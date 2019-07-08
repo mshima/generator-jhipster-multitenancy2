@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+const _ = require('lodash');
 const chalk = require('chalk');
 const CommonGenerator = require('generator-jhipster/generators/common');
 
@@ -56,18 +57,70 @@ module.exports = class extends CommonGenerator {
          *      return Object.assign(phaseFromJHipster, myCustomPhaseSteps);
          * ```
          */
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._initializing();
+        const initializing = super._initializing()
+        const myCustomPhaseSteps = {
+            loadConf() {
+                this.tenantName = this.config.get('tenantName');
+                this.tenantChangelogDate = this.config.get('tenantChangelogDate');
+            },
+        };
+        return Object.assign(initializing, myCustomPhaseSteps);
     }
 
     get prompting() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._prompting();
+        const prompting = super._prompting()
+        const myCustomPhaseSteps = {
+            askTenantAware() {
+                const prompts = [
+                    {
+                        when: this.tenantName === undefined,
+                        name: 'tenantName',
+                        message: 'What is the alias given tenants in your application?',
+                        default: 'Company',
+                        validate: (input) => {
+                            if (_.toLower(input) === 'account') {
+                                return `${input} is a reserved word.`;
+                            }
+                            return true;
+                        }
+                    }
+                ];
+                const done = this.async();
+                this.prompt(prompts).then(props => {
+                    if(props.tenantName){
+                        this.tenantName = props.tenantName;
+                        this.tenantChangelogDate = this.dateFormatForLiquibase();
+                    }
+                    done();
+                });
+            },
+        };
+        return Object.assign(prompting, myCustomPhaseSteps);
     }
 
     get configuring() {
         // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._configuring();
+        const configuring = super._configuring()
+        const configuringCustomPhaseSteps = {
+            saveConf() {
+                this.config.set('tenantName', this.tenantName);
+                this.config.set('tenantChangelogDate', this.tenantChangelogDate);
+            },
+            generateTenant() {
+                const options = this.options;
+                const configOptions = this.configOptions;
+
+                this.composeWith(require.resolve('../entity'), {
+                    ...options,
+                    configOptions,
+                    regenerate: true,
+                    'skip-install': true,
+                    debug: this.isDebugEnabled,
+                    arguments: [this.tenantName]
+                });
+            },
+        };
+        return Object.assign(configuring, configuringCustomPhaseSteps);
     }
 
     get default() {
@@ -76,8 +129,10 @@ module.exports = class extends CommonGenerator {
     }
 
     get writing() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._writing();
+        const writing = super._writing()
+        const myCustomPhaseSteps = {
+        };
+        return Object.assign(writing, myCustomPhaseSteps);
     }
 
     get install() {
@@ -87,6 +142,12 @@ module.exports = class extends CommonGenerator {
 
     get end() {
         // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._end();
+        const end = super._end()
+        const myCustomPhaseSteps = {
+//            saveConf() {
+//                this.config.set('tenantName', this.tenantName);
+//            },
+        };
+        return Object.assign(end, myCustomPhaseSteps);
     }
 };

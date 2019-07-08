@@ -2,6 +2,12 @@
 const chalk = require('chalk');
 const EntityGenerator = require('generator-jhipster/generators/entity');
 
+const pluralize = require('pluralize');
+const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+
+const mtUtils = require('../multitenancy-utils');
+const partialFiles = require('./partials/index');
+
 module.exports = class extends EntityGenerator {
     constructor(args, opts) {
         super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
@@ -16,6 +22,8 @@ module.exports = class extends EntityGenerator {
 
         // This sets up options for this sub generator and is being reused from JHipster
         jhContext.setupEntityOptions(this, jhContext, this);
+
+        this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get("tenantName"));
     }
 
     get initializing() {
@@ -55,18 +63,132 @@ module.exports = class extends EntityGenerator {
          *      return Object.assign(phaseFromJHipster, myCustomPhaseSteps);
          * ```
          */
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._initializing();
+        const phaseFromJHipster = super._initializing();
+        const postCustomPhaseSteps = {
+                setUpVariables() {
+                    this.tenantName = this.config.get("tenantName");
+                    const context = this.context;
+
+                    if(this.isTenant && !context.fileData){
+                        context.service = 'serviceClass';
+                        context.pagination = 'pagination';
+                        context.changelog = this.config.get("tenantChangelogDate");
+
+                        context.fields = [{
+                            fieldName: 'name',
+                            fieldType: 'String',
+                            fieldValidateRules: [
+                                'required'
+                                ]
+                        }];
+
+                        context.relationships = [{
+                            relationshipName: 'users',
+                            otherEntityName: 'user',
+                            relationshipType: 'one-to-many',
+                            otherEntityField: 'login',
+                            relationshipValidateRules: 'required',
+                            ownerSide: true,
+                            otherEntityRelationshipName: this._.toLower(this.tenantName)
+                        }];
+                    }
+                },
+        }
+
+        return Object.assign(phaseFromJHipster, postCustomPhaseSteps);
     }
 
     get prompting() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._prompting();
+        const prompting = super._prompting()
+        const myCustomPhaseSteps = {
+            askTenantAware() {
+                const context = this.context;
+                const isTenant = this.isTenant;
+                const prompts = [
+                    {
+                        when: ((context.fileData === undefined || context.fileData.tenantAware === undefined) && !isTenant),
+                        type: 'confirm',
+                        name: 'tenantAware',
+                        message: `Do you want to make ${context.name} tenant aware?`,
+                        default: false
+                    }
+                    ];
+                const done = this.async();
+                this.prompt(prompts).then(props => {
+                    if(!isTenant && props.tenantAware !== undefined){
+                        this.newTenantAware = props.tenantAware;
+                    }
+                    done();
+                });
+            }
+        };
+        return Object.assign(myCustomPhaseSteps);
     }
 
     get configuring() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._configuring();
+        const myCustomPrePhaseSteps = {
+                loadTenantDef() {
+                    const context = this.context;
+                    this.tenantName = this.config.get('tenantName');
+                    //this.isTenant = this.isTenant || (this._.lowerFirst(context.name) === this._.lowerFirst(this.config.get("tenantName")));
+
+                    if (this.newTenantAware === undefined){
+                        this.context.tenantAware = context.fileData ? context.fileData.tenantAware : false;
+                    }else {
+                        this.context.tenantAware = this.newTenantAware;
+                    }
+                    /* tenant variables */
+                    mtUtils.tenantVariables(this.tenantName, this);
+
+                    //TODO remove (compatibility)
+                    if(!this.options){
+                        this.options = {};
+                    }
+                    mtUtils.tenantVariables(this.tenantName, this.options);
+
+                    //this.tenantAware = this.tenantAware !== undefined ? this.tenantAware : false;
+                },
+                preJson() {
+                    if(this.isTenant) return;
+
+                    const context = this.context;
+
+                    if(this.context.tenantAware){
+                        context.service = 'serviceClass';
+
+                        const relationships = context.relationships;
+                        // if any relationship exisits already in the entity to the tenant remove it and regenerated
+                        for (let i = relationships.length - 1; i >= 0; i--) {
+                            if (relationships[i].otherEntityName === this.tenantName) {
+                                relationships.splice(i);
+                            }
+                        }
+
+                        this.log(chalk.white(`Entity ${chalk.bold(this.options.name)} found. Adding relationship`));
+                        const real = {
+                            relationshipName: this._.toLower(this.tenantName),
+                            otherEntityName: this._.toLower(this.tenantName),
+                            relationshipType: 'many-to-one',
+                            otherEntityField: 'id',
+                            relationshipValidateRules: 'required',
+                            ownerSide: true,
+                            otherEntityRelationshipName: this._.toLower(context.name)
+                        };
+                        relationships.push(real);
+                    }
+                },
+        }
+        const configuring = super._configuring();
+
+        const myCustomPostPhaseSteps = {
+                postJson() {
+                    if(this.isTenant) return;
+
+                    // super class creates a new file without tenantAware (6.1.2)
+                    this.updateEntityConfig(this.context.filename, 'tenantAware', this.context.tenantAware);
+                },
+        }
+        return Object.assign(myCustomPrePhaseSteps, configuring, myCustomPostPhaseSteps);
     }
 
     get default() {
@@ -75,8 +197,43 @@ module.exports = class extends EntityGenerator {
     }
 
     get writing() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._writing();
+        var phaseFromJHipster = super._writing();
+        var myCustomPhaseSteps = {
+//            // sets up all the variables we'll need for the templating
+            setUpVariables() {
+                this.context.isTenant = this.isTenant;
+                if (this.context.tenantAware) {
+                    // tenancy already been configured
+//                    this.tenancyExists = false;
+
+                    this.packageFolder = this.config.get('packageFolder');
+                    // function to use directly template
+                    this.template = function (source, destination) {
+                        this.fs.copyTpl(
+                                this.templatePath(source),
+                                this.destinationPath(destination),
+                                this
+                        );
+                    };
+
+                    // references to the various directories we'll be copying files to
+                    this.javaDir = jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder + "/";
+
+                    const context = this.context;
+
+//                    this.entityName = this._.kebabCase(this._.lowerFirst(context.fileData.name));
+                    this.entityNameUpperFirst = this._.upperFirst(this.entityName);
+
+                    this.entityNameLowerFirst = context.entityInstance;
+                    this.options.entityNameLowerFirst = context.entityInstance;
+
+                    this.tenantNameUpperFirst = context.entityClass;
+                    this.options.tenantNameUpperFirst = context.entityClass;
+                }
+            },
+        }
+        return Object.assign(phaseFromJHipster, myCustomPhaseSteps);
+
     }
 
     get install() {

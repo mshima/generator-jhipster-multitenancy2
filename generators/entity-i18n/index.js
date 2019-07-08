@@ -2,6 +2,8 @@
 const chalk = require('chalk');
 const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
 
+let isTenant;
+
 module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
         super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
@@ -13,6 +15,8 @@ module.exports = class extends EntityI18nGenerator {
         }
 
         this.configOptions = jhContext.configOptions || {};
+
+        isTenant = (this._.lowerFirst(this.fileData.entityTableName) === this._.lowerFirst(this.config.get("tenantName")));
     }
 
     get initializing() {
@@ -72,7 +76,7 @@ module.exports = class extends EntityI18nGenerator {
     }
 
     get writing() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
+        if (isTenant) return;
         return super._writing();
     }
 

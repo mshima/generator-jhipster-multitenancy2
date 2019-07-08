@@ -1,6 +1,9 @@
 /* eslint-disable consistent-return */
 const chalk = require('chalk');
 const ServerGenerator = require('generator-jhipster/generators/server');
+const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+
+const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends ServerGenerator {
     constructor(args, opts) {
@@ -20,7 +23,7 @@ module.exports = class extends ServerGenerator {
 
     get initializing() {
         /**
-         * Any method beginning with _ can be reused from the superclass `ServerGenerator`
+         * Any method beginning with _ can be reused from the superclass `EntityServerGenerator`
          *
          * There are multiple ways to customize a phase from JHipster.
          *
@@ -56,7 +59,16 @@ module.exports = class extends ServerGenerator {
          * ```
          */
         // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._initializing();
+        const initializing = super._initializing()
+        const myCustomPhaseSteps = {
+            // sets up all the variables we'll need for the templating
+            setUpVariables() {
+                this.jhiPrefixDashed = this._.kebabCase(this.jhiPrefix);
+                this.angularXAppName = this.getAngularXAppName();
+                this.jhiPrefixCapitalized = this._.upperFirst(this.jhiPrefix);
+            },
+        };
+        return Object.assign(initializing, myCustomPhaseSteps);
     }
 
     get prompting() {
@@ -75,8 +87,42 @@ module.exports = class extends ServerGenerator {
     }
 
     get writing() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._writing();
+        const writing = super._writing();
+        const myCustomPhaseSteps = {
+            // sets up all the variables we'll need for the templating
+            setUpVariables() {
+                // references to the various directories we'll be copying files to
+                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
+                this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
+                this.webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
+                this.angularDir = jhipsterConstants.ANGULAR_DIR;
+                this.testDir = jhipsterConstants.SERVER_TEST_SRC_DIR + this.packageFolder;
+                this.clientTestDir = jhipsterConstants.CLIENT_TEST_SRC_DIR;
+
+                // template variables
+                mtUtils.tenantVariables(this.config.get('tenantName'), this);
+                this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))")`;
+                this.mainClass = this.getMainClassName();
+                this.changelogDate = this.config.get("tenantChangelogDate");
+            },
+            // make the necessary server code changes
+            generateServerCode() {
+                // update user object
+                this.template('src/main/java/package/domain/_User.java', `${this.javaDir}domain/User.java`);
+                this.template('src/main/java/package/domain/_EntityParameter.java', `${this.javaDir}domain/${this.tenantNameUpperFirst}Parameter.java`);
+
+                this.template('src/main/java/package/service/dto/_UserDTO.java', `${this.javaDir}service/dto/UserDTO.java`);
+
+                // database changes
+                this.template('src/main/resources/config/liquibase/changelog/_user_tenant_constraints.xml', `${this.resourceDir}config/liquibase/changelog/${this.changelogDate}__user_${this.tenantNameUpperFirst}_constraints.xml`);
+                this.addChangelogToLiquibase(`${this.changelogDate}__user_${this.tenantNameUpperFirst}_constraints`);
+
+                // copy over aspect
+                this.template('src/main/java/package/aop/_tenant/_TenantAspect.java', `${this.javaDir}aop/${this.tenantNameLowerFirst}/${this.tenantNameUpperFirst}Aspect.java`);
+                this.template('src/main/java/package/aop/_tenant/_UserAspect.java', `${this.javaDir}aop/${this.tenantNameLowerFirst}/UserAspect.java`);
+            },
+        };
+        return Object.assign(writing, myCustomPhaseSteps);
     }
 
     get install() {
