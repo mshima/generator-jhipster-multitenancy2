@@ -2,8 +2,7 @@
 const chalk = require('chalk');
 const ServerGenerator = require('generator-jhipster/generators/server');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-
-const mtUtils = require('../multitenancy-utils');
+const writeFiles = require('./files').writeFiles;
 
 module.exports = class extends ServerGenerator {
     constructor(args, opts) {
@@ -81,42 +80,10 @@ module.exports = class extends ServerGenerator {
         const writing = super._writing();
         const myCustomPhaseSteps = {
             // make the necessary server code changes
+            writeAdditionalFile() {
+                writeFiles.call(this);
+            },
             generateServerCode() {
-                // function to use directly template
-                this.template = function (source, destination) {
-                    this.fs.copyTpl(
-                            this.templatePath(source),
-                            this.destinationPath(destination),
-                            this
-                    );
-                };
-
-                this.packageFolder = this.config.get('packageFolder');
-                // references to the various directories we'll be copying files to
-                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
-
-                // TODO Add entities:
-                // ` || execution(* ${this.packageName}.service.${_.upperFirst(entity)}Service.*(..))`
-                this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))")`;
-                
-                // template variables
-                mtUtils.tenantVariables(this.config.get('tenantName'), this);
-                this.changelogDate = this.config.get("tenantChangelogDate");
-                this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
-
-                // update user object
-                this.template('src/main/java/package/domain/_User.java', `${this.javaDir}domain/User.java`);
-                this.template('src/main/java/package/domain/_EntityParameter.java', `${this.javaDir}domain/${this.tenantNameUpperFirst}Parameter.java`);
-
-                this.template('src/main/java/package/service/dto/_UserDTO.java', `${this.javaDir}service/dto/UserDTO.java`);
-
-                // database changes
-                this.template('src/main/resources/config/liquibase/changelog/_user_tenant_constraints.xml', `${this.resourceDir}config/liquibase/changelog/${this.changelogDate}__user_${this.tenantNameUpperFirst}_constraints.xml`);
-                this.addChangelogToLiquibase(`${this.changelogDate}__user_${this.tenantNameUpperFirst}_constraints`);
-
-                // copy over aspect
-                this.template('src/main/java/package/aop/_tenant/_TenantAspect.java', `${this.javaDir}aop/${this.tenantNameLowerFirst}/${this.tenantNameUpperFirst}Aspect.java`);
-                this.template('src/main/java/package/aop/_tenant/_UserAspect.java', `${this.javaDir}aop/${this.tenantNameLowerFirst}/UserAspect.java`);
             },
         };
         return Object.assign(writing, myCustomPhaseSteps);
