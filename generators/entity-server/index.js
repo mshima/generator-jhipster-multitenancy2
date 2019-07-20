@@ -113,7 +113,7 @@ module.exports = class extends EntityServerGenerator {
                     customEntity() {
                         this.template('_EntityAspect.java', `${this.javaDir}aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`);
 
-                        mtUtils.processPartialTemplates(partialFiles.serverEntityTenantAware.templates(this), this);
+                        mtUtils.processPartialTemplates(partialFiles.server.entityTenantAwareTemplates(this), this);
                     },
             }
             return Object.assign(writing, setupCustomPhaseSteps, writeCustomPhaseSteps);

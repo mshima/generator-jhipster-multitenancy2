@@ -1,3 +1,4 @@
+// Add jpa filter to the entity to remove entries from another tenant
 const file = (context) => {
     return `${context.javaDir}domain/${context.entityClass}.java`;
 };

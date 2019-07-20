@@ -9,12 +9,10 @@ const serverTemplates = [
 
 
 module.exports = {
-    serverEntityTenantAware: {
-        templates: function (context) {
+    server: {
+        entityTenantAwareTemplates: function (context) {
             return mtUtils.requireTemplates('./entity-server/partials/server/', serverTemplates, context);
         },
-    },
-    server: {
         tenantResource: tenantResource.tmpl,
         tenantService: tenantService.tmpl
     }

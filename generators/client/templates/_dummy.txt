@@ -1,2 +1,0 @@
-hello multitenancy2!
-It's dummy.txt
