@@ -8,15 +8,6 @@ module.exports = {
 };
 
 function writeFiles() {
-    // function to use directly template
-    this.template = function (source, destination) {
-        this.fs.copyTpl(
-                this.templatePath(source),
-                this.destinationPath(destination),
-                this
-        );
-    };
-
     this.packageFolder = this.config.get('packageFolder');
     // references to the various directories we'll be copying files to
     this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
@@ -28,9 +19,6 @@ function writeFiles() {
     // template variables
     mtUtils.tenantVariables(this.config.get('tenantName'), this);
     this.changelogDate = this.config.get("tenantChangelogDate");
-
-    // update user object
-    this.template('src/main/java/package/domain/_User.java', `${this.javaDir}domain/User.java`);
 
     // configs for the template files
     const files = {
