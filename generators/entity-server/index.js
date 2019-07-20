@@ -111,7 +111,6 @@ module.exports = class extends EntityServerGenerator {
         if(!isTenant) {
             const writeCustomPhaseSteps = {
                     customEntity() {
-                        this.entityNamePlural = this.entityInstancePlural;
                         this.template('_EntityAspect.java', `${this.javaDir}aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`);
 
                         mtUtils.processPartialTemplates(partialFiles.serverEntityTenantAware.templates(this), this);

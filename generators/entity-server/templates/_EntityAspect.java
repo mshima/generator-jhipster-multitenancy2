@@ -109,8 +109,8 @@ public class <%= entityClass %>Aspect {
             if (loggedInUser.get<%= tenantNameUpperFirst %>() != null) {
                 <%= entityClass %> example = new <%= entityClass %>();
                 example.set<%= tenantNameUpperFirst %>(loggedInUser.get<%= tenantNameUpperFirst %>());
-                List<<%= entityClass %>> <%= entityNamePlural %> = <%= entityInstance %>Repository.findAll(Example.of(example));
-                return <%= entityNamePlural %>;
+                List<<%= entityClass %>> <%= entityInstancePlural %> = <%= entityInstance %>Repository.findAll(Example.of(example));
+                return <%= entityInstancePlural %>;
             }
         }
         return pjp.proceed();
