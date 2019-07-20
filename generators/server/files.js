@@ -12,10 +12,14 @@ function writeFiles() {
     // references to the various directories we'll be copying files to
     this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
 
-    // TODO Add entities:
-    // ` || execution(* ${this.packageName}.service.${_.upperFirst(entity)}Service.*(..))`
-    this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))")`;
-    
+    this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))`;
+    this.getExistingEntities().forEach(entity => {
+        if(entity.definition.tenantAware){
+            this.tenantisedEntityServices = this.tenantisedEntityServices + ` || execution(* ${this.packageName}.service.${this._.upperFirst(entity.name)}Service.*(..))`
+        }
+    });
+    this.tenantisedEntityServices = this.tenantisedEntityServices + '")';
+
     // template variables
     mtUtils.tenantVariables(this.config.get('tenantName'), this);
     this.changelogDate = this.config.get("tenantChangelogDate");
