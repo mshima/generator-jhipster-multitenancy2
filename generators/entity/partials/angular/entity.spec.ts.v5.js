@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityInstance}/${context.entityInstance}.spec.ts`;
+    return `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityFolderName}/${context.entityFileName}.spec.ts`;
 };
 
 /*
