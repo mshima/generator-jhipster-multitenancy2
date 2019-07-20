@@ -87,12 +87,6 @@ module.exports = class extends EntityClientGenerator {
         if (isTenant) return;
         var phaseFromJHipster = super._writing();
         var myCustomPhaseSteps = {
-//            // sets up all the variables we'll need for the templating
-            setUpVariables() {
-                if (this.tenantAware) {
-                    this.entityName = this.entityInstance;
-                }
-            },
             generateClientCode() {
                 if (this.tenantAware) {
                     mtUtils.tenantVariables(this.config.get('tenantName'), this);
@@ -111,7 +105,7 @@ module.exports = class extends EntityClientGenerator {
                             mtUtils.processPartialTemplates(partialFiles.angular.languageTemplates, this);
 
                             this.rewriteFile(
-                                `${this.CLIENT_MAIN_SRC_DIR}i18n/${language}/${this.entityName}.json`,
+                                `${this.CLIENT_MAIN_SRC_DIR}i18n/${language}/${this.entityFileName}.json`,
                                 '"detail": {',
                                 `"${this.tenantNameLowerFirst}": "${this.tenantNameUpperFirst}",`
                             );

@@ -4,13 +4,13 @@ const file = (context) => {
 
 /*
                 this.rewriteFile(
-                    `${webappDir}app/shared/model/${entityName}.model.ts`,
+                    `${webappDir}app/shared/model/${entityModelFileName}.model.ts`,
                     `export interface I${entityClass} {`,
                     `import { ${tenantNameUpperFirst} } from '../../admin/${tenantNameLowerFirst}-management/${tenantNameLowerFirst}.model';`
                 );
 
                 this.rewriteFile(
-                    `${webappDir}app/shared/model/${entityName}.model.ts`,
+                    `${webappDir}app/shared/model/${entityModelFileName}.model.ts`,
                     'id?: number;',
                     `${tenantNameLowerFirst}?: ${tenantNameUpperFirst};`
                 );

@@ -4,19 +4,19 @@ const file = (context) => {
 
 /*
                     this.rewriteFile(
-                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.page-object.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityFolderName}/${context.entityFileName}.page-object.ts`,
                         'getPageTitle() {',
                         `${tenantNameLowerFirst}Select = element(by.css('select'));`
                     );
 
                     this.replaceContent(
-                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.page-object.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityFolderName}/${context.entityFileName}.page-object.ts`,
                         '} from \'protractor\';',
                         ', protractor } from \'protractor\';'
                     );
 
                     this.rewriteFile(
-                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.page-object.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityFolderName}/${context.entityFileName}.page-object.ts`,
                         'save(): promise.Promise<void> {',
                         partialFiles.angular.entitySpecTs2(this)
                     );

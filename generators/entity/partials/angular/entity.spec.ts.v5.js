@@ -4,28 +4,28 @@ const file = (context) => {
 
 /*
                     this.rewriteFile(
-                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityFolderName}/${context.entityFileName}.spec.ts`,
                         `describe('${context.entityClass} e2e test', () => {`,
                         `import { ${tenantNameUpperFirst}MgmtComponentsPage } from '../../admin/${tenantNameLowerFirst}-management.spec';
 `
                     );
 
                     this.rewriteFile(
-                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
-                        `let ${entityName}ComponentsPage: ${context.entityClass}ComponentsPage;`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityFolderName}/${context.entityFileName}.spec.ts`,
+                        `let ${entityInstance}ComponentsPage: ${context.entityClass}ComponentsPage;`,
                         `let ${tenantNameLowerFirst}MgmtComponentsPage: ${tenantNameUpperFirst}MgmtComponentsPage;`
                     );
 
                     this.replaceContent(
-                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityFolderName}/${context.entityFileName}.spec.ts`,
                         `it('should create and save ${entityClassPlural}', () => {`,
                         partialFiles.angular.entitySpecTs1(this)
                     );
 
                     this.rewriteFile(
-                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
-                        `${entityName}UpdatePage.save();`,
-                        `${entityName}UpdatePage.set${tenantNameUpperFirst}();`
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityFolderName}/${context.entityFileName}.spec.ts`,
+                        `${entityInstance}UpdatePage.save();`,
+                        `${entityInstance}UpdatePage.set${tenantNameUpperFirst}();`
                     );
  */
 const tmpls = [
@@ -42,7 +42,7 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `let ${context.entityName}ComponentsPage: ${context.entityClass}ComponentsPage;`;
+            return `let ${context.entityInstance}ComponentsPage: ${context.entityClass}ComponentsPage;`;
         },
         tmpl: (context) => {
             return `let ${context.tenantNameLowerFirst}MgmtComponentsPage: ${context.tenantNameUpperFirst}MgmtComponentsPage;`;
@@ -65,10 +65,10 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `${context.entityName}UpdatePage.save();`;
+            return `${context.entityInstance}UpdatePage.save();`;
         },
         tmpl: (context) => {
-            return `${context.entityName}UpdatePage.set${context.tenantNameUpperFirst}();`;
+            return `${context.entityInstance}UpdatePage.set${context.tenantNameUpperFirst}();`;
         }
     },
 ]
