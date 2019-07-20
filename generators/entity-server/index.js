@@ -122,23 +122,14 @@ module.exports = class extends EntityServerGenerator {
         const writeCustomPhaseSteps = {
                 // make the necessary server code changes
                 customServerCode() {
-                    this.replaceContent(
-                            `${this.javaDir}service/${this.tenantNameUpperFirst}Service.java`,
-                            `return ${this.tenantNameLowerFirst}Repository.findById(id);`,
-                            partialFiles.server.tenantService(this),
-                            false
-                    );
-
                     this.replaceContent(`${this.javaDir}domain/${this.tenantNameUpperFirst}.java`,
                             `    @OneToMany(mappedBy = "'${this.tenantNameLowerFirst}'")`,
                     `\t@OneToMany(mappedBy = "'${this.tenantNameLowerFirst}'", fetch = FetchType.EAGER)`);
 
-                    this.rewriteFile(`${this.javaDir}web/rest/${this.tenantNameUpperFirst}Resource.java`,
-                            `${this.tenantNameLowerFirst}Service.delete(id);`,
-                            partialFiles.server.tenantResource(this));
-
                     this.template('src/main/java/package/repository/_TenantRepository.java',
                     `${this.javaDir}repository/${this.tenantNameUpperFirst}Repository.java`);
+
+                    mtUtils.processPartialTemplates(partialFiles.server.tenantTemplates(this), this);
                 },
         };
         return Object.assign(writing, setupCustomPhaseSteps, writeCustomPhaseSteps);

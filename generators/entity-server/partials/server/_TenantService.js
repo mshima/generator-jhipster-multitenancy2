@@ -1,5 +1,16 @@
-const tmpl = context => 
-`return ${context.tenantNameLowerFirst}Repository.findById(id);
+const file = (context) => {
+    return `${context.javaDir}service/${context.tenantNameUpperFirst}Service.java`;
+};
+
+const tmpls = [
+    {
+        type: 'replaceContent',
+        regex: false,
+        target: (context) => {
+            return `return ${context.tenantNameLowerFirst}Repository.findById(id);`;
+        },
+        tmpl: (context) => {
+            return `return ${context.tenantNameLowerFirst}Repository.findById(id);
     }
 
     /** 
@@ -12,7 +23,11 @@ const tmpl = context =>
     public Optional<${context.tenantNameUpperFirst}> findOneAndFetchUsersEagerly(Long id) {
         log.debug("Request to get ${context.tenantNameUpperFirst} with users: {}", id);
         return ${context.tenantNameLowerFirst}Repository.findOneAndFetchUsersEagerly(id);`;
+        }
+    },
+]
 
 module.exports = {
-    tmpl
+    file,
+    tmpls
 };
