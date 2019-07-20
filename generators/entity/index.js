@@ -193,12 +193,6 @@ module.exports = class extends EntityGenerator {
         var myCustomPhaseSteps = {
 //            // sets up all the variables we'll need for the templating
             setUpVariables() {
-                this.context.isTenant = this.isTenant;
-                if (this.context.tenantAware) {
-                    const context = this.context;
-
-                    this.entityNameLowerFirst = context.entityInstance;
-                }
             },
         }
         return Object.assign(phaseFromJHipster, myCustomPhaseSteps);

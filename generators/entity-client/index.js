@@ -91,8 +91,6 @@ module.exports = class extends EntityClientGenerator {
             setUpVariables() {
                 if (this.tenantAware) {
                     this.entityName = this.entityInstance;
-
-                    this.entityNameLowerFirst = this.entityInstance;
                 }
             },
             generateClientCode() {

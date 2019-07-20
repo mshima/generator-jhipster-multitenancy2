@@ -3,7 +3,7 @@ const tmpl = (context) => {
         ${context.tenantNameLowerFirst}MgmtComponentsPage = new ${context.tenantNameUpperFirst}MgmtComponentsPage();
         ${context.tenantNameLowerFirst}MgmtComponentsPage.create${context.tenantNameUpperFirst}();
 
-        navBarPage.goToEntity('${context.entityNameLowerFirst}');`;
+        navBarPage.goToEntity('${context.entityInstance}');`;
     return template;
 };
 

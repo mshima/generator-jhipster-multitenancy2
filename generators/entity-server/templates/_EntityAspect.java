@@ -33,28 +33,28 @@ public class <%= entityClass %>Aspect {
     private UserRepository userRepository;
 
     @Autowired
-    private <%= entityClass %>Repository <%= entityNameLowerFirst %>Repository;
+    private <%= entityClass %>Repository <%= entityInstance %>Repository;
 
     /**
      * Run method if <%= entityClass %> repository save is hit.
      * Adds tenant information to entity.
      */
-    @Before(value = "execution(* <%=packageName%>.repository.<%= entityClass %>Repository.save(..)) && args(<%= entityNameLowerFirst %>, ..)")
-    public void onSave(JoinPoint joinPoint, <%= entityClass %> <%= entityNameLowerFirst %>) {
+    @Before(value = "execution(* <%=packageName%>.repository.<%= entityClass %>Repository.save(..)) && args(<%= entityInstance %>, ..)")
+    public void onSave(JoinPoint joinPoint, <%= entityClass %> <%= entityInstance %>) {
         Optional<String> login = SecurityUtils.getCurrentUserLogin();
 
         if(login.isPresent()) {
             User loggedInUser = userRepository.findOneByLogin(login.get()).get();
 
             if (loggedInUser.get<%= tenantNameUpperFirst %>() != null) {
-                <%= entityNameLowerFirst %>.set<%= tenantNameUpperFirst %>(loggedInUser.get<%= tenantNameUpperFirst %>());
+                <%= entityInstance %>.set<%= tenantNameUpperFirst %>(loggedInUser.get<%= tenantNameUpperFirst %>());
             }
         }
     }
 
     /**
      * Run method if <%= entityClass %> repository deleteById is hit.
-     * Verify if tenant owns the <%= entityNameLowerFirst %> before delete.
+     * Verify if tenant owns the <%= entityInstance %> before delete.
      */
     @Before(value = "execution(* <%=packageName%>.repository.<%= entityClass %>Repository.deleteById(..)) && args(id, ..)")
     public void onDelete(JoinPoint joinPoint, Long id) {
@@ -64,8 +64,8 @@ public class <%= entityClass %>Aspect {
             User loggedInUser = userRepository.findOneByLogin(login.get()).get();
 
             if (loggedInUser.get<%= tenantNameUpperFirst %>() != null) {
-                <%= entityClass %> <%= entityNameLowerFirst %> = <%= entityNameLowerFirst %>Repository.findById(id).get();
-                if(<%= entityNameLowerFirst %>.get<%= tenantNameUpperFirst %>() != loggedInUser.get<%= tenantNameUpperFirst %>()){
+                <%= entityClass %> <%= entityInstance %> = <%= entityInstance %>Repository.findById(id).get();
+                if(<%= entityInstance %>.get<%= tenantNameUpperFirst %>() != loggedInUser.get<%= tenantNameUpperFirst %>()){
                     throw new NoSuchElementException();
                 }
             }
@@ -109,7 +109,7 @@ public class <%= entityClass %>Aspect {
             if (loggedInUser.get<%= tenantNameUpperFirst %>() != null) {
                 <%= entityClass %> example = new <%= entityClass %>();
                 example.set<%= tenantNameUpperFirst %>(loggedInUser.get<%= tenantNameUpperFirst %>());
-                List<<%= entityClass %>> <%= entityNamePlural %> = <%= entityNameLowerFirst %>Repository.findAll(Example.of(example));
+                List<<%= entityClass %>> <%= entityNamePlural %> = <%= entityInstance %>Repository.findAll(Example.of(example));
                 return <%= entityNamePlural %>;
             }
         }

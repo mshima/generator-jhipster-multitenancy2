@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityNameLowerFirst}/${context.entityNameLowerFirst}.spec.ts`;
+    return `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityInstance}/${context.entityInstance}.spec.ts`;
 };
 
 /*
@@ -58,7 +58,7 @@ const tmpls = [
         ${context.tenantNameLowerFirst}MgmtComponentsPage = new ${context.tenantNameUpperFirst}MgmtComponentsPage();
         ${context.tenantNameLowerFirst}MgmtComponentsPage.create${context.tenantNameUpperFirst}();
 
-        navBarPage.goToEntity('${context.entityNameLowerFirst}');`;
+        navBarPage.goToEntity('${context.entityInstance}');`;
             return template;
         }
     },

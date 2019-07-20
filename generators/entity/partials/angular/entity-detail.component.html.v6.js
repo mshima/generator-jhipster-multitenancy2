@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.CLIENT_MAIN_SRC_DIR}app/entities/${context.entityNameLowerFirst}/${context.entityNameLowerFirst}-detail.component.html`;
+    return `${context.CLIENT_MAIN_SRC_DIR}app/entities/${context.entityInstance}/${context.entityInstance}-detail.component.html`;
 };
 
 const tmpls = [
@@ -20,17 +20,17 @@ const tmpls = [
             return `<dt><span(.*)>${context.tenantNameUpperFirst}</span></dt>(\\s*)<dd>`;
         },
         tmpl: (context) => {
-            return `<dt *ngIf="${context.entityNameLowerFirst}.${context.tenantNameLowerFirst}"><span$1>${context.tenantNameUpperFirst}</span></dt>$2<dd>`;
+            return `<dt *ngIf="${context.entityInstance}.${context.tenantNameLowerFirst}"><span$1>${context.tenantNameUpperFirst}</span></dt>$2<dd>`;
         }
     },
     {
         type: 'replaceContent',
         regex: false,
         target: (context) => {
-            return `{{${context.entityNameLowerFirst}.${context.tenantNameLowerFirst}?.id}}`;
+            return `{{${context.entityInstance}.${context.tenantNameLowerFirst}?.id}}`;
         },
         tmpl: (context) => {
-            return `{{${context.entityNameLowerFirst}.${context.tenantNameLowerFirst}?.name}}`;
+            return `{{${context.entityInstance}.${context.tenantNameLowerFirst}?.name}}`;
         }
     },
     {
