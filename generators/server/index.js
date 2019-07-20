@@ -59,21 +59,7 @@ module.exports = class extends ServerGenerator {
          * ```
          */
         // Here we are not overriding this phase and hence its being handled by JHipster
-        const initializing = super._initializing()
-        const myCustomPhaseSteps = {
-            // sets up all the variables we'll need for the templating
-            setUpVariables() {
-                // function to use directly template
-                this.template = function (source, destination) {
-                    this.fs.copyTpl(
-                            this.templatePath(source),
-                            this.destinationPath(destination),
-                            this
-                    );
-                };
-            },
-        };
-        return Object.assign(initializing, myCustomPhaseSteps);
+        return super._initializing();
     }
 
     get prompting() {
@@ -96,6 +82,15 @@ module.exports = class extends ServerGenerator {
         const myCustomPhaseSteps = {
             // make the necessary server code changes
             generateServerCode() {
+                // function to use directly template
+                this.template = function (source, destination) {
+                    this.fs.copyTpl(
+                            this.templatePath(source),
+                            this.destinationPath(destination),
+                            this
+                    );
+                };
+
                 this.packageFolder = this.config.get('packageFolder');
                 // references to the various directories we'll be copying files to
                 this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;

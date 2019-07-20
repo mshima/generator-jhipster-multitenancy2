@@ -189,13 +189,8 @@ module.exports = class extends EntityGenerator {
     }
 
     get writing() {
-        var phaseFromJHipster = super._writing();
-        var myCustomPhaseSteps = {
-//            // sets up all the variables we'll need for the templating
-            setUpVariables() {
-            },
-        }
-        return Object.assign(phaseFromJHipster, myCustomPhaseSteps);
+        // Here we are not overriding this phase and hence its being handled by JHipster
+        return super._writing();
 
     }
 

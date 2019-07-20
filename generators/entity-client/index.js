@@ -84,7 +84,9 @@ module.exports = class extends EntityClientGenerator {
     }
 
     get writing() {
+        // TODO copy generated files instead of creating ours
         if (isTenant) return;
+
         var phaseFromJHipster = super._writing();
         var myCustomPhaseSteps = {
             generateClientCode() {

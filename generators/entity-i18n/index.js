@@ -76,6 +76,7 @@ module.exports = class extends EntityI18nGenerator {
     }
 
     get writing() {
+        // TODO copy generated files instead of creating ours
         if (isTenant) return;
         return super._writing();
     }
