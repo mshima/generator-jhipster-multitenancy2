@@ -7,6 +7,7 @@ const entityTenantAwareTemplates = [
 const tenantTemplates = [
     '_TenantResource',
     '_TenantService',
+    '_Tenant.java',
 ] 
 
 
