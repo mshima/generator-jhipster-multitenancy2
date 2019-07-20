@@ -18,7 +18,7 @@ const file = (context) => {
 
                     this.replaceContent(
                         `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
-                        `it('should create and save ${entityNamePluralUpperFirst}', () => {`,
+                        `it('should create and save ${entityClassPlural}', () => {`,
                         partialFiles.angular.entitySpecTs1(this)
                     );
 
@@ -51,7 +51,7 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `it('should create and save ${context.entityNamePluralUpperFirst}', () => {`;
+            return `it('should create and save ${context.entityClassPlural}', () => {`;
         },
         tmpl: (context) => {
             let template = `it('should create and save ${context.name}', () => {
