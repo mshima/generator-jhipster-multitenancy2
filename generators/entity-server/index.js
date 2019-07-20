@@ -111,7 +111,6 @@ module.exports = class extends EntityServerGenerator {
         if(!isTenant) {
             const writeCustomPhaseSteps = {
                     customEntity() {
-                        this.entityNameUpperFirst = this.entityClass;
                         this.entityNameLowerFirst = this.entityInstance;
                         this.entityNamePlural = this.entityInstancePlural;
                         this.template('_EntityAspect.java', `${this.javaDir}aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`);

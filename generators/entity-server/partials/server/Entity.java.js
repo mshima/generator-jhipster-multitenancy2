@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.javaDir}domain/${context.entityNameUpperFirst}.java`;
+    return `${context.javaDir}domain/${context.entityClass}.java`;
 };
 
 const tmpls = [
@@ -16,7 +16,7 @@ import org.hibernate.annotations.ParamDef;
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `public class ${context.entityNameUpperFirst}`;
+            return `public class ${context.entityClass}`;
         },
         tmpl: (context) => {
             return `@FilterDef(name = "TENANT_FILTER", parameters = {@ParamDef(name = "${context.tenantNameLowerFirst}Id", type = "long")})

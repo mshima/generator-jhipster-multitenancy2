@@ -5,14 +5,14 @@ const file = (context) => {
 /*
                     this.rewriteFile(
                         `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
-                        `describe('${entityNameUpperFirst} e2e test', () => {`,
+                        `describe('${context.entityClass} e2e test', () => {`,
                         `import { ${tenantNameUpperFirst}MgmtComponentsPage } from '../../admin/${tenantNameLowerFirst}-management.spec';
 `
                     );
 
                     this.rewriteFile(
                         `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
-                        `let ${entityName}ComponentsPage: ${entityNameUpperFirst}ComponentsPage;`,
+                        `let ${entityName}ComponentsPage: ${context.entityClass}ComponentsPage;`,
                         `let ${tenantNameLowerFirst}MgmtComponentsPage: ${tenantNameUpperFirst}MgmtComponentsPage;`
                     );
 
@@ -32,7 +32,7 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `describe('${context.entityNameUpperFirst} e2e test', () => {`;
+            return `describe('${context.entityClass} e2e test', () => {`;
         },
         tmpl: (context) => {
             return `import { ${context.tenantNameUpperFirst}MgmtComponentsPage } from '../../admin/${context.tenantNameLowerFirst}-management.spec';
@@ -42,7 +42,7 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `let ${context.entityName}ComponentsPage: ${context.entityNameUpperFirst}ComponentsPage;`;
+            return `let ${context.entityName}ComponentsPage: ${context.entityClass}ComponentsPage;`;
         },
         tmpl: (context) => {
             return `let ${context.tenantNameLowerFirst}MgmtComponentsPage: ${context.tenantNameUpperFirst}MgmtComponentsPage;`;

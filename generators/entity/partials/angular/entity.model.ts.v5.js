@@ -5,7 +5,7 @@ const file = (context) => {
 /*
                 this.rewriteFile(
                     `${webappDir}app/shared/model/${entityName}.model.ts`,
-                    `export interface I${entityNameUpperFirst} {`,
+                    `export interface I${entityClass} {`,
                     `import { ${tenantNameUpperFirst} } from '../../admin/${tenantNameLowerFirst}-management/${tenantNameLowerFirst}.model';`
                 );
 
@@ -20,7 +20,7 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `export interface I${context.entityNameUpperFirst} {`;
+            return `export interface I${context.entityClass} {`;
         },
         tmpl: (context) => {
             return `import { ${context.tenantNameUpperFirst} } from '../../admin/${context.tenantNameLowerFirst}-management/${context.tenantNameLowerFirst}.model';`;

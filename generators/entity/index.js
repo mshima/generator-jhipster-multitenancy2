@@ -197,9 +197,6 @@ module.exports = class extends EntityGenerator {
                 if (this.context.tenantAware) {
                     const context = this.context;
 
-//                    this.entityName = this._.kebabCase(this._.lowerFirst(context.fileData.name));
-                    this.entityNameUpperFirst = this._.upperFirst(this.entityName);
-
                     this.entityNameLowerFirst = context.entityInstance;
                 }
             },
