@@ -1,29 +1,29 @@
 const file = (context) => {
-    return `${context.clientTestDir}e2e/entities/${context.options.entityNameLowerFirst}/${context.options.entityNameLowerFirst}.spec.ts`;
+    return `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityNameLowerFirst}/${context.entityNameLowerFirst}.spec.ts`;
 };
 
 /*
                     this.rewriteFile(
-                        `${clientTestDir}e2e/entities/${entityName}/${entityName}.spec.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
                         `describe('${entityNameUpperFirst} e2e test', () => {`,
                         `import { ${tenantNameUpperFirst}MgmtComponentsPage } from '../../admin/${tenantNameLowerFirst}-management.spec';
 `
                     );
 
                     this.rewriteFile(
-                        `${clientTestDir}e2e/entities/${entityName}/${entityName}.spec.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
                         `let ${entityName}ComponentsPage: ${entityNameUpperFirst}ComponentsPage;`,
                         `let ${tenantNameLowerFirst}MgmtComponentsPage: ${tenantNameUpperFirst}MgmtComponentsPage;`
                     );
 
                     this.replaceContent(
-                        `${clientTestDir}e2e/entities/${entityName}/${entityName}.spec.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
                         `it('should create and save ${entityNamePluralUpperFirst}', () => {`,
                         partialFiles.angular.entitySpecTs1(this)
                     );
 
                     this.rewriteFile(
-                        `${clientTestDir}e2e/entities/${entityName}/${entityName}.spec.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.spec.ts`,
                         `${entityName}UpdatePage.save();`,
                         `${entityName}UpdatePage.set${tenantNameUpperFirst}();`
                     );
@@ -32,7 +32,7 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `describe('${context.options.entityNameUpperFirst} e2e test', () => {`;
+            return `describe('${context.entityNameUpperFirst} e2e test', () => {`;
         },
         tmpl: (context) => {
             return `import { ${context.tenantNameUpperFirst}MgmtComponentsPage } from '../../admin/${context.tenantNameLowerFirst}-management.spec';
@@ -42,7 +42,7 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `let ${context.options.entityName}ComponentsPage: ${context.options.entityNameUpperFirst}ComponentsPage;`;
+            return `let ${context.entityName}ComponentsPage: ${context.entityNameUpperFirst}ComponentsPage;`;
         },
         tmpl: (context) => {
             return `let ${context.tenantNameLowerFirst}MgmtComponentsPage: ${context.tenantNameUpperFirst}MgmtComponentsPage;`;
@@ -51,24 +51,24 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `it('should create and save ${context.options.entityNamePluralUpperFirst}', () => {`;
+            return `it('should create and save ${context.entityNamePluralUpperFirst}', () => {`;
         },
         tmpl: (context) => {
-            let template = `it('should create and save ${context.options.name}', () => {
+            let template = `it('should create and save ${context.name}', () => {
         ${context.tenantNameLowerFirst}MgmtComponentsPage = new ${context.tenantNameUpperFirst}MgmtComponentsPage();
         ${context.tenantNameLowerFirst}MgmtComponentsPage.create${context.tenantNameUpperFirst}();
 
-        navBarPage.goToEntity('${context.options.entityNameLowerFirst}');`;
+        navBarPage.goToEntity('${context.entityNameLowerFirst}');`;
             return template;
         }
     },
     {
         type: 'rewriteFile',
         target: (context) => {
-            return `${context.options.entityName}UpdatePage.save();`;
+            return `${context.entityName}UpdatePage.save();`;
         },
         tmpl: (context) => {
-            return `${context.options.entityName}UpdatePage.set${context.tenantNameUpperFirst}();`;
+            return `${context.entityName}UpdatePage.set${context.tenantNameUpperFirst}();`;
         }
     },
 ]

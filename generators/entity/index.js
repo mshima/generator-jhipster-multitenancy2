@@ -139,14 +139,6 @@ module.exports = class extends EntityGenerator {
                     }
                     /* tenant variables */
                     mtUtils.tenantVariables(this.tenantName, this);
-
-                    //TODO remove (compatibility)
-                    if(!this.options){
-                        this.options = {};
-                    }
-                    mtUtils.tenantVariables(this.tenantName, this.options);
-
-                    //this.tenantAware = this.tenantAware !== undefined ? this.tenantAware : false;
                 },
                 preJson() {
                     if(this.isTenant) return;
@@ -203,32 +195,12 @@ module.exports = class extends EntityGenerator {
             setUpVariables() {
                 this.context.isTenant = this.isTenant;
                 if (this.context.tenantAware) {
-                    // tenancy already been configured
-//                    this.tenancyExists = false;
-
-                    this.packageFolder = this.config.get('packageFolder');
-                    // function to use directly template
-                    this.template = function (source, destination) {
-                        this.fs.copyTpl(
-                                this.templatePath(source),
-                                this.destinationPath(destination),
-                                this
-                        );
-                    };
-
-                    // references to the various directories we'll be copying files to
-                    this.javaDir = jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder + "/";
-
                     const context = this.context;
 
 //                    this.entityName = this._.kebabCase(this._.lowerFirst(context.fileData.name));
                     this.entityNameUpperFirst = this._.upperFirst(this.entityName);
 
                     this.entityNameLowerFirst = context.entityInstance;
-                    this.options.entityNameLowerFirst = context.entityInstance;
-
-                    this.tenantNameUpperFirst = context.entityClass;
-                    this.options.tenantNameUpperFirst = context.entityClass;
                 }
             },
         }

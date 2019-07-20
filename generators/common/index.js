@@ -120,6 +120,7 @@ module.exports = class extends CommonGenerator {
                 });
             },
         };
+        // configuringCustomPhaseSteps should be run after configuring, otherwise tenantName will be overridden
         return Object.assign(configuring, configuringCustomPhaseSteps);
     }
 
@@ -129,10 +130,7 @@ module.exports = class extends CommonGenerator {
     }
 
     get writing() {
-        const writing = super._writing()
-        const myCustomPhaseSteps = {
-        };
-        return Object.assign(writing, myCustomPhaseSteps);
+        return super._writing();
     }
 
     get install() {
@@ -142,12 +140,6 @@ module.exports = class extends CommonGenerator {
 
     get end() {
         // Here we are not overriding this phase and hence its being handled by JHipster
-        const end = super._end()
-        const myCustomPhaseSteps = {
-//            saveConf() {
-//                this.config.set('tenantName', this.tenantName);
-//            },
-        };
-        return Object.assign(end, myCustomPhaseSteps);
+        return super._end();
     }
 };

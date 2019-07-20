@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.webappDir}app/entities/${context.options.entityNameLowerFirst}/${context.options.entityNameLowerFirst}.component.html`;
+    return `${context.CLIENT_MAIN_SRC_DIR}app/entities/${context.entityNameLowerFirst}/${context.entityNameLowerFirst}.component.html`;
 };
 
 const tmpls = [
@@ -27,7 +27,7 @@ const tmpls = [
         type: 'replaceContent',
         regex: true,
         target: (context) => {
-            return `<td>\n(\\s*)(<div \\*ngIf="${context.options.entityNameLowerFirst}.${context.tenantNameLowerFirst}">)`;
+            return `<td>\n(\\s*)(<div \\*ngIf="${context.entityNameLowerFirst}.${context.tenantNameLowerFirst}">)`;
         },
         tmpl: (context) => {
             return `<td *ngIf="!currentAccount.${context.tenantNameLowerFirst}">\n$1$2`;
@@ -47,10 +47,10 @@ const tmpls = [
         type: 'replaceContent',
         regex: false,
         target: (context) => {
-            return `{{${context.options.entityNameLowerFirst}.${context.tenantNameLowerFirst}?.id}}`;
+            return `{{${context.entityNameLowerFirst}.${context.tenantNameLowerFirst}?.id}}`;
         },
         tmpl: (context) => {
-            return `{{${context.options.entityNameLowerFirst}.${context.tenantNameLowerFirst}?.name}}`;
+            return `{{${context.entityNameLowerFirst}.${context.tenantNameLowerFirst}?.name}}`;
         }
     },
 ]

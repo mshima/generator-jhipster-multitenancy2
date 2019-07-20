@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.webappDir}app/shared/model/${context.options.entityNameLowerFirst}.model.ts`;
+    return `${context.CLIENT_MAIN_SRC_DIR}app/shared/model/${context.entityNameLowerFirst}.model.ts`;
 };
 
 const tmpls = [

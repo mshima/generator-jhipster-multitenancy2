@@ -1,10 +1,10 @@
 const file = (context) => {
-    return `${context.clientTestDir}e2e/admin/${context.options.tenantNameLowerFirst}-management.spec.ts`;
+    return `${context.CLIENT_TEST_SRC_DIR}e2e/admin/${context.tenantNameLowerFirst}-management.spec.ts`;
 };
 
 /*
                     this.rewriteFile(
-                        `${clientTestDir}e2e/admin/${tenantNameLowerFirst}-management.spec.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/admin/${tenantNameLowerFirst}-management.spec.ts`,
                         'clickOnCreateButton() {',
                         partialFiles.angular.tenantMgmtSpecTs(this)
                     );

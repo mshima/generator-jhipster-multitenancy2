@@ -91,18 +91,21 @@ module.exports = class extends EntityServerGenerator {
         const setupCustomPhaseSteps = {
                 // sets up all the variables we'll need for the templating
                 setUpVariables() {
+                    this.packageFolder = this.config.get('packageFolder');
                     // references to the various directories we'll be copying files to
                     this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
-                    this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
-                    this.webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
-                    this.angularDir = jhipsterConstants.ANGULAR_DIR;
-                    this.testDir = jhipsterConstants.SERVER_TEST_SRC_DIR + this.packageFolder;
-                    this.clientTestDir = jhipsterConstants.CLIENT_TEST_SRC_DIR;
+
+                    // function to use directly template
+                    this.template = function (source, destination) {
+                        this.fs.copyTpl(
+                                this.templatePath(source),
+                                this.destinationPath(destination),
+                                this
+                        );
+                    };
 
                     // template variables
                     mtUtils.tenantVariables(this.config.get('tenantName'), this);
-                    this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))")`;
-                    this.mainClass = this.getMainClassName();
                 },
         };
         if(!isTenant) {

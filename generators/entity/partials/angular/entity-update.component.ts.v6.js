@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.webappDir}app/entities/${context.options.entityNameLowerFirst}/${context.options.entityNameLowerFirst}-update.component.ts`;
+    return `${context.CLIENT_MAIN_SRC_DIR}app/entities/${context.entityNameLowerFirst}/${context.entityNameLowerFirst}-update.component.ts`;
 };
 
 const tmpls = [

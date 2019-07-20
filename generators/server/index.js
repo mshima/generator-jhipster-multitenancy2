@@ -63,9 +63,14 @@ module.exports = class extends ServerGenerator {
         const myCustomPhaseSteps = {
             // sets up all the variables we'll need for the templating
             setUpVariables() {
-                this.jhiPrefixDashed = this._.kebabCase(this.jhiPrefix);
-                this.angularXAppName = this.getAngularXAppName();
-                this.jhiPrefixCapitalized = this._.upperFirst(this.jhiPrefix);
+                // function to use directly template
+                this.template = function (source, destination) {
+                    this.fs.copyTpl(
+                            this.templatePath(source),
+                            this.destinationPath(destination),
+                            this
+                    );
+                };
             },
         };
         return Object.assign(initializing, myCustomPhaseSteps);
@@ -89,24 +94,21 @@ module.exports = class extends ServerGenerator {
     get writing() {
         const writing = super._writing();
         const myCustomPhaseSteps = {
-            // sets up all the variables we'll need for the templating
-            setUpVariables() {
-                // references to the various directories we'll be copying files to
-                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
-                this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
-                this.webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
-                this.angularDir = jhipsterConstants.ANGULAR_DIR;
-                this.testDir = jhipsterConstants.SERVER_TEST_SRC_DIR + this.packageFolder;
-                this.clientTestDir = jhipsterConstants.CLIENT_TEST_SRC_DIR;
-
-                // template variables
-                mtUtils.tenantVariables(this.config.get('tenantName'), this);
-                this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))")`;
-                this.mainClass = this.getMainClassName();
-                this.changelogDate = this.config.get("tenantChangelogDate");
-            },
             // make the necessary server code changes
             generateServerCode() {
+                this.packageFolder = this.config.get('packageFolder');
+                // references to the various directories we'll be copying files to
+                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
+
+                // TODO Add entities:
+                // ` || execution(* ${this.packageName}.service.${_.upperFirst(entity)}Service.*(..))`
+                this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))")`;
+                
+                // template variables
+                mtUtils.tenantVariables(this.config.get('tenantName'), this);
+                this.changelogDate = this.config.get("tenantChangelogDate");
+                this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
+
                 // update user object
                 this.template('src/main/java/package/domain/_User.java', `${this.javaDir}domain/User.java`);
                 this.template('src/main/java/package/domain/_EntityParameter.java', `${this.javaDir}domain/${this.tenantNameUpperFirst}Parameter.java`);

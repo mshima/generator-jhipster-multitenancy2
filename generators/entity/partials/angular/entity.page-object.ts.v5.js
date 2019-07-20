@@ -1,22 +1,22 @@
 const file = (context) => {
-    return `${context.clientTestDir}e2e/entities/${context.options.entityNameLowerFirst}/${context.options.entityNameLowerFirst}.page-object.ts`;
+    return `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${context.entityNameLowerFirst}/${context.entityNameLowerFirst}.page-object.ts`;
 };
 
 /*
                     this.rewriteFile(
-                        `${clientTestDir}e2e/entities/${entityName}/${entityName}.page-object.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.page-object.ts`,
                         'getPageTitle() {',
                         `${tenantNameLowerFirst}Select = element(by.css('select'));`
                     );
 
                     this.replaceContent(
-                        `${clientTestDir}e2e/entities/${entityName}/${entityName}.page-object.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.page-object.ts`,
                         '} from \'protractor\';',
                         ', protractor } from \'protractor\';'
                     );
 
                     this.rewriteFile(
-                        `${clientTestDir}e2e/entities/${entityName}/${entityName}.page-object.ts`,
+                        `${context.CLIENT_TEST_SRC_DIR}e2e/entities/${entityName}/${entityName}.page-object.ts`,
                         'save(): promise.Promise<void> {',
                         partialFiles.angular.entitySpecTs2(this)
                     );

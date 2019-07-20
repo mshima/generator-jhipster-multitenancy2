@@ -60,18 +60,8 @@ module.exports = class extends ClientGenerator {
          *      return Object.assign(phaseFromJHipster, myCustomPhaseSteps);
          * ```
          */
-        const initializing = super._initializing();
-        const myCustomPhaseSteps = {
-            // sets up all the variables we'll need for the templating
-            setUpVariables() {
-                this.jhiPrefixDashed = this._.kebabCase(this.jhiPrefix);
-                this.angularXAppName = this.getAngularXAppName();
-                this.jhiPrefixCapitalized = this._.upperFirst(this.jhiPrefix);
-            },
-        };
-        return Object.assign(initializing, myCustomPhaseSteps);
-//       // Here we are not overriding this phase and hence its being handled by JHipster
-//        return super._initializing();
+       // Here we are not overriding this phase and hence its being handled by JHipster
+        return super._initializing();
     }
 
     get prompting() {
@@ -103,20 +93,12 @@ module.exports = class extends ClientGenerator {
                     );
                 };
 
-                // references to the various directories we'll be copying files to
-                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
-                this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
+                // Ok
                 this.webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
                 this.angularDir = jhipsterConstants.ANGULAR_DIR;
-                this.testDir = jhipsterConstants.SERVER_TEST_SRC_DIR + this.packageFolder;
                 this.clientTestDir = jhipsterConstants.CLIENT_TEST_SRC_DIR;
-
                 // template variables
                 mtUtils.tenantVariables(this.config.get('tenantName'), this);
-//                mtUtils.tenantVariables('TenantName', this);
-                this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))")`;
-                this.mainClass = this.getMainClassName();
-                this.changelogDate = this.dateFormatForLiquibase();
             },
             // make the necessary client code changes and adds the tenant UI
             generateClientCode() {
@@ -284,8 +266,9 @@ module.exports = class extends ClientGenerator {
 
                 // Rewriting on tests
                 if (this.protractorTests) {
+                    const CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
                     this.rewriteFile(
-                        `${this.clientTestDir}e2e/admin/administration.spec.ts`,
+                        `${CLIENT_TEST_SRC_DIR}e2e/admin/administration.spec.ts`,
                         'it(\'should load metrics\', () => {',
                         partialFiles.angular.e2eAdminSpecTs(this)
                     );

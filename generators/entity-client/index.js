@@ -64,11 +64,6 @@ module.exports = class extends EntityClientGenerator {
          * ```
          */
         // Here we are not overriding this phase and hence its being handled by JHipster
-//        const initializingFromJHipster = ;
-//        const initializingCustomPhaseSteps = {
-////                setUpVariables() {
-////                },
-//        }
         return super._initializing();
     }
 
@@ -95,58 +90,21 @@ module.exports = class extends EntityClientGenerator {
 //            // sets up all the variables we'll need for the templating
             setUpVariables() {
                 if (this.tenantAware) {
-                    // tenancy already been configured
-//                    this.tenancyExists = false;
-
-                    this.packageFolder = this.config.get('packageFolder');
-                    // function to use directly template
-                    this.template = function (source, destination) {
-                        this.fs.copyTpl(
-                                this.templatePath(source),
-                                this.destinationPath(destination),
-                                this
-                        );
-                    };
-
-                    // references to the various directories we'll be copying files to
-                    this.javaDir = jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder + "/";
-
-                    const context = this.context;
-
                     this.entityName = this.entityInstance;
                     this.entityNameUpperFirst = this.entityClass;
 
                     this.entityNameLowerFirst = this.entityInstance;
-                    this.options.entityNameLowerFirst = this.entityInstance;
-
                 }
             },
             generateClientCode() {
                 if (this.tenantAware) {
-                    const context = this.context;
-
                     mtUtils.tenantVariables(this.config.get('tenantName'), this);
-
-                    const tenantNameUpperFirst = this.tenantNameUpperFirst;
-                    const tenantNameLowerFirst = this.tenantNameLowerFirst;
-                    const tenantNamePluralLowerFirst = this.tenantNamePluralLowerFirst;
-
-                    const webappDir = this.CLIENT_MAIN_SRC_DIR;
-                    const clientTestDir = jhipsterConstants.CLIENT_TEST_SRC_DIR;
-
-                    const entityName = this.entityName;
-                    const entityNamePlural = this.entityInstancePlural;
-                    const entityNamePluralUpperFirst = this.entityClassPlural;
-                    const protractorTests = this.testFrameworks.indexOf('protractor') !== -1;
-                    const angularAppName = this.angularAppName;
-
-                    this.angularAppName = angularAppName;
-                    this.webappDir = webappDir;
 
                     mtUtils.processPartialTemplates(partialFiles.angular.templates(this), this);
 
                     // e2e test
-                    if (protractorTests) {
+                    if (this.testFrameworks.indexOf('protractor') !== -1) {
+                        this.CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
                         mtUtils.processPartialTemplates(partialFiles.angular.testTemplates(this), this);
                     }
 
@@ -156,9 +114,9 @@ module.exports = class extends EntityClientGenerator {
                             mtUtils.processPartialTemplates(partialFiles.angular.languageTemplates, this);
 
                             this.rewriteFile(
-                                `${webappDir}i18n/${language}/${entityName}.json`,
+                                `${this.CLIENT_MAIN_SRC_DIR}i18n/${language}/${this.entityName}.json`,
                                 '"detail": {',
-                                `"${tenantNameLowerFirst}": "${tenantNameUpperFirst}",`
+                                `"${this.tenantNameLowerFirst}": "${this.tenantNameUpperFirst}",`
                             );
                         });
                     }
