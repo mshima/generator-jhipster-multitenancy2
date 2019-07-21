@@ -1,10 +1,18 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const mtUtils = require('../multitenancy-utils');
 
-const partialFiles = require('./partials/index');
+const serverTemplates = [
+    'UserDTO.java',
+    'User.java',
+] 
 
 module.exports = {
-    writeFiles
+    writeFiles,
+    server: {
+        templates: function (context) {
+            return mtUtils.requireTemplates('./server/partials/server/', serverTemplates, context);
+        },
+    }
 };
 
 function writeFiles() {
@@ -61,6 +69,4 @@ function writeFiles() {
     this.writeFilesToDisk(files, this, false);
 
     this.addChangelogToLiquibase(`${this.changelogDate}__user_${this.tenantNameUpperFirst}_constraints`);
-
-    mtUtils.processPartialTemplates(partialFiles.server.templates(this), this);
 }

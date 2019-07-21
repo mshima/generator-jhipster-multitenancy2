@@ -2,7 +2,8 @@
 const chalk = require('chalk');
 const ServerGenerator = require('generator-jhipster/generators/server');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-const writeFiles = require('./files').writeFiles;
+const files = require('./files');
+const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends ServerGenerator {
     constructor(args, opts) {
@@ -81,9 +82,8 @@ module.exports = class extends ServerGenerator {
         const myCustomPhaseSteps = {
             // make the necessary server code changes
             writeAdditionalFile() {
-                writeFiles.call(this);
-            },
-            generateServerCode() {
+                files.writeFiles.call(this);
+                mtUtils.processPartialTemplates(files.server.templates(this), this);
             },
         };
         return Object.assign(writing, myCustomPhaseSteps);
