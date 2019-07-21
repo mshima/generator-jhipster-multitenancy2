@@ -141,9 +141,10 @@ module.exports = class extends EntityGenerator {
                     mtUtils.tenantVariables(this.tenantName, this);
                 },
                 preJson() {
-                    if(this.isTenant) return;
-
                     const context = this.context;
+                    context.isTenant = this.isTenant;
+
+                    if(this.isTenant) return;
 
                     if(this.context.tenantAware){
                         context.service = 'serviceClass';

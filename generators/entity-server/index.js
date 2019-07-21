@@ -25,7 +25,7 @@ module.exports = class extends EntityServerGenerator {
             this.pkType = 'UUID';
         }
 
-        isTenant = (this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get("tenantName")));
+        isTenant = this.isTenant || false;
         isTenantAware = this.tenantAware || false;
     }
 
@@ -93,37 +93,22 @@ module.exports = class extends EntityServerGenerator {
                 setUpVariables() {
                     this.SERVER_MAIN_SRC_DIR = jhipsterConstants.SERVER_MAIN_SRC_DIR;
 
-                    // function to use directly template
-                    this.template = function (source, destination) {
-                        this.fs.copyTpl(
-                                this.templatePath(source),
-                                this.destinationPath(destination),
-                                this
-                        );
-                    };
-
                     // template variables
                     mtUtils.tenantVariables(this.config.get('tenantName'), this);
                 },
         };
-        if(!isTenant) {
-            const writeCustomPhaseSteps = {
-                    customEntity() {
-                        this.template('_EntityAspect.java', `${this.SERVER_MAIN_SRC_DIR}${this.packageFolder}/aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`);
-
-                        mtUtils.processPartialTemplates(files.partials.entityTenantAwareTemplates(this), this);
-                    },
-            }
-            return Object.assign(writing, setupCustomPhaseSteps, writeCustomPhaseSteps);
-        }
 
         const writeCustomPhaseSteps = {
                 // make the necessary server code changes
                 customServerCode() {
-                    this.template('src/main/java/package/repository/_TenantRepository.java',
-                    `${this.SERVER_MAIN_SRC_DIR}${this.packageFolder}/repository/${this.tenantNameUpperFirst}Repository.java`);
+                    files.writeFiles.call(this);
 
-                    mtUtils.processPartialTemplates(files.partials.tenantTemplates(this), this);
+                    if(this.tenantAware){
+                        mtUtils.processPartialTemplates(files.partials.entityTenantAwareTemplates(this), this);
+
+                    }else if(this.isTenant){
+                        mtUtils.processPartialTemplates(files.partials.tenantTemplates(this), this);
+                    }
                 },
         };
         return Object.assign(writing, setupCustomPhaseSteps, writeCustomPhaseSteps);
