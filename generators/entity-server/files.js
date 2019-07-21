@@ -1,4 +1,4 @@
-const mtUtils = require('../../multitenancy-utils');
+const mtUtils = require('../multitenancy-utils');
 
 const entityTenantAwareTemplates = [
     'Entity.java',
@@ -12,7 +12,7 @@ const tenantTemplates = [
 
 
 module.exports = {
-    server: {
+    partials: {
         entityTenantAwareTemplates: function (context) {
             return mtUtils.requireTemplates('./entity-server/partials/server/', entityTenantAwareTemplates, context);
         },

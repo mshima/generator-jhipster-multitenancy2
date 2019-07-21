@@ -4,7 +4,7 @@ const EntityServerGenerator = require('generator-jhipster/generators/entity-serv
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 
 const mtUtils = require('../multitenancy-utils');
-const partialFiles = require('./partials');
+const files = require('./files');
 
 let isTenant;
 let isTenantAware;
@@ -111,7 +111,7 @@ module.exports = class extends EntityServerGenerator {
                     customEntity() {
                         this.template('_EntityAspect.java', `${this.SERVER_MAIN_SRC_DIR}${this.packageFolder}/aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`);
 
-                        mtUtils.processPartialTemplates(partialFiles.server.entityTenantAwareTemplates(this), this);
+                        mtUtils.processPartialTemplates(files.partials.entityTenantAwareTemplates(this), this);
                     },
             }
             return Object.assign(writing, setupCustomPhaseSteps, writeCustomPhaseSteps);
@@ -123,7 +123,7 @@ module.exports = class extends EntityServerGenerator {
                     this.template('src/main/java/package/repository/_TenantRepository.java',
                     `${this.SERVER_MAIN_SRC_DIR}${this.packageFolder}/repository/${this.tenantNameUpperFirst}Repository.java`);
 
-                    mtUtils.processPartialTemplates(partialFiles.server.tenantTemplates(this), this);
+                    mtUtils.processPartialTemplates(files.partials.tenantTemplates(this), this);
                 },
         };
         return Object.assign(writing, setupCustomPhaseSteps, writeCustomPhaseSteps);
