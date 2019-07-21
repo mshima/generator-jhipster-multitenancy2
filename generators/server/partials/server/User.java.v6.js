@@ -1,6 +1,6 @@
 // Add jpa filter to the entity to remove entries from another tenant
 const file = (context) => {
-    return `${context.javaDir}domain/User.java`;
+    return `${context.SERVER_MAIN_SRC_DIR}${context.packageFolder}/domain/User.java`;
 };
 
 const tmpls = [

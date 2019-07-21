@@ -1,10 +1,6 @@
 const file = (context) => {
-    return `${context.javaDir}domain/${context.tenantNameUpperFirst}.java`;
+    return `${context.SERVER_MAIN_SRC_DIR}${context.packageFolder}/domain/${context.tenantNameUpperFirst}.java`;
 };
-//this.replaceContent(`${this.javaDir}domain/${this.tenantNameUpperFirst}.java`,
-//`    @OneToMany(mappedBy = "'${this.tenantNameLowerFirst}'")`,
-//`\t@OneToMany(mappedBy = "'${this.tenantNameLowerFirst}'", fetch = FetchType.EAGER)`);
-
 
 const tmpls = [
     {

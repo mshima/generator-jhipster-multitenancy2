@@ -10,7 +10,6 @@ module.exports = {
 function writeFiles() {
     this.packageFolder = this.config.get('packageFolder');
     // references to the various directories we'll be copying files to
-    this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
 
     this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))`;
     this.getExistingEntities().forEach(entity => {

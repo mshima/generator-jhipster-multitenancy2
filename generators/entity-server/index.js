@@ -91,9 +91,7 @@ module.exports = class extends EntityServerGenerator {
         const setupCustomPhaseSteps = {
                 // sets up all the variables we'll need for the templating
                 setUpVariables() {
-                    this.packageFolder = this.config.get('packageFolder');
-                    // references to the various directories we'll be copying files to
-                    this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
+                    this.SERVER_MAIN_SRC_DIR = jhipsterConstants.SERVER_MAIN_SRC_DIR;
 
                     // function to use directly template
                     this.template = function (source, destination) {
@@ -111,7 +109,7 @@ module.exports = class extends EntityServerGenerator {
         if(!isTenant) {
             const writeCustomPhaseSteps = {
                     customEntity() {
-                        this.template('_EntityAspect.java', `${this.javaDir}aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`);
+                        this.template('_EntityAspect.java', `${this.SERVER_MAIN_SRC_DIR}${this.packageFolder}/aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`);
 
                         mtUtils.processPartialTemplates(partialFiles.server.entityTenantAwareTemplates(this), this);
                     },
@@ -123,7 +121,7 @@ module.exports = class extends EntityServerGenerator {
                 // make the necessary server code changes
                 customServerCode() {
                     this.template('src/main/java/package/repository/_TenantRepository.java',
-                    `${this.javaDir}repository/${this.tenantNameUpperFirst}Repository.java`);
+                    `${this.SERVER_MAIN_SRC_DIR}${this.packageFolder}/repository/${this.tenantNameUpperFirst}Repository.java`);
 
                     mtUtils.processPartialTemplates(partialFiles.server.tenantTemplates(this), this);
                 },

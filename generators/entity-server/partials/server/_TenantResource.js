@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.javaDir}web/rest/${context.tenantNameUpperFirst}Resource.java`;
+    return `${context.SERVER_MAIN_SRC_DIR}${context.packageFolder}/web/rest/${context.tenantNameUpperFirst}Resource.java`;
 };
 
 const tmpls = [
