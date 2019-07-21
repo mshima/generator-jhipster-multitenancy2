@@ -1,4 +1,4 @@
-const mtUtils = require('../../multitenancy-utils');
+const mtUtils = require('../multitenancy-utils');
 
 const angularTemplates = [
     'entity.model.ts',
@@ -15,10 +15,10 @@ const angularTestTemplates = [
 module.exports = {
     angular: {
         templates: function (context) {
-            return mtUtils.requireTemplates('./entity/partials/angular/', angularTemplates, context);
+            return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTemplates, context);
         },
         testTemplates: function (context) {
-            return mtUtils.requireTemplates('./entity/partials/angular/', angularTestTemplates, context);
+            return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTestTemplates, context);
         },
         languageTemplates: [
         ],

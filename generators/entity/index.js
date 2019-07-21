@@ -6,7 +6,6 @@ const pluralize = require('pluralize');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 
 const mtUtils = require('../multitenancy-utils');
-const partialFiles = require('./partials/index');
 
 module.exports = class extends EntityGenerator {
     constructor(args, opts) {

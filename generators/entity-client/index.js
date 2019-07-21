@@ -4,7 +4,7 @@ const EntityClientGenerator = require('generator-jhipster/generators/entity-clie
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 
 const mtUtils = require('../multitenancy-utils');
-const partialFiles = require('../entity/partials/index');
+const files = require('./files');
 
 let isTenant;
 
@@ -93,18 +93,18 @@ module.exports = class extends EntityClientGenerator {
                 if (this.tenantAware) {
                     mtUtils.tenantVariables(this.config.get('tenantName'), this);
 
-                    mtUtils.processPartialTemplates(partialFiles.angular.templates(this), this);
+                    mtUtils.processPartialTemplates(files.angular.templates(this), this);
 
                     // e2e test
                     if (this.testFrameworks.indexOf('protractor') !== -1) {
                         this.CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
-                        mtUtils.processPartialTemplates(partialFiles.angular.testTemplates(this), this);
+                        mtUtils.processPartialTemplates(files.angular.testTemplates(this), this);
                     }
 
                     // i18n
                     if (this.enableTranslation) {
                         this.languages.forEach((language) => {
-                            mtUtils.processPartialTemplates(partialFiles.angular.languageTemplates, this);
+//                            mtUtils.processPartialTemplates(files.angular.languageTemplates, this);
 
                             this.rewriteFile(
                                 `${this.CLIENT_MAIN_SRC_DIR}i18n/${language}/${this.entityFileName}.json`,
