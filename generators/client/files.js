@@ -1,7 +1,25 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const mtUtils = require('../multitenancy-utils');
+
+const angularTemplates = [
+    'account.model.ts',
+    'account.service.ts',
+    'admin-index.ts',
+    'administration.spec.ts',
+    'core_index.ts',
+    'navbar.component.html',
+    'navbar.component.ts',
+    'shared_index.ts',
+] 
+
 
 module.exports = {
-    writeFiles
+    writeFiles,
+    angular: {
+        templates: function (context) {
+            return mtUtils.requireTemplates('./client/partials/angular/', angularTemplates, context);
+        },
+    }
 };
 
 function writeFiles() {
@@ -100,7 +118,7 @@ function writeFiles() {
         ],
         tests: [
             {
-                path: this.clientTestDir,
+                path: this.CLIENT_TEST_SRC_DIR,
                 templates: [
                     {
                         file: 'spec/app/admin/_tenant-management-detail.component.spec.ts',
@@ -110,7 +128,7 @@ function writeFiles() {
             },
             {
                 condition: generator => generator.protractorTests,
-                path: this.clientTestDir,
+                path: this.CLIENT_TEST_SRC_DIR,
                 templates: [
                     {
                         file: 'e2e/admin/_tenant-management.spec.ts',
@@ -123,5 +141,30 @@ function writeFiles() {
 
     // parse the templates and write files to the appropriate locations
     this.writeFilesToDisk(files, this, false);
+
+    const languageFiles = {
+            languages: [
+                {
+                    condition: generator => generator.enableTranslation,
+                    path: this.webappDir,
+                    templates: [
+                        {
+                            file: 'i18n/en/_tenant-management.json',
+                            renameTo: generator => `i18n/${language}/${this.tenantNameLowerFirst}-management.json`
+                        }
+                    ]
+                }
+            ]
+    }
+
+    if (this.enableTranslation) {
+        //this.addTranslationKeyToAllLanguages(`${this.tenantNameLowerFirst}-management`, `${this.tenantNameUpperFirst} Management`, 'addAdminElementTranslationKey', this.enableTranslation);
+        //this.addTranslationKeyToAllLanguages(`userManagement${this.tenantNameUpperFirst}`, `${this.tenantNameUpperFirst}`, 'addGlobalTranslationKey', this.enableTranslation);
+
+        // TODO: generate this file for each language
+        this.languages.forEach((language) => {
+            this.writeFilesToDisk(files, this, false);
+        });
+    }
 
 }

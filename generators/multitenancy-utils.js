@@ -43,6 +43,11 @@ function processPartialTemplates(partialTemplates, context) {
             if(item.disabled){
                 return;
             }
+            if(typeof item.condition === "function"){
+                if(!item.condition(context)){
+                    return;
+                }
+            }
             var target = (typeof item.target === "function") ? item.target(context) : item.target;
             var tmpl = (typeof item.tmpl === "function") ? item.tmpl(context) : item.tmpl;
             if(item.type === 'replaceContent'){
