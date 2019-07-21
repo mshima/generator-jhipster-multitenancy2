@@ -49,7 +49,7 @@ function writeFiles() {
                 path: jhipsterConstants.SERVER_MAIN_SRC_DIR,
                 templates: [
                     {
-                        file: 'package/domain/_EntityParameter.java',
+                        file: 'package/domain/_TenantParameter.java',
                         renameTo: generator => `${this.packageFolder}/domain/${this.tenantNameUpperFirst}Parameter.java`
                     },
                     {
