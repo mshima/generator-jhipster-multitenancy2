@@ -62,6 +62,17 @@ module.exports = class extends CommonGenerator {
             loadConf() {
                 this.tenantName = this.config.get('tenantName');
                 this.tenantChangelogDate = this.config.get('tenantChangelogDate');
+
+                if(this.options.withMultitenancyChangelog !== undefined){
+                    this.tenantChangelogDate = '' + this.options.withMultitenancyChangelog;
+                    this.config.set('nextChangelogDate', this.tenantChangelogDate);
+                }else{
+                    this.tenantChangelogDate = this.config.get('tenantChangelogDate');
+                    if(this.tenantChangelogDate === undefined){
+                        this.tenantChangelogDate = this.dateFormatForLiquibase();
+                    }
+                }
+                this.config.set('tenantChangelogDate', this.tenantChangelogDate);
             },
         };
         return Object.assign(initializing, myCustomPhaseSteps);
@@ -89,7 +100,6 @@ module.exports = class extends CommonGenerator {
                 this.prompt(prompts).then(props => {
                     if(props.tenantName){
                         this.tenantName = props.tenantName;
-                        this.tenantChangelogDate = this.dateFormatForLiquibase();
                     }
                     done();
                 });

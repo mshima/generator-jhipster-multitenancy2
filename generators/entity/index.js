@@ -68,7 +68,14 @@ module.exports = class extends EntityGenerator {
                     this.tenantName = this.config.get("tenantName");
                     const context = this.context;
 
-                    if(!this.isTenant) return;
+                    if(!this.isTenant) {
+                        let nextChangelogDate = this.config.get('nextChangelogDate');
+                        if(nextChangelogDate !== undefined){
+                            context.changelogDate = '' + (Number(nextChangelogDate) + 1);
+                            this.config.set('nextChangelogDate', context.changelogDate);
+                        }
+                        return;
+                    }
 
                     if(!context.fileData){
                         context.service = 'serviceClass';
@@ -199,6 +206,7 @@ module.exports = class extends EntityGenerator {
                     if(this.isTenant) {
                         // force tenant to be serviceClass
                         context.service = 'serviceClass';
+                        context.changelogDate = this.config.get("tenantChangelogDate");
                         return;
                     }
 
@@ -231,9 +239,17 @@ module.exports = class extends EntityGenerator {
 
         const myCustomPostPhaseSteps = {
                 postJson() {
-                    if(this.isTenant) return;
+                    if(this.isTenant) {
+                        // jhipster will override tenant's changelogDate
+                        if(!this.context.useConfigurationFile){
+                            this.context.changelogDate = this.config.get('tenantChangelogDate');
+                            this.updateEntityConfig(this.context.filename, 'changelogDate', this.context.changelogDate);
+                        }
+                        return;
+                    }
 
-                    // super class creates a new file without tenantAware (6.1.2)
+                    this.log(chalk.white(`Saving ${chalk.bold(this.options.name)} tenantAware`));
+                    // Super class creates a new file without tenantAware (6.1.2), so add tenantAware to it.
                     this.updateEntityConfig(this.context.filename, 'tenantAware', this.context.tenantAware);
                 },
         }
