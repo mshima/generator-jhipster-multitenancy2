@@ -150,7 +150,7 @@ function writeFiles() {
                     templates: [
                         {
                             file: 'i18n/en/_tenant-management.json',
-                            renameTo: generator => `i18n/${language}/${this.tenantNameLowerFirst}-management.json`
+                            renameTo: generator => `i18n/${this.currentLanguage}/${this.tenantNameLowerFirst}-management.json`
                         }
                     ]
                 }
@@ -163,7 +163,8 @@ function writeFiles() {
 
         // TODO: generate this file for each language
         this.languages.forEach((language) => {
-            this.writeFilesToDisk(files, this, false);
+            this.currentLanguage = language;
+            this.writeFilesToDisk(languageFiles, this, false);
         });
     }
 
