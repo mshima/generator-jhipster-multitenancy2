@@ -103,13 +103,23 @@ module.exports = class extends EntityGenerator {
             askTenantAware() {
                 const context = this.context;
                 const isTenant = this.isTenant;
+
+                let relationWithTenant = false;
+                if(!isTenant && context.fileData !== undefined && context.fileData.relationships !== undefined){
+                    context.relationships.forEach((field) => {
+                        if(this._.toLower(field.otherEntityName) === this._.toLower(this.tenantName)){
+                            relationWithTenant = true;
+                        }
+                    });
+                }
+
                 const prompts = [
                     {
                         when: ((context.fileData === undefined || context.fileData.tenantAware === undefined) && !isTenant),
                         type: 'confirm',
                         name: 'tenantAware',
                         message: `Do you want to make ${context.name} tenant aware?`,
-                        default: false
+                        default: relationWithTenant
                     }
                     ];
                 const done = this.async();
@@ -143,7 +153,11 @@ module.exports = class extends EntityGenerator {
                     const context = this.context;
                     context.isTenant = this.isTenant;
 
-                    if(this.isTenant) return;
+                    if(this.isTenant) {
+                        // force tenant to be serviceClass
+                        context.service = 'serviceClass';
+                        return;
+                    }
 
                     if(this.context.tenantAware){
                         context.service = 'serviceClass';
