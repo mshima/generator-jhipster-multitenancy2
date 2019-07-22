@@ -73,7 +73,6 @@ module.exports = class extends EntityClientGenerator {
     }
 
     get configuring() {
-        //super.updateEntityConfig()
         // Here we are not overriding this phase and hence its being handled by JHipster
         return super._configuring();
     }
@@ -90,6 +89,7 @@ module.exports = class extends EntityClientGenerator {
         var phaseFromJHipster = super._writing();
         var myCustomPhaseSteps = {
             generateClientCode() {
+                if(this.isTenant && this.tenantManagement) return;
                 if (this.tenantAware) {
                     mtUtils.tenantVariables(this.config.get('tenantName'), this);
 

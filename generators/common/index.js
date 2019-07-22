@@ -103,18 +103,31 @@ module.exports = class extends CommonGenerator {
         const configuring = super._configuring()
         const configuringCustomPhaseSteps = {
             saveConf() {
+                let tenantManagement = this.options['withTenantManagement'];
+                if(tenantManagement === undefined){
+                    tenantManagement = true;
+                    this.getExistingEntities().forEach(entity => {
+                        if(this._.toLower(entity.definition.name) === this._.toLower(this.tenantName)){
+                            tenantManagement = false;
+                        }
+                    });
+                }
+                this.tenantManagement = tenantManagement;
+                this.config.set('tenantManagement', this.tenantManagement);
                 this.config.set('tenantName', this.tenantName);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
             },
             generateTenant() {
+                if(!this.tenantManagement) return;
+
                 const options = this.options;
                 const configOptions = this.configOptions;
 
                 this.composeWith(require.resolve('../entity'), {
                     ...options,
                     configOptions,
-                    regenerate: true,
-                    'skip-install': true,
+                    regenerate: false,
+                    'skip-install': false,
                     debug: this.isDebugEnabled,
                     arguments: [this.tenantName]
                 });
