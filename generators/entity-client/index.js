@@ -100,19 +100,6 @@ module.exports = class extends EntityClientGenerator {
                         this.CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
                         mtUtils.processPartialTemplates(files.angular.testTemplates(this), this);
                     }
-
-                    // i18n
-                    if (this.enableTranslation) {
-                        this.languages.forEach((language) => {
-//                            mtUtils.processPartialTemplates(files.angular.languageTemplates, this);
-
-                            this.rewriteFile(
-                                `${this.CLIENT_MAIN_SRC_DIR}i18n/${language}/${this.entityFileName}.json`,
-                                '"detail": {',
-                                `"${this.tenantNameLowerFirst}": "${this.tenantNameUpperFirst}",`
-                            );
-                        });
-                    }
                 }
             }
         }
