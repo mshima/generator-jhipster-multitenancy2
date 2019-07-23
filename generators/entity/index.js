@@ -152,8 +152,16 @@ module.exports = class extends EntityGenerator {
                 const context = this.context;
                 const isTenant = this.isTenant;
 
+                if(isTenant) return;
+
+                // tenantAware is already defined
+                if(context.fileData !== undefined && context.fileData.tenantAware !== undefined){
+                    return;
+                }
+
+                // look for tenantAware entities
                 let relationWithTenant = false;
-                if(!isTenant && context.fileData !== undefined && context.fileData.relationships !== undefined){
+                if(context.fileData !== undefined && context.fileData.relationships !== undefined){
                     context.relationships.forEach((field) => {
                         if(this._.toLower(field.otherEntityName) === this._.toLower(this.tenantName)){
                             relationWithTenant = true;
@@ -161,9 +169,14 @@ module.exports = class extends EntityGenerator {
                     });
                 }
 
+                // Always use default value
+                if(this.options.withDefaultTenantAware){
+                    this.newTenantAware = relationWithTenant;
+                }
+
                 const prompts = [
                     {
-                        when: ((context.fileData === undefined || context.fileData.tenantAware === undefined) && !isTenant),
+                        when: this.newTenantAware === undefined,
                         type: 'confirm',
                         name: 'tenantAware',
                         message: `Do you want to make ${context.name} tenant aware?`,
