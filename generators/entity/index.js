@@ -75,10 +75,13 @@ module.exports = class extends EntityGenerator {
                     const context = this.context;
 
                     if(!this.isTenant) {
-                        let nextChangelogDate = this.config.get('nextChangelogDate');
-                        if(nextChangelogDate !== undefined){
-                            context.changelogDate = '' + (Number(nextChangelogDate) + 1);
-                            this.config.set('nextChangelogDate', context.changelogDate);
+                        // if tenantAware is undefined (first pass), then override changelogDate
+                        if(context.fileData.tenantAware == undefined){
+                            let nextChangelogDate = this.config.get('nextChangelogDate');
+                            if(nextChangelogDate !== undefined){
+                                context.changelogDate = '' + (Number(nextChangelogDate) + 1);
+                                this.config.set('nextChangelogDate', context.changelogDate);
+                            }
                         }
                         return;
                     }
