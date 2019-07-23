@@ -6,9 +6,6 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 const mtUtils = require('../multitenancy-utils');
 const files = require('./files');
 
-let isTenant;
-let isTenantAware;
-
 module.exports = class extends EntityServerGenerator {
     constructor(args, opts) {
         super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
@@ -24,9 +21,6 @@ module.exports = class extends EntityServerGenerator {
         if (jhContext.databaseType === 'cassandra') {
             this.pkType = 'UUID';
         }
-
-        isTenant = this.isTenant || false;
-        isTenantAware = this.tenantAware || false;
     }
 
     get initializing() {
@@ -86,7 +80,6 @@ module.exports = class extends EntityServerGenerator {
 
     get writing() {
         const writing = super._writing();
-        if(!isTenant && !isTenantAware) return writing;
 
         const setupCustomPhaseSteps = {
                 // sets up all the variables we'll need for the templating
@@ -101,6 +94,8 @@ module.exports = class extends EntityServerGenerator {
         const writeCustomPhaseSteps = {
                 // make the necessary server code changes
                 customServerCode() {
+                    if(!this.isTenant && !this.tenantAware) return
+
                     files.writeFiles.call(this);
 
                     if(this.tenantAware){

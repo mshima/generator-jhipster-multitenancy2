@@ -22,7 +22,13 @@ module.exports = class extends EntityGenerator {
         // This sets up options for this sub generator and is being reused from JHipster
         jhContext.setupEntityOptions(this, jhContext, this);
 
+        // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get("tenantName"));
+        this.tenantManagement = this.configOptions.tenantManagement;
+
+        // pass to entity-* subgen
+        this.context.isTenant = this.isTenant;
+        this.context.tenantManagement = this.configOptions.tenantManagement;
     }
 
     get initializing() {
@@ -150,9 +156,8 @@ module.exports = class extends EntityGenerator {
         const myCustomPhaseSteps = {
             askTenantAware() {
                 const context = this.context;
-                const isTenant = this.isTenant;
 
-                if(isTenant) return;
+                if(this.isTenant) return;
 
                 // tenantAware is already defined
                 if(context.fileData !== undefined && context.fileData.tenantAware !== undefined){
@@ -185,7 +190,7 @@ module.exports = class extends EntityGenerator {
                     ];
                 const done = this.async();
                 this.prompt(prompts).then(props => {
-                    if(!isTenant && props.tenantAware !== undefined){
+                    if(!this.isTenant && props.tenantAware !== undefined){
                         this.newTenantAware = props.tenantAware;
                     }
                     done();
@@ -201,20 +206,21 @@ module.exports = class extends EntityGenerator {
                     const context = this.context;
 
                     this.tenantName = this.config.get('tenantName');
-                    this.tenantManagement = this.config.get('tenantManagement');
-                    //this.isTenant = this.isTenant || (this._.lowerFirst(context.name) === this._.lowerFirst(this.config.get("tenantName")));
 
+                    let tenantAware;
                     if (this.newTenantAware === undefined){
-                        this.context.tenantAware = context.fileData ? context.fileData.tenantAware : false;
+                        tenantAware = context.fileData ? context.fileData.tenantAware : false;
                     }else {
-                        this.context.tenantAware = this.newTenantAware;
+                        tenantAware = this.newTenantAware;
                     }
+                    // pass to entity-* subgen
+                    context.tenantAware = tenantAware;
+
                     /* tenant variables */
                     mtUtils.tenantVariables(this.tenantName, this);
                 },
                 preJson() {
                     const context = this.context;
-                    context.isTenant = this.isTenant;
 
                     if(this.isTenant) {
                         // force tenant to be serviceClass

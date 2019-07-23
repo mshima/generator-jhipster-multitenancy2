@@ -23,7 +23,7 @@ module.exports = class extends EntityClientGenerator {
         // This sets up options for this sub generator and is being reused from JHipster
         jhContext.setupEntityOptions(this, jhContext, this);
 
-        isTenant = (this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get("tenantName")));
+        isTenant = this.isTenant;
     }
 
     get initializing() {

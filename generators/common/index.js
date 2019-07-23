@@ -116,7 +116,7 @@ module.exports = class extends CommonGenerator {
         const configuring = super._configuring()
         const configuringCustomPhaseSteps = {
             saveConf() {
-                let tenantManagement = this.options['withTenantManagement'];
+                let tenantManagement = this.options.withTenantManagement;
                 if(tenantManagement === undefined){
                     tenantManagement = true;
                     this.getExistingEntities().forEach(entity => {
@@ -126,6 +126,9 @@ module.exports = class extends CommonGenerator {
                     });
                 }
                 this.tenantManagement = tenantManagement;
+                // Pass to others subgens
+                this.configOptions.tenantManagement = tenantManagement;
+
                 this.config.set('tenantManagement', this.tenantManagement);
                 this.config.set('tenantName', this.tenantName);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
