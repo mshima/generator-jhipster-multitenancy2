@@ -60,8 +60,11 @@ module.exports = class extends CommonGenerator {
         const initializing = super._initializing()
         const myCustomPhaseSteps = {
             loadConf() {
-                this.tenantName = this.config.get('tenantName');
-                this.tenantChangelogDate = this.config.get('tenantChangelogDate');
+                if(this.options.withTenantName !== undefined){
+                    this.tenantName = this.options.withTenantName;
+                }else{
+                    this.tenantName = this.config.get('tenantName');
+                }
 
                 if(this.options.withMultitenancyChangelog !== undefined){
                     this.tenantChangelogDate = '' + this.options.withMultitenancyChangelog;
