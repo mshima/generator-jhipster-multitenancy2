@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
 
 let isTenant;
+let tenantManagement;
 
 module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
@@ -16,7 +17,8 @@ module.exports = class extends EntityI18nGenerator {
 
         this.configOptions = jhContext.configOptions || {};
 
-        isTenant = (this._.lowerFirst(this.fileData.entityTableName) === this._.lowerFirst(this.config.get("tenantName")));
+        isTenant = this.isTenant;
+        tenantManagement = this.tenantManagement;
     }
 
     get initializing() {
@@ -77,7 +79,7 @@ module.exports = class extends EntityI18nGenerator {
 
     get writing() {
         // TODO copy generated files instead of creating ours
-        if (isTenant) return;
+        if (isTenant && tenantManagement) return;
         return super._writing();
     }
 

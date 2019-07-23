@@ -7,6 +7,7 @@ const mtUtils = require('../multitenancy-utils');
 const files = require('./files');
 
 let isTenant;
+let tenantManagement;
 
 module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {
@@ -24,6 +25,7 @@ module.exports = class extends EntityClientGenerator {
         jhContext.setupEntityOptions(this, jhContext, this);
 
         isTenant = this.isTenant;
+        tenantManagement = this.tenantManagement;
     }
 
     get initializing() {
@@ -84,7 +86,7 @@ module.exports = class extends EntityClientGenerator {
 
     get writing() {
         // TODO copy generated files instead of creating ours
-        if (isTenant) return;
+        if (isTenant && tenantManagement) return;
 
         var phaseFromJHipster = super._writing();
         var myCustomPhaseSteps = {

@@ -11,6 +11,12 @@ module.exports = class extends EntityGenerator {
     constructor(args, opts) {
         super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
 
+        this.option('default-tenant-aware', {
+            desc: 'Always discover relationship with tenant',
+            type: Boolean,
+            defaults: false
+        });
+
         const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
 
         if (!jhContext) {
@@ -178,7 +184,7 @@ module.exports = class extends EntityGenerator {
                 }
 
                 // Always use default value
-                if(this.options.withDefaultTenantAware){
+                if(this.options.defaultTenantAware){
                     this.newTenantAware = relationWithTenant;
                 }
 

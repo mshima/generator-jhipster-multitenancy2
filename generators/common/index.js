@@ -7,6 +7,28 @@ module.exports = class extends CommonGenerator {
     constructor(args, opts) {
         super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
 
+        this.option('tenant-name', {
+            desc: 'Set tenant name',
+            type: String,
+            defaults: undefined
+        });
+
+        this.option('tenant-changelog-date', {
+            desc: 'Use liquibase changelog date to reproducible builds',
+            type: String,
+            defaults: undefined
+        });
+
+        this.option('tenant-management', {
+            desc: 'Create tenant management client',
+            type: Boolean,
+            defaults: undefined
+        });
+
+        this.tenantName = this.options['tenant-name'] || this.config.get('tenantName');
+        this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
+        this.tenantManagement = this.options['tenant-management'] || this.config.get('tenantManagement');
+
         const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
 
         if (!jhContext) {
@@ -60,20 +82,10 @@ module.exports = class extends CommonGenerator {
         const initializing = super._initializing()
         const myCustomPhaseSteps = {
             loadConf() {
-                if(this.options.withTenantName !== undefined){
-                    this.tenantName = this.options.withTenantName;
-                }else{
-                    this.tenantName = this.config.get('tenantName');
-                }
-
-                if(this.options.withMultitenancyChangelog !== undefined){
-                    this.tenantChangelogDate = '' + this.options.withMultitenancyChangelog;
+                if(this.options['tenant-changelog-date'] !== undefined){
                     this.config.set('nextChangelogDate', this.tenantChangelogDate);
-                }else{
-                    this.tenantChangelogDate = this.config.get('tenantChangelogDate');
-                    if(this.tenantChangelogDate === undefined){
-                        this.tenantChangelogDate = this.dateFormatForLiquibase();
-                    }
+                }else if(this.tenantChangelogDate === undefined){
+                    this.tenantChangelogDate = this.dateFormatForLiquibase();
                 }
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
 
@@ -127,13 +139,11 @@ module.exports = class extends CommonGenerator {
                     }
                 });
 
-                let tenantManagement = this.options.withTenantManagement || this.config.get('tenantManagement');
-                if(tenantManagement === undefined){
-                    tenantManagement = !this.tenantExists;
+                if(this.tenantManagement === undefined){
+                    this.tenantManagement = !this.tenantExists;
                 }
-                this.tenantManagement = tenantManagement;
                 // Pass to others subgens
-                this.configOptions.tenantManagement = tenantManagement;
+                this.configOptions.tenantManagement = this.tenantManagement;
 
                 this.config.set('tenantManagement', this.tenantManagement);
                 this.config.set('tenantName', this.tenantName);

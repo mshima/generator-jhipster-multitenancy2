@@ -86,6 +86,7 @@ module.exports = class extends ServerGenerator {
                 mtUtils.processPartialTemplates(files.server.templates(this), this);
             },
         };
+
         return Object.assign(writing, myCustomPhaseSteps);
     }
 
