@@ -270,6 +270,10 @@ module.exports = class extends EntityGenerator {
                         return;
                     }
 
+                    if(this.context.tenantAware){
+                        this.configOptions.tenantAwareEntities.push(this.context.entityClass); 
+                    }
+
                     this.log(chalk.white(`Saving ${chalk.bold(this.options.name)} tenantAware`));
                     // Super class creates a new file without tenantAware (6.1.2), so add tenantAware to it.
                     this.updateEntityConfig(this.context.filename, 'tenantAware', this.context.tenantAware);

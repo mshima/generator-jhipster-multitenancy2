@@ -20,10 +20,8 @@ function writeFiles() {
     // references to the various directories we'll be copying files to
 
     this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))`;
-    this.getExistingEntities().forEach(entity => {
-        if(entity.definition.tenantAware){
-            this.tenantisedEntityServices = this.tenantisedEntityServices + ` || execution(* ${this.packageName}.service.${this._.upperFirst(entity.name)}Service.*(..))`
-        }
+    this.configOptions.tenantAwareEntities.forEach(tenantAwareEntity => {
+        this.tenantisedEntityServices = this.tenantisedEntityServices + ` || execution(* ${this.packageName}.service.${tenantAwareEntity}Service.*(..))`
     });
     this.tenantisedEntityServices = this.tenantisedEntityServices + '")';
 

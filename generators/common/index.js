@@ -76,6 +76,8 @@ module.exports = class extends CommonGenerator {
                     }
                 }
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
+
+                this.configOptions.tenantAwareEntities = [];
             },
         };
         return Object.assign(initializing, myCustomPhaseSteps);
