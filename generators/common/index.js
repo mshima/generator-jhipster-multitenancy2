@@ -116,14 +116,18 @@ module.exports = class extends CommonGenerator {
         const configuring = super._configuring()
         const configuringCustomPhaseSteps = {
             saveConf() {
-                let tenantManagement = this.options.withTenantManagement;
+                this.firstExec = this.config.get('tenantName') === undefined;
+
+                this.tenantExists = false;
+                this.getExistingEntities().forEach(entity => {
+                    if(this._.toLower(entity.definition.name) === this._.toLower(this.tenantName)){
+                        this.tenantExists = true;
+                    }
+                });
+
+                let tenantManagement = this.options.withTenantManagement || this.config.get('tenantManagement');
                 if(tenantManagement === undefined){
-                    tenantManagement = true;
-                    this.getExistingEntities().forEach(entity => {
-                        if(this._.toLower(entity.definition.name) === this._.toLower(this.tenantName)){
-                            tenantManagement = false;
-                        }
-                    });
+                    tenantManagement = !this.tenantExists;
                 }
                 this.tenantManagement = tenantManagement;
                 // Pass to others subgens
@@ -134,7 +138,7 @@ module.exports = class extends CommonGenerator {
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
             },
             generateTenant() {
-                if(!this.tenantManagement) return;
+                if(this.tenantExists && !this.firstExec) return;
 
                 const options = this.options;
                 const configOptions = this.configOptions;
