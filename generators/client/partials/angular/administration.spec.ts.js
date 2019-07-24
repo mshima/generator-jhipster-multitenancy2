@@ -13,9 +13,8 @@ const tmpls = [
             return `it('should load ${context.tenantNameLowerFirst} management', async () => {
         await navBarPage.clickOnAdmin('${context.tenantNameLowerFirst}-management');
         const expect1 = /${context.tenantNamePluralUpperFirst}/;
-        element.all(by.css('h2 span')).first().getText().then((value) => {
-            expect(value).toMatch(expect1);
-        });
+        const value1 = await element(by.id('${context.tenantNameLowerFirst}-management-page-heading')).getText();
+        expect(value1).to.eq(expect1);
     });\n`;
         }
     },
@@ -28,10 +27,9 @@ const tmpls = [
         tmpl: (context) => {
             return `it('should load ${context.tenantNameLowerFirst} management', async () => {
         await navBarPage.clickOnAdmin('${context.tenantNameLowerFirst}-management');
-        const expect1 = /${context.tenantNameLowerFirst}Management.home.title/;
-        element.all(by.css('h2 span')).first().getAttribute('jhiTranslate').then((value) => {
-            expect(value).toMatch(expect1);
-        });
+        const expect1 = '${context.tenantNameLowerFirst}Management.home.title';
+        const value1 = await element(by.id('${context.tenantNameLowerFirst}-management-page-heading')).getAttribute('jhiTranslate');
+        expect(value1).to.eq(expect1);
     });\n`;
         }
     },

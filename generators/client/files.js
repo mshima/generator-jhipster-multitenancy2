@@ -135,6 +135,16 @@ function writeFiles() {
                         renameTo: generator => `e2e/admin/${this.tenantNameLowerFirst}-management.spec.ts`
                     }
                 ]
+            },
+            {
+                condition: generator => generator.protractorTests,
+                path: this.CLIENT_TEST_SRC_DIR,
+                templates: [
+                    {
+                        file: 'e2e/admin/_tenant-management.page-object.ts',
+                        renameTo: generator => `e2e/admin/${this.tenantNameLowerFirst}-management.page-object.ts`
+                    }
+                ]
             }
         ]
     };

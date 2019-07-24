@@ -108,7 +108,7 @@ module.exports = class extends EntityI18nGenerator {
                 /* tenant variables */
                 mtUtils.tenantVariables(this.tenantName, this);
 
-                this.addTranslationKeyToAllLanguages(`${this.tenantNameLowerFirst}-management`, `${this.tenantNameUpperFirst} Management`, 'addAdminElementTranslationKey', this.enableTranslation);
+                this.addTranslationKeyToAllLanguages(`${this.tenantNameLowerFirst}Management`, `${this.tenantNameUpperFirst} Management`, 'addAdminElementTranslationKey', this.enableTranslation);
                 this.addTranslationKeyToAllLanguages(`userManagement${this.tenantNameUpperFirst}`, `${this.tenantNameUpperFirst}`, 'addGlobalTranslationKey', this.enableTranslation);
 
                 const languageFiles = {

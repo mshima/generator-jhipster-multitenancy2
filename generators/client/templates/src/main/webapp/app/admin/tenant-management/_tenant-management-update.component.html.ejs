@@ -19,14 +19,12 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 jhiTranslate="<%= tenantNameLowerFirst %>Management.home.createOrEditLabel">
-                Create or edit a <%= tenantNameUpperFirst %>
-            </h2>
+            <h2 id="jhi-company-management-heading" jhiTranslate="<%= tenantNameLowerFirst %>Management.home.createOrEditLabel">Create or edit a <%= tenantNameUpperFirst %></h2>
             <div>
                 <<%= jhiPrefixDashed %>-alert-error></<%= jhiPrefixDashed %>-alert-error>
                 <div class="form-group" [hidden]="!<%= tenantNameLowerFirst %>.id">
                     <label jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" name="id"
+                    <input type="text" class="form-control" id="id" name="id"
                         [(ngModel)]="<%= tenantNameLowerFirst %>.id" readonly>
                 </div>
 
@@ -44,11 +42,10 @@
                 </div>
             </div>
             <div>
-                <button type="button" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span
-                    jhiTranslate="entity.action.cancel">Cancel</span>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
-                <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>
