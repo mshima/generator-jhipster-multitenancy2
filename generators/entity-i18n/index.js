@@ -6,6 +6,7 @@ const mtUtils = require('../multitenancy-utils');
 
 let isTenant;
 let tenantManagement;
+let experimentalTenantManagement;
 
 module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
@@ -21,6 +22,7 @@ module.exports = class extends EntityI18nGenerator {
 
         isTenant = this.isTenant;
         tenantManagement = this.tenantManagement;
+        experimentalTenantManagement = this.experimentalTenantManagement;
     }
 
     get initializing() {
@@ -70,8 +72,20 @@ module.exports = class extends EntityI18nGenerator {
     }
 
     get configuring() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._configuring();
+        const configuring = super._configuring();
+
+        if (!isTenant) return configuring;
+
+        const myCustomPhaseSteps = {
+                configure() {
+                    if(isTenant){
+                        this.entityTranslationKey = this.entityTranslationKey + 'Management';
+                        this.entityTranslationKeyMenu = this.entityTranslationKeyMenu + 'Management';
+                    }
+                }
+        }
+
+        return Object.assign(configuring, myCustomPhaseSteps);
     }
 
     get default() {
@@ -83,7 +97,7 @@ module.exports = class extends EntityI18nGenerator {
         // TODO copy generated files instead of creating ours
         const writing = super._writing();
 
-        if (!isTenant) return writing;
+        if (!isTenant || !tenantManagement) return writing;
 
         const myCustomPhaseSteps = {
             writeAdditionalEntries() {
@@ -118,6 +132,8 @@ module.exports = class extends EntityI18nGenerator {
                 });
             },
         };
+
+        if(!experimentalTenantManagement) return myCustomPhaseSteps;
 
         return Object.assign(writing, myCustomPhaseSteps);
     }

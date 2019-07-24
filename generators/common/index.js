@@ -19,15 +19,22 @@ module.exports = class extends CommonGenerator {
             defaults: undefined
         });
 
+        this.option('experimental-tenant-management', {
+            desc: 'Create experimental tenant management client',
+            type: Boolean,
+            defaults: false
+        });
+
         this.option('tenant-management', {
             desc: 'Create tenant management client',
             type: Boolean,
-            defaults: undefined
+            defaults: true
         });
 
         this.tenantName = this.options['tenant-name'] || this.config.get('tenantName');
         this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
         this.tenantManagement = this.options['tenant-management'] || this.config.get('tenantManagement');
+        this.experimentalTenantManagement = this.options['experimental-tenant-management'] || this.config.get('experimentalTenantManagement');
 
         const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
 
@@ -142,10 +149,17 @@ module.exports = class extends CommonGenerator {
                 if(this.tenantManagement === undefined){
                     this.tenantManagement = !this.tenantExists;
                 }
+                if(this.experimentalTenantManagement === undefined){
+                    this.experimentalTenantManagement = false;
+                }
+
                 // Pass to others subgens
                 this.configOptions.tenantManagement = this.tenantManagement;
+                this.configOptions.experimentalTenantManagement = this.experimentalTenantManagement;
 
                 this.config.set('tenantManagement', this.tenantManagement);
+                this.config.set('experimentalTenantManagement', this.experimentalTenantManagement);
+
                 this.config.set('tenantName', this.tenantName);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
             },
