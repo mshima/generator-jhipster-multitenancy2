@@ -1,6 +1,8 @@
 /* eslint-disable consistent-return */
 const chalk = require('chalk');
 const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
+const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const mtUtils = require('../multitenancy-utils');
 
 let isTenant;
 let tenantManagement;
@@ -79,8 +81,45 @@ module.exports = class extends EntityI18nGenerator {
 
     get writing() {
         // TODO copy generated files instead of creating ours
-        if (isTenant && tenantManagement) return;
-        return super._writing();
+        const writing = super._writing();
+
+        if (!isTenant) return writing;
+
+        const myCustomPhaseSteps = {
+            writeAdditionalEntries() {
+                if (!this.enableTranslation) return;
+
+                this.tenantName = this.config.get('tenantName');
+
+                /* tenant variables */
+                mtUtils.tenantVariables(this.tenantName, this);
+
+                this.addTranslationKeyToAllLanguages(`${this.tenantNameLowerFirst}-management`, `${this.tenantNameUpperFirst} Management`, 'addAdminElementTranslationKey', this.enableTranslation);
+                this.addTranslationKeyToAllLanguages(`userManagement${this.tenantNameUpperFirst}`, `${this.tenantNameUpperFirst}`, 'addGlobalTranslationKey', this.enableTranslation);
+
+                const languageFiles = {
+                        languages: [
+                            {
+                                condition: generator => generator.enableTranslation,
+                                path: jhipsterConstants.CLIENT_MAIN_SRC_DIR,
+                                templates: [
+                                    {
+                                        file: 'i18n/en/_tenant-management.json',
+                                        renameTo: generator => `i18n/${this.currentLanguage}/${this.tenantNameLowerFirst}-management.json`
+                                    }
+                                ]
+                            }
+                        ]
+                }
+
+                this.languages.forEach((language) => {
+                    this.currentLanguage = language;
+                    this.writeFilesToDisk(languageFiles, this, false);
+                });
+            },
+        };
+
+        return Object.assign(writing, myCustomPhaseSteps);
     }
 
     get install() {

@@ -141,31 +141,4 @@ function writeFiles() {
 
     // parse the templates and write files to the appropriate locations
     this.writeFilesToDisk(files, this, false);
-
-    const languageFiles = {
-            languages: [
-                {
-                    condition: generator => generator.enableTranslation,
-                    path: this.webappDir,
-                    templates: [
-                        {
-                            file: 'i18n/en/_tenant-management.json',
-                            renameTo: generator => `i18n/${this.currentLanguage}/${this.tenantNameLowerFirst}-management.json`
-                        }
-                    ]
-                }
-            ]
-    }
-
-    if (this.enableTranslation) {
-        //this.addTranslationKeyToAllLanguages(`${this.tenantNameLowerFirst}-management`, `${this.tenantNameUpperFirst} Management`, 'addAdminElementTranslationKey', this.enableTranslation);
-        //this.addTranslationKeyToAllLanguages(`userManagement${this.tenantNameUpperFirst}`, `${this.tenantNameUpperFirst}`, 'addGlobalTranslationKey', this.enableTranslation);
-
-        // TODO: generate this file for each language
-        this.languages.forEach((language) => {
-            this.currentLanguage = language;
-            this.writeFilesToDisk(languageFiles, this, false);
-        });
-    }
-
 }
