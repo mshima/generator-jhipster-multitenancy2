@@ -268,6 +268,28 @@ module.exports = class extends EntityGenerator {
         const configuring = super._configuring();
 
         const myCustomPostPhaseSteps = {
+                configureTenantFolder() {
+                    const context = this.context;
+
+                    if(!this.isTenant || !this.experimentalTenantManagement) return;
+
+                    // Angular client
+                    // `entities/${generator.entityFolderName}/${generator.entityFileName}`
+                    // Tests
+                    // `spec/app/entities/${generator.entityFolderName}/${generator.entityFileName}
+                    // Protractor
+                    // `e2e/entities/${generator.entityFolderName}/${generator.entityFileName}`
+                    context.entityFolderName = '../admin/' + context.entityFolderName + '-management';
+                    context.entityFileName = context.entityFileName + '-management';
+
+                    // Angular service
+                    // entities/${generator.entityFolderName}/${generator.entityServiceFileName}.service.ts
+                    context.entityServiceFileName = context.entityServiceFileName + '-management';
+
+                    // Angular model
+                    // `shared/model/${generator.entityModelFileName}.model.ts`
+                    //this.entityModelFileName = this.entityModelFileName;
+                },
                 postJson() {
                     if(this.isTenant) {
                         // jhipster will override tenant's changelogDate
