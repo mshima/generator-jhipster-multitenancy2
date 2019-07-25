@@ -20,7 +20,5 @@ module.exports = {
         testTemplates: function (context) {
             return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTestTemplates, context);
         },
-        languageTemplates: [
-        ],
     }
 };
