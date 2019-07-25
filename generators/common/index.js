@@ -33,6 +33,8 @@ module.exports = class extends CommonGenerator {
 
         this.tenantName = this.options['tenant-name'] || this.config.get('tenantName');
         this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
+
+        // INFO Saved config is never used for now, doesn't work with current option config
         this.tenantManagement = this.options['tenant-management'] || this.config.get('tenantManagement');
         this.experimentalTenantManagement = this.options['experimental-tenant-management'] || this.config.get('experimentalTenantManagement');
 
