@@ -32,13 +32,13 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { <%= tenantNameUpperFirst %> } from './<%= tenantNameLowerFirst %>.model';
 import { <%= tenantNameUpperFirst %>Service } from '../../shared';
 import { AccountService } from '../../core';
-import { <%= tenantNameUpperFirst %>MgmtDeleteDialogComponent } from '../';
+import { <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DeleteDialogComponent } from '../';
 
 @Component({
-    selector: '<%=jhiPrefixDashed%>-<%= tenantNameLowerFirst %>-mgmt',
+    selector: '<%=jhiPrefixDashed%>-<%= tenantNameLowerFirst %><%= angularTenantSelectorSuffix %>',
     templateUrl: './<%= tenantNameLowerFirst %>-management.component.html'
 })
-export class <%= tenantNameUpperFirst %>MgmtComponent implements OnInit, OnDestroy {
+export class <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Component implements OnInit, OnDestroy {
     <%= tenantNamePluralLowerFirst %>: <%= tenantNameUpperFirst %>[];
     currentAccount: any;
     error: any;
@@ -138,7 +138,7 @@ export class <%= tenantNameUpperFirst %>MgmtComponent implements OnInit, OnDestr
     <%_ } _%>
 
     delete<%= tenantNameUpperFirst %>(<%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %>) {
-        const modalRef = this.modalService.open(<%= tenantNameUpperFirst %>MgmtDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+        const modalRef = this.modalService.open(<%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DeleteDialogComponent, { size: 'lg', backdrop: 'static' });
         modalRef.componentInstance.<%= tenantNameLowerFirst %> = <%= tenantNameLowerFirst %>;
         modalRef.result.then(
             result => {

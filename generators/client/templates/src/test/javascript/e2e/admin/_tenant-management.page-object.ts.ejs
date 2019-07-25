@@ -6,9 +6,9 @@ if (enableTranslation) {
     elementGetter = `getAttribute('jhiTranslate')`;
 } _%>
 
-export class <%= tenantNameUpperFirst %>MgmtComponentsPage {
+export class <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>ComponentsPage {
     createButton = element(by.id('jh-create-entity'));
-    deleteButtons = element.all(by.css('jhi-<%= tenantNameLowerFirst %>-mgmt div table .btn-danger'));
+    deleteButtons = element.all(by.css('jhi-<%= tenantNameLowerFirst %><%= angularTenantSelectorSuffix %> div table .btn-danger'));
     title = element(by.id('<%= tenantNameLowerFirst %>-management-page-heading'));
 
     async clickOnCreateButton(timeout?: number) {
@@ -28,7 +28,7 @@ export class <%= tenantNameUpperFirst %>MgmtComponentsPage {
     }
 }
 
-export class <%= tenantNameUpperFirst %>MgmtUpdatePage {
+export class <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdatePage {
     pageTitle = element(by.id('jhi-<%= tenantNameLowerFirst %>-management-heading'));
     saveButton = element(by.id('save-entity'));
     cancelButton = element(by.id('cancel-save'));

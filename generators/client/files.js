@@ -97,7 +97,7 @@ function writeFiles() {
             {
                 path: this.angularDir,
                 templates: [
-                    { file: 'admin/admin.route.ts', method: 'processJs' },
+                    'admin/admin.route.ts',
                     'admin/admin.module.ts',
                 ]
             }

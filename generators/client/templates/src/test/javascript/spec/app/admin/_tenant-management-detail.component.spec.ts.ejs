@@ -22,14 +22,14 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { <%=angularXAppName%>TestModule } from '../../test.module';
-import { <%= tenantNameUpperFirst %>MgmtDetailComponent } from 'app/admin/<%= tenantNameLowerFirst %>-management/<%= tenantNameLowerFirst %>-management-detail.component';
+import { <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent } from 'app/admin/<%= tenantNameLowerFirst %>-management/<%= tenantNameLowerFirst %>-management-detail.component';
 import { <%= tenantNameUpperFirst %> } from 'app/admin/<%= tenantNameLowerFirst %>-management/<%= tenantNameLowerFirst %>.model';
 
 describe('Component Tests', () => {
 
     describe('<%= tenantNameUpperFirst %> Management Detail Component', () => {
-        let comp: <%= tenantNameUpperFirst %>MgmtDetailComponent;
-        let fixture: ComponentFixture<<%= tenantNameUpperFirst %>MgmtDetailComponent>;
+        let comp: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent;
+        let fixture: ComponentFixture<<%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent>;
         const route = ({
             data: of({ <%= tenantNameLowerFirst %>: new <%= tenantNameUpperFirst %>(1, 'my<%= tenantNameLowerFirst %>')})
         } as any) as ActivatedRoute;
@@ -37,7 +37,7 @@ describe('Component Tests', () => {
         beforeEach(async(() => {
             TestBed.configureTestingModule({
                 imports: [<%=angularXAppName%>TestModule],
-                declarations: [<%= tenantNameUpperFirst %>MgmtDetailComponent],
+                declarations: [<%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent],
                 providers: [
                     {
                         provide: ActivatedRoute,
@@ -45,12 +45,12 @@ describe('Component Tests', () => {
                     }
                 ]
             })
-                .overrideTemplate(<%= tenantNameUpperFirst %>MgmtDetailComponent, '')
+                .overrideTemplate(<%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent, '')
                 .compileComponents();
         }));
 
         beforeEach(() => {
-            fixture = TestBed.createComponent(<%= tenantNameUpperFirst %>MgmtDetailComponent);
+            fixture = TestBed.createComponent(<%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent);
             comp = fixture.componentInstance;
         });
 

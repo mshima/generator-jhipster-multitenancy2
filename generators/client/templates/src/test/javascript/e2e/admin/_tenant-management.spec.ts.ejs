@@ -19,7 +19,7 @@
 import { browser, ExpectedConditions as ec, promise } from 'protractor';
 import { NavBarPage, SignInPage } from '../page-objects/jhi-page-objects';
 
-import { <%= tenantNameUpperFirst %>MgmtComponentsPage, <%= tenantNameUpperFirst %>MgmtUpdatePage } from './<%= tenantNameLowerFirst %>-management.page-object';
+import { <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>ComponentsPage, <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdatePage } from './<%= tenantNameLowerFirst %>-management.page-object';
 
 const expect = chai.expect;
 
@@ -27,8 +27,8 @@ describe('<%= tenantNameLowerFirst %>-management e2e test', () => {
 
     let navBarPage: NavBarPage;
     let signInPage: SignInPage;
-    let <%= tenantNameLowerFirst %>MgmtUpdatePage: <%= tenantNameUpperFirst %>MgmtUpdatePage;
-    let <%= tenantNameLowerFirst %>MgmtComponentsPage: <%= tenantNameUpperFirst %>MgmtComponentsPage;
+    let <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdatePage;
+    let <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>ComponentsPage;
 
     before(async () => {
         await browser.get('/');
@@ -41,29 +41,29 @@ describe('<%= tenantNameLowerFirst %>-management e2e test', () => {
     it('should load <%= tenantNameLowerFirst %> management', async () => {
         await navBarPage.clickOnAdminMenu();
         await navBarPage.clickOnAdmin('<%= tenantNameLowerFirst %>-management');
-        <%= tenantNameLowerFirst %>MgmtComponentsPage = new <%= tenantNameUpperFirst %>MgmtComponentsPage();
-        await browser.wait(ec.visibilityOf(<%= tenantNameLowerFirst %>MgmtComponentsPage.title), 5000);
-        expect(await <%= tenantNameLowerFirst %>MgmtComponentsPage.getTitle()).to.eq('<%= tenantNameLowerFirst %>Management.home.title');
+        <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage = new <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>ComponentsPage();
+        await browser.wait(ec.visibilityOf(<%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.title), 5000);
+        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.getTitle()).to.eq('<%= tenantNameLowerFirst %>Management.home.title');
     });
 
     it('should load create <%= tenantNameLowerFirst %> management page', async () => {
-        await <%= tenantNameLowerFirst %>MgmtComponentsPage.clickOnCreateButton();
-        <%= tenantNameLowerFirst %>MgmtUpdatePage = new <%= tenantNameUpperFirst %>MgmtUpdatePage();
-        expect(await <%= tenantNameLowerFirst %>MgmtUpdatePage.getPageTitle()).to.eq('<%= tenantNameLowerFirst %>Management.home.createOrEditLabel');
+        await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.clickOnCreateButton();
+        <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage = new <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdatePage();
+        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getPageTitle()).to.eq('<%= tenantNameLowerFirst %>Management.home.createOrEditLabel');
         expect(await browser.getCurrentUrl()).to.match(new RegExp('.*/admin/<%= tenantNameLowerFirst %>-management/new'));
-        await <%= tenantNameLowerFirst %>MgmtUpdatePage.cancel();
+        await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.cancel();
     });
 
     it('should create and save <%= tenantNameLowerFirst %> management', async () => {
-        const nbButtonsBeforeCreate = await <%= tenantNameLowerFirst %>MgmtComponentsPage.countDeleteButtons();
+        const nbButtonsBeforeCreate = await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.countDeleteButtons();
 
-        await <%= tenantNameLowerFirst %>MgmtComponentsPage.clickOnCreateButton();
-        await promise.all([<%= tenantNameLowerFirst %>MgmtUpdatePage.setNameInput('new <%= tenantNameLowerFirst %>')]);
-        expect(await <%= tenantNameLowerFirst %>MgmtUpdatePage.getNameInput()).to.eq('new <%= tenantNameLowerFirst %>', 'Expected Name value to be equals to name');
-        await <%= tenantNameLowerFirst %>MgmtUpdatePage.save();
-        expect(await <%= tenantNameLowerFirst %>MgmtUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
+        await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.clickOnCreateButton();
+        await promise.all([<%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.setNameInput('new <%= tenantNameLowerFirst %>')]);
+        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getNameInput()).to.eq('new <%= tenantNameLowerFirst %>', 'Expected Name value to be equals to name');
+        await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.save();
+        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
 
-        expect(await <%= tenantNameLowerFirst %>MgmtComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
+        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
         expect(await browser.getCurrentUrl()).to.match(new RegExp('.*/admin/<%= tenantNameLowerFirst %>-management'));
     });
 

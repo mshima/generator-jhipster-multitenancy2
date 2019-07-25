@@ -23,10 +23,10 @@ import { <%= tenantNameUpperFirst %> } from './<%= tenantNameLowerFirst %>.model
 import { <%= tenantNameUpperFirst %>Service } from '../../shared';
 
 @Component({
-    selector: '<%= jhiPrefixDashed %>-<%= tenantNameLowerFirst %>-mgmt-update',
+    selector: '<%= jhiPrefixDashed %>-<%= tenantNameLowerFirst %><%= angularTenantSelectorSuffix %>-update',
     templateUrl: './<%= tenantNameLowerFirst %>-management-update.component.html'
 })
-export class <%= tenantNameUpperFirst %>MgmtUpdateComponent implements OnInit {
+export class <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdateComponent implements OnInit {
 
     <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %>;
     isSaving: boolean;

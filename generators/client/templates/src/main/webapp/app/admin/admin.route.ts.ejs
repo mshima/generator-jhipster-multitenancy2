@@ -36,7 +36,7 @@ import {
     <%_ if (!skipUserManagement) { _%>
     userMgmtRoute,
     <%_ } _%>
-    <%= tenantNameLowerFirst %>MgmtRoute
+    <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>Route
 } from './';
 
 import { UserRouteAccessService } from 'app/core';
@@ -59,7 +59,7 @@ const ADMIN_ROUTES = [
     ...userMgmtRoute,
     <%_ } _%>
     metricsRoute,
-    ...<%= tenantNameLowerFirst %>MgmtRoute
+    ...<%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>Route
 ];
 
 export const adminState: Routes = [{

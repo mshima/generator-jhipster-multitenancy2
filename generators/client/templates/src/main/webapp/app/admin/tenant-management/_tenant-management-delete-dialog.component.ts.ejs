@@ -24,10 +24,10 @@ import { <%= tenantNameUpperFirst %> } from './<%= tenantNameLowerFirst %>.model
 import { <%= tenantNameUpperFirst %>Service } from '../../shared';
 
 @Component({
-    selector: '<%=jhiPrefixDashed%>-<%= tenantNameLowerFirst %>-mgmt-delete-dialog',
+    selector: '<%=jhiPrefixDashed%>-<%= tenantNameLowerFirst %><%= angularTenantSelectorSuffix %>-delete-dialog',
     templateUrl: './<%= tenantNameLowerFirst %>-management-delete-dialog.component.html'
 })
-export class <%= tenantNameUpperFirst %>MgmtDeleteDialogComponent {
+export class <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DeleteDialogComponent {
     <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %>;
 
     constructor(

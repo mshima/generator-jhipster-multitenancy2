@@ -22,10 +22,10 @@ import { ActivatedRoute } from '@angular/router';
 import { <%= tenantNameUpperFirst %> } from './<%= tenantNameLowerFirst %>.model';
 
 @Component({
-    selector: '<%=jhiPrefixDashed%>-<%= tenantNameLowerFirst %>-mgmt-detail',
+    selector: '<%=jhiPrefixDashed%>-<%= tenantNameLowerFirst %><%= angularTenantSelectorSuffix %>-detail',
     templateUrl: './<%= tenantNameLowerFirst %>-management-detail.component.html'
 })
-export class <%= tenantNameUpperFirst %>MgmtDetailComponent implements OnInit {
+export class <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent implements OnInit {
 
     <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %>;
 

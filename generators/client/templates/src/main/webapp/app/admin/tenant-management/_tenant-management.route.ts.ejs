@@ -22,13 +22,13 @@ import { JhiPaginationUtil, JhiResolvePagingParams } from 'ng-jhipster';
 
 import { <%= tenantNameUpperFirst %> } from 'app/admin';
 import { <%= tenantNameUpperFirst %>Service } from 'app/shared';
-import { <%= tenantNameUpperFirst %>MgmtComponent } from './<%= tenantNameLowerFirst %>-management.component';
-import { <%= tenantNameUpperFirst %>MgmtDetailComponent } from './<%= tenantNameLowerFirst %>-management-detail.component';
-import { <%= tenantNameUpperFirst %>MgmtUpdateComponent } from './<%= tenantNameLowerFirst %>-management-update.component';
+import { <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Component } from './<%= tenantNameLowerFirst %>-management.component';
+import { <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent } from './<%= tenantNameLowerFirst %>-management-detail.component';
+import { <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdateComponent } from './<%= tenantNameLowerFirst %>-management-update.component';
 import { <%= tenantNameUpperFirst %>RouteAccessService } from './../../core';
 
 @Injectable({ providedIn: 'root' })
-export class <%= tenantNameUpperFirst %>MgmtResolve implements Resolve<any> {
+export class <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Resolve implements Resolve<any> {
     constructor(private service: <%= tenantNameUpperFirst %>Service) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
@@ -40,10 +40,10 @@ export class <%= tenantNameUpperFirst %>MgmtResolve implements Resolve<any> {
     }
 }
 
-export const <%= tenantNameLowerFirst %>MgmtRoute: Routes = [
+export const <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>Route: Routes = [
     {
         path: '<%= tenantNameLowerFirst %>-management',
-        component: <%= tenantNameUpperFirst %>MgmtComponent,
+        component: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Component,
         resolve: {
             'pagingParams': JhiResolvePagingParams
         },
@@ -54,9 +54,9 @@ export const <%= tenantNameLowerFirst %>MgmtRoute: Routes = [
     },
     {
         path: '<%= tenantNameLowerFirst %>-management/:id/view',
-        component: <%= tenantNameUpperFirst %>MgmtDetailComponent,
+        component: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent,
         resolve: {
-            <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %>MgmtResolve
+            <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Resolve
         },
         data: {
             pageTitle: '<%= tenantNameLowerFirst %>Management.home.title'
@@ -64,16 +64,16 @@ export const <%= tenantNameLowerFirst %>MgmtRoute: Routes = [
     },
     {
         path: '<%= tenantNameLowerFirst %>-management/new',
-        component: <%= tenantNameUpperFirst %>MgmtUpdateComponent,
+        component: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdateComponent,
         resolve: {
-            <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %>MgmtResolve
+            <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Resolve
         }
     },
     {
         path: '<%= tenantNameLowerFirst %>-management/:id/edit',
-        component: <%= tenantNameUpperFirst %>MgmtUpdateComponent,
+        component: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdateComponent,
         resolve: {
-            <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %>MgmtResolve
+            <%= tenantNameLowerFirst %>: <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Resolve
         }
     }
 ];

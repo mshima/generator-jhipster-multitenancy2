@@ -36,10 +36,10 @@ import {
     UserMgmtUpdateComponent,
     UserMgmtDeleteDialogComponent,
     <%_ } _%>
-    <%= tenantNameUpperFirst %>MgmtComponent,
-    <%= tenantNameUpperFirst %>MgmtDetailComponent,
-    <%= tenantNameUpperFirst %>MgmtUpdateComponent,
-    <%= tenantNameUpperFirst %>MgmtDeleteDialogComponent,
+    <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Component,
+    <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent,
+    <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdateComponent,
+    <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DeleteDialogComponent,
     LogsComponent,
     <%=jhiPrefixCapitalized%>MetricsMonitoringComponent,
     <%=jhiPrefixCapitalized%>HealthModalComponent,
@@ -70,10 +70,10 @@ import {
         UserMgmtUpdateComponent,
         UserMgmtDeleteDialogComponent,
         <%_ } _%>
-        <%= tenantNameUpperFirst %>MgmtComponent,
-        <%= tenantNameUpperFirst %>MgmtDetailComponent,
-        <%= tenantNameUpperFirst %>MgmtUpdateComponent,
-        <%= tenantNameUpperFirst %>MgmtDeleteDialogComponent,
+        <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Component,
+        <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DetailComponent,
+        <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdateComponent,
+        <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DeleteDialogComponent,
         LogsComponent,
         <%=jhiPrefixCapitalized%>ConfigurationComponent,
         <%=jhiPrefixCapitalized%>HealthCheckComponent,
@@ -95,7 +95,7 @@ import {
         UserMgmtDeleteDialogComponent,
         <%_ } _%>
         <%=jhiPrefixCapitalized%>HealthModalComponent,
-        <%= tenantNameUpperFirst %>MgmtDeleteDialogComponent
+        <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>DeleteDialogComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
