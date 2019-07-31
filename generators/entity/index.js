@@ -31,12 +31,10 @@ module.exports = class extends EntityGenerator {
         // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get("tenantName"));
         this.tenantManagement = this.configOptions.tenantManagement;
-        this.experimentalTenantManagement = this.configOptions.experimentalTenantManagement;
 
         // pass to entity-* subgen
         this.context.isTenant = this.isTenant;
         this.context.tenantManagement = this.configOptions.tenantManagement;
-        this.context.experimentalTenantManagement = this.configOptions.experimentalTenantManagement;
     }
 
     get initializing() {
@@ -250,14 +248,11 @@ module.exports = class extends EntityGenerator {
                         // if any relationship exisits already in the entity to the tenant remove it and regenerated
                         for (let i = relationships.length - 1; i >= 0; i--) {
                             if (relationships[i].otherEntityName === this.tenantName) {
-                                if(!this.experimentalTenantManagement){
-                                    relationships.splice(i);
-                                }
                                 containsTenant = true;
                             }
                         }
 
-                        if(containsTenant && this.experimentalTenantManagement){
+                        if(containsTenant){
                             return;
                         }
 
@@ -281,7 +276,7 @@ module.exports = class extends EntityGenerator {
                 configureTenantFolder() {
                     const context = this.context;
 
-                    if(!this.isTenant || !this.experimentalTenantManagement) return;
+                    if(!this.isTenant) return;
 
                     // Angular client
                     // `entities/${generator.entityFolderName}/${generator.entityFileName}`

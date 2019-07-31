@@ -31,13 +31,8 @@ function tenantVariables(tenantName, context) {
     context.tenantNamePluralLowerFirst = pluralize(context.tenantNameLowerFirst);
     context.tenantNamePluralUpperFirst = pluralize(context.tenantNameUpperFirst);
 
-    if(context.options.experimentalTenantManagement){
-        context.angularTenantComponentSuffix = '';
-        context.angularTenantSelectorSuffix = '';
-    } else {
-        context.angularTenantComponentSuffix = 'Mgmt';
-        context.angularTenantSelectorSuffix = '-mgmt';
-    }
+    context.angularTenantComponentSuffix = '';
+    context.angularTenantSelectorSuffix = '';
 }
 
 function processPartialTemplates(partialTemplates, context) {

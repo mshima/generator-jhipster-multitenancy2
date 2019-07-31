@@ -9,7 +9,6 @@ const files = require('./files');
 const CLIENT_MAIN_SRC_DIR = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
 
 let isTenant;
-let experimentalTenantManagement;
 
 module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {
@@ -27,7 +26,6 @@ module.exports = class extends EntityClientGenerator {
         jhContext.setupEntityOptions(this, jhContext, this);
 
         isTenant = this.isTenant;
-        experimentalTenantManagement = this.experimentalTenantManagement;
     }
 
     get initializing() {
@@ -96,17 +94,6 @@ module.exports = class extends EntityClientGenerator {
                             //addAdminToModule(appName, adminAngularName, adminFolderName, adminFileName, enableTranslation, clientFramework)
                             //this.addAdminToModule(this.angularXAppName, 'Company', 'company-management', 'company-management', this.enableTranslation, this.clientFramework);
 
-                            this.log('####');
-                            this.log(`${chalk.yellow('Reference to ') +
-                                    entityFileName +
-                                    entityClass +
-                                    entityName +
-                                    entityFolderName +
-                                    entityFileName +
-                                    entityUrl +
-                                    clientFramework +
-                                    microServiceName}`);
-
                             const moduleNeedle = 'jhipster-needle-add-admin-module';
                             const appName = this.getAngularXAppName();
                             const entityAngularName = entityName;
@@ -156,9 +143,6 @@ module.exports = class extends EntityClientGenerator {
     }
 
     get writing() {
-        // TODO copy generated files instead of creating ours
-        if (isTenant && !experimentalTenantManagement) return;
-
         var phaseFromJHipster = super._writing();
         var myCustomPhaseSteps = {
             generateClientCode() {
@@ -175,7 +159,7 @@ module.exports = class extends EntityClientGenerator {
                     // e2e test
                     if (this.testFrameworks.indexOf('protractor') !== -1) {
                         this.CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
-                        mtUtils.processPartialTemplates(files.angular.testTemplates(this), this);
+//                        mtUtils.processPartialTemplates(files.angular.testTemplates(this), this);
                     }
                 }
             }

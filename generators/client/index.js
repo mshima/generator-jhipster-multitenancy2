@@ -69,13 +69,7 @@ module.exports = class extends ClientGenerator {
     }
 
     get configuring() {
-        const configuring = super._configuring()
-        const myCustomPhaseSteps = {
-            setUpVariables() {
-                this.experimentalTenantManagement = this.options.experimentalTenantManagement;
-            },
-        }
-        return Object.assign(configuring, myCustomPhaseSteps);
+        return super._configuring();
 
     }
 
@@ -97,14 +91,9 @@ module.exports = class extends ClientGenerator {
                 // template variables
                 mtUtils.tenantVariables(this.config.get('tenantName'), this);
 
-                if(this.experimentalTenantManagement){
-                    // relative to app root
-                    this.tenantModelPath = 'shared/admin';
-                    this.tenantServicePath = 'admin/' + this.tenantNameLowerFirst + '-management';
-                }else{
-                    this.tenantModelPath = 'admin/' + this.tenantNameLowerFirst + '-management';
-                    this.tenantServicePath = 'shared';
-                }
+                // relative to app root
+                this.tenantModelPath = 'shared/admin';
+                this.tenantServicePath = 'admin/' + this.tenantNameLowerFirst + '-management';
             },
             writeAdditionalFile() {
                 files.writeFiles.call(this);
