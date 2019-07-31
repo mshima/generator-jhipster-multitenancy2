@@ -147,18 +147,22 @@ module.exports = class extends EntityClientGenerator {
         var myCustomPhaseSteps = {
             generateClientCode() {
                 if(this.isTenant) {
+                    mtUtils.tenantVariables(this.config.get('tenantName'), this);
                     //this.addEntityToMenu(this.entityStateName, this.enableTranslation, this.clientFramework, this.entityTranslationKeyMenu);
                     this.addElementToAdminMenu('admin/company-management', 'asterisk', this.enableTranslation, this.clientFramework, 'companyManagement');
+
+                    // e2e test
+                    if (this.testFrameworks.indexOf('protractor') !== -1) {
+                        mtUtils.processPartialTemplates(files.angular.protractor(this), this);
+                    }
+                    files.writeFiles.call(this);
+
                     return;
                 }
                 if (this.tenantAware) {
                     mtUtils.tenantVariables(this.config.get('tenantName'), this);
 
                     mtUtils.processPartialTemplates(files.angular.templates(this), this);
-
-                    // e2e test
-                    if (this.testFrameworks.indexOf('protractor') !== -1) {
-                    }
                 }
             }
         }

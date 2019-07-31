@@ -1,3 +1,4 @@
+const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const mtUtils = require('../multitenancy-utils');
 
 const angularTemplates = [
@@ -9,16 +10,17 @@ const angularTemplates = [
 ] 
 
 const angularTestTemplates = [
-    'tenant-management.spec.ts',
+    '_tenant-management.spec.ts',
 ] 
 
 module.exports = {
+    writeFiles,
     angular: {
         templates: function (context) {
             return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTemplates, context);
         },
-        testTemplates: function (context) {
-            return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTestTemplates, context);
+        protractor: function (context) {
+            return mtUtils.requireTemplates('./entity-client/partials/angular/protractor/', angularTestTemplates, context);
         },
     }
 };
@@ -28,8 +30,8 @@ function writeFiles() {
     const files = {
         tests: [
             {
-                condition: generator => generator.protractorTests && !generator.configOptions.experimentalTenantManagement,
-                path: this.CLIENT_TEST_SRC_DIR,
+                condition: generator => generator.protractorTests,
+                path: jhipsterConstants.CLIENT_TEST_SRC_DIR,
                 templates: [
                     {
                         file: 'e2e/admin/_tenant-management.spec.ts',
