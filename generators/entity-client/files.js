@@ -5,7 +5,8 @@ const angularTemplates = [
     'entity.component.html',
     'entity-detail.component.html',
     'entity-update.component.html',
-    'entity-update.component.ts'
+    'entity-update.component.ts',
+    'navbar.component.html',
 ] 
 
 const angularTestTemplates = [

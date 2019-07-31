@@ -7,7 +7,6 @@ const angularTemplates = [
     'admin-index.ts',
     'administration.spec.ts',
     'core_index.ts',
-//    'navbar.component.html',
     'navbar.component.ts',
     'shared_index.ts',
 ] 
