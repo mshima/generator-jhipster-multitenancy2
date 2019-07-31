@@ -22,3 +22,24 @@ module.exports = {
         },
     }
 };
+
+function writeFiles() {
+    // configs for the template files
+    const files = {
+        tests: [
+            {
+                condition: generator => generator.protractorTests && !generator.configOptions.experimentalTenantManagement,
+                path: this.CLIENT_TEST_SRC_DIR,
+                templates: [
+                    {
+                        file: 'e2e/admin/_tenant-management.spec.ts',
+                        renameTo: generator => `e2e/admin/${this.tenantNameLowerFirst}-management/${this.tenantNameLowerFirst}-management-tenant.spec.ts`
+                    }
+                ]
+            },
+        ]
+    };
+
+    // parse the templates and write files to the appropriate locations
+    this.writeFilesToDisk(files, this, false);
+}
