@@ -85,9 +85,6 @@ module.exports = class extends EntityServerGenerator {
                 // sets up all the variables we'll need for the templating
                 setUpVariables() {
                     this.SERVER_MAIN_SRC_DIR = jhipsterConstants.SERVER_MAIN_SRC_DIR;
-
-                    // template variables
-                    mtUtils.tenantVariables(this.config.get('tenantName'), this);
                 },
         };
 

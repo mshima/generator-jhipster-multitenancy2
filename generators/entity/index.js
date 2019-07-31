@@ -30,11 +30,9 @@ module.exports = class extends EntityGenerator {
 
         // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get("tenantName"));
-        this.tenantManagement = this.configOptions.tenantManagement;
 
         // pass to entity-* subgen
         this.context.isTenant = this.isTenant;
-        this.context.tenantManagement = this.configOptions.tenantManagement;
     }
 
     get initializing() {
@@ -77,8 +75,14 @@ module.exports = class extends EntityGenerator {
         const phaseFromJHipster = super._initializing();
         const postCustomPhaseSteps = {
                 setUpVariables() {
-                    this.tenantName = this.config.get("tenantName");
                     const context = this.context;
+
+                    if(this.isTenant) {
+                        context.clientRootFolder = '../admin';
+                    }
+
+                    /* tenant variables */
+                    mtUtils.tenantVariables.call(this, this.config.get('tenantName'), context);
 
                     if(!this.isTenant) {
                         // if tenantAware is undefined (first pass), then override changelogDate
@@ -112,8 +116,7 @@ module.exports = class extends EntityGenerator {
                             otherEntityField: 'login',
                             //relationshipValidateRules: 'required',
                             ownerSide: true,
-                            otherEntityStateName: 'admin/' + this._.toLower(this.tenantName) + '-management',
-                            otherEntityRelationshipName: this._.toLower(this.tenantName)
+                            otherEntityRelationshipName: context.tenantName
                         }];
                     }else{
                         context.service = 'serviceClass';
@@ -151,7 +154,7 @@ module.exports = class extends EntityGenerator {
                                 otherEntityField: 'login',
                                 relationshipValidateRules: 'required',
                                 ownerSide: true,
-                                otherEntityRelationshipName: this._.toLower(this.tenantName)
+                                otherEntityRelationshipName: context.tenantName
                             });
                         }
                     }
@@ -178,7 +181,7 @@ module.exports = class extends EntityGenerator {
                 let relationWithTenant = false;
                 if(context.fileData !== undefined && context.fileData.relationships !== undefined){
                     context.relationships.forEach((field) => {
-                        if(this._.toLower(field.otherEntityName) === this._.toLower(this.tenantName)){
+                        if(this._.toLower(field.otherEntityName) === this._.toLower(context.tenantName)){
                             relationWithTenant = true;
                         }
                     });
@@ -215,8 +218,6 @@ module.exports = class extends EntityGenerator {
                 loadTenantDef() {
                     const context = this.context;
 
-                    this.tenantName = this.config.get('tenantName');
-
                     // pass to entity-* subgen
                     if (this.newTenantAware === undefined){
                         context.tenantAware = context.fileData ? context.fileData.tenantAware : false;
@@ -224,14 +225,14 @@ module.exports = class extends EntityGenerator {
                         context.tenantAware = this.newTenantAware;
                     }
 
-                    /* tenant variables */
-                    mtUtils.tenantVariables(this.tenantName, this);
+                    if(this.isTenant) {
+                        context.clientRootFolder = '../admin';
+                    }
                 },
                 preJson() {
                     const context = this.context;
 
                     if(this.isTenant) {
-                        context.clientRootFolder = '../admin';
                         // force tenant to be serviceClass
                         context.service = 'serviceClass';
                         context.changelogDate = this.config.get("tenantChangelogDate");
@@ -243,27 +244,43 @@ module.exports = class extends EntityGenerator {
 
                         const relationships = context.relationships;
 
-                        let containsTenant = false;
+                        let tenantRelationship;
                         // if any relationship exisits already in the entity to the tenant remove it and regenerated
                         for (let i = relationships.length - 1; i >= 0; i--) {
-                            if (relationships[i].otherEntityName === this.tenantName) {
-                                containsTenant = true;
+                            this.log(relationships[i].otherEntityName);
+                            if (relationships[i].otherEntityName === context.tenantName) {
+                                tenantRelationship = relationships[i];
                             }
                         }
 
-                        if(containsTenant){
+                        if(tenantRelationship){
+                            if(!tenantRelationship.clientRootFolder){
+                                tenantRelationship.clientRootFolder = '../admin';
+                            }
+                            if(!tenantRelationship.otherEntityStateName){
+                                tenantRelationship.otherEntityStateName = context.tenantStateName;
+                            }
+                            if(!tenantRelationship.otherEntityFolderName){
+                                tenantRelationship.otherEntityFolderName = context.tenantFolderName;
+                            }
+                            if(!tenantRelationship.otherEntityRelationshipName){
+                                tenantRelationship.otherEntityRelationshipName = context.tenantInstance;
+                            }
                             return;
                         }
 
                         this.log(chalk.white(`Entity ${chalk.bold(this.options.name)} found. Adding relationship`));
                         const real = {
-                            relationshipName: this._.toLower(this.tenantName),
-                            otherEntityName: this._.toLower(this.tenantName),
+                            relationshipName: context.tenantName,
+                            otherEntityName: context.tenantName,
                             relationshipType: 'many-to-one',
                             otherEntityField: 'id',
                             relationshipValidateRules: 'required',
                             ownerSide: true,
-                            otherEntityRelationshipName: this._.toLower(context.name)
+                            clientRootFolder: '../admin',
+                            otherEntityStateName: context.tenantStateName,
+                            otherEntityFolderName: context.tenantFolderName,
+                            otherEntityRelationshipName: context.tenantInstance
                         };
                         relationships.push(real);
                     }

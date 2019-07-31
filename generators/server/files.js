@@ -26,7 +26,7 @@ function writeFiles() {
     this.tenantisedEntityServices = this.tenantisedEntityServices + '")';
 
     // template variables
-    mtUtils.tenantVariables(this.config.get('tenantName'), this);
+    mtUtils.tenantVariables.call(this, this.config.get('tenantName'), this);
     this.changelogDate = this.config.get("tenantChangelogDate");
 
     // configs for the template files

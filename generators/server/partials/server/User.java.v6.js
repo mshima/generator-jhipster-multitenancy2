@@ -8,13 +8,14 @@ const tmpls = [
         type: 'replaceContent',
         regex: true,
         target: (context) => {
-            return `(import org\\.hibernate\\.annotations\\.BatchSize;)`;
+            return `(import org\\.hibernate\\.annotations\\.CacheConcurrencyStrategy;)`;
         },
         tmpl: (context) => {
             return `$1
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;`;
+import org.hibernate.annotations.ParamDef;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;`;
         }
     },
     {
@@ -37,6 +38,7 @@ $1`;
         },
         tmpl: (context) => {
             return `$2@ManyToOne
+$2@JsonIgnoreProperties("users")
 $2private ${context.tenantNameUpperFirst} ${context.tenantNameLowerFirst};
 
 $1`;

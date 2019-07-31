@@ -17,7 +17,7 @@
  limitations under the License.
 -%>
 import { browser, ExpectedConditions as ec, promise } from 'protractor';
-import { NavBarPage, SignInPage } from '../page-objects/jhi-page-objects';
+import { NavBarPage, SignInPage } from '../../page-objects/jhi-page-objects';
 
 import { <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>ComponentsPage, <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdatePage } from './<%= tenantNameLowerFirst %>-management.page-object';
 
@@ -43,13 +43,13 @@ describe('<%= tenantNameLowerFirst %>-management e2e test', () => {
         await navBarPage.clickOnAdmin('<%= tenantNameLowerFirst %>-management');
         <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage = new <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>ComponentsPage();
         await browser.wait(ec.visibilityOf(<%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.title), 5000);
-        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.getTitle()).to.eq('<%= tenantNameLowerFirst %>Management.home.title');
+        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.getTitle()).to.eq('<%= angularAppName %>.<%= entityTranslationKey %>.home.title');
     });
 
     it('should load create <%= tenantNameLowerFirst %> management page', async () => {
         await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.clickOnCreateButton();
         <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage = new <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdatePage();
-        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getPageTitle()).to.eq('<%= tenantNameLowerFirst %>Management.home.createOrEditLabel');
+        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getPageTitle()).to.eq('<%= angularAppName %>.<%= entityTranslationKey %>.home.createOrEditLabel');
         expect(await browser.getCurrentUrl()).to.match(new RegExp('.*/admin/<%= tenantNameLowerFirst %>-management/new'));
         await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.cancel();
     });

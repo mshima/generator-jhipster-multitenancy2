@@ -5,7 +5,6 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 const mtUtils = require('../multitenancy-utils');
 
 let isTenant;
-let tenantManagement;
 
 module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
@@ -20,7 +19,6 @@ module.exports = class extends EntityI18nGenerator {
         this.configOptions = jhContext.configOptions || {};
 
         isTenant = this.isTenant;
-        tenantManagement = this.tenantManagement;
     }
 
     get initializing() {
@@ -95,39 +93,32 @@ module.exports = class extends EntityI18nGenerator {
         // TODO copy generated files instead of creating ours
         const writing = super._writing();
 
-        if (!isTenant || !tenantManagement) return writing;
-
         const myCustomPhaseSteps = {
             writeAdditionalEntries() {
-                if (!this.enableTranslation) return;
-
-                this.tenantName = this.config.get('tenantName');
-
-                /* tenant variables */
-                mtUtils.tenantVariables(this.tenantName, this);
+                if (!this.enableTranslation || !this.isTenant) return;
 
                 this.addTranslationKeyToAllLanguages(`${this.tenantNameLowerFirst}Management`, `${this.tenantNameUpperFirst} Management`, 'addAdminElementTranslationKey', this.enableTranslation);
                 this.addTranslationKeyToAllLanguages(`userManagement${this.tenantNameUpperFirst}`, `${this.tenantNameUpperFirst}`, 'addGlobalTranslationKey', this.enableTranslation);
 
-                const languageFiles = {
-                        languages: [
-                            {
-                                condition: generator => generator.enableTranslation,
-                                path: jhipsterConstants.CLIENT_MAIN_SRC_DIR,
-                                templates: [
-                                    {
-                                        file: 'i18n/en/_tenant-management.json',
-                                        renameTo: generator => `i18n/${this.currentLanguage}/${this.tenantNameLowerFirst}-management.json`
-                                    }
-                                ]
-                            }
-                        ]
-                }
-
-                this.languages.forEach((language) => {
-                    this.currentLanguage = language;
-                    this.writeFilesToDisk(languageFiles, this, false);
-                });
+//                const languageFiles = {
+//                        languages: [
+//                            {
+//                                condition: generator => generator.enableTranslation,
+//                                path: jhipsterConstants.CLIENT_MAIN_SRC_DIR,
+//                                templates: [
+//                                    {
+//                                        file: 'i18n/en/_tenant-management.json',
+//                                        renameTo: generator => `i18n/${this.currentLanguage}/${this.tenantNameLowerFirst}-management.json`
+//                                    }
+//                                ]
+//                            }
+//                        ]
+//                }
+//
+//                this.languages.forEach((language) => {
+//                    this.currentLanguage = language;
+//                    this.writeFilesToDisk(languageFiles, this, false);
+//                });
             },
         };
 

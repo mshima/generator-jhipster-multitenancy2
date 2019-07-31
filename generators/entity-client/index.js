@@ -147,7 +147,6 @@ module.exports = class extends EntityClientGenerator {
         var myCustomPhaseSteps = {
             generateClientCode() {
                 if(this.isTenant) {
-                    mtUtils.tenantVariables(this.config.get('tenantName'), this);
                     //this.addEntityToMenu(this.entityStateName, this.enableTranslation, this.clientFramework, this.entityTranslationKeyMenu);
                     this.addElementToAdminMenu('admin/company-management', 'asterisk', this.enableTranslation, this.clientFramework, 'companyManagement');
 
@@ -160,8 +159,6 @@ module.exports = class extends EntityClientGenerator {
                     return;
                 }
                 if (this.tenantAware) {
-                    mtUtils.tenantVariables(this.config.get('tenantName'), this);
-
                     mtUtils.processPartialTemplates(files.angular.templates(this), this);
                 }
             }

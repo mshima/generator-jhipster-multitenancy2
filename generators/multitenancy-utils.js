@@ -20,7 +20,37 @@ function readConfig(config, context) {
 
 // Variations in tenant name
 function tenantVariables(tenantName, context) {
+    if(tenantName === undefined) return;
     /* tenant variables */
+    const tenantNamePluralizedAndSpinalCased = _.kebabCase(pluralize(tenantName));
+
+    context.tenantClientRootFolder = '../admin';
+    context.tenantName = _.lowerFirst(tenantName);
+
+    context.tenantNameCapitalized = _.upperFirst(tenantName);
+    context.tenantClass = context.tenantNameCapitalized;
+    context.tenantClassHumanized = _.startCase(context.tenantNameCapitalized);
+    context.tenantClassPlural = pluralize(context.tenantClass);
+    context.tenantClassPluralHumanized = _.startCase(context.tenantClassPlural);
+    context.tenantInstance = _.lowerFirst(tenantName);
+    context.tenantInstancePlural = pluralize(context.tenantInstance);
+    context.tenantApiUrl = tenantNamePluralizedAndSpinalCased;
+    context.tenantFileName = _.kebabCase(context.tenantNameCapitalized + _.upperFirst(context.entityAngularJSSuffix));
+    context.tenantFolderName = this.getEntityFolderName(context.clientRootFolder, context.tenantFileName);
+    context.tenantModelFileName = context.tenantFolderName;
+    //context.tenantParentPathAddition = context.getEntityParentPathAddition(context.clientRootFolder);
+    context.tenantPluralFileName = tenantNamePluralizedAndSpinalCased + context.entityAngularJSSuffix;
+    context.tenantServiceFileName = context.tenantFileName;
+    context.tenantAngularName = context.tenantClass + this.upperFirstCamelCase(context.entityAngularJSSuffix);
+    context.tenantReactName = context.tenantClass + this.upperFirstCamelCase(context.entityAngularJSSuffix);
+
+    context.tenantFileSuffix = '-management';
+    context.tenantStateName = 'admin/' + _.kebabCase(context.tenantAngularName) + context.tenantFileSuffix;
+
+    context.tenantTranslationKey = context.tenantClientRootFolder
+    ? _.camelCase(`${context.tenantClientRootFolder}-${context.tenantInstance}`)
+    : context.tenantInstance;
+
     context.tenantName = _.camelCase(tenantName);
     context.tenantNameUpperCase = _.toUpper(tenantName);
     context.tenantNameLowerCase = _.toLower(tenantName);
@@ -36,7 +66,8 @@ function tenantVariables(tenantName, context) {
 
     // relative to app root
     context.tenantModelPath = 'shared/admin';
-    context.tenantServicePath = 'admin/' + context.tenantNameLowerFirst + '-management';
+    context.tenantServicePath = 'admin/' + context.tenantFileName + '-management';
+
 }
 
 function processPartialTemplates(partialTemplates, context) {
