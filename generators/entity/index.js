@@ -112,7 +112,7 @@ module.exports = class extends EntityGenerator {
                             otherEntityName: 'user',
                             relationshipType: 'one-to-many',
                             otherEntityField: 'login',
-                            relationshipValidateRules: 'required',
+                            //relationshipValidateRules: 'required',
                             ownerSide: true,
                             otherEntityRelationshipName: this._.toLower(this.tenantName)
                         }];
@@ -234,6 +234,7 @@ module.exports = class extends EntityGenerator {
                     const context = this.context;
 
                     if(this.isTenant) {
+                        context.clientRootFolder = '../admin';
                         // force tenant to be serviceClass
                         context.service = 'serviceClass';
                         context.changelogDate = this.config.get("tenantChangelogDate");
@@ -244,11 +245,20 @@ module.exports = class extends EntityGenerator {
                         context.service = 'serviceClass';
 
                         const relationships = context.relationships;
+
+                        let containsTenant = false;
                         // if any relationship exisits already in the entity to the tenant remove it and regenerated
                         for (let i = relationships.length - 1; i >= 0; i--) {
                             if (relationships[i].otherEntityName === this.tenantName) {
-                                relationships.splice(i);
+                                if(!this.experimentalTenantManagement){
+                                    relationships.splice(i);
+                                }
+                                containsTenant = true;
                             }
+                        }
+
+                        if(containsTenant && this.experimentalTenantManagement){
+                            return;
                         }
 
                         this.log(chalk.white(`Entity ${chalk.bold(this.options.name)} found. Adding relationship`));
@@ -279,12 +289,15 @@ module.exports = class extends EntityGenerator {
                     // `spec/app/entities/${generator.entityFolderName}/${generator.entityFileName}
                     // Protractor
                     // `e2e/entities/${generator.entityFolderName}/${generator.entityFileName}`
-                    context.entityFolderName = '../admin/' + context.entityFolderName + '-management';
+                    context.entityFolderName = context.entityFolderName + '-management';
                     context.entityFileName = context.entityFileName + '-management';
 
                     // Angular service
                     // entities/${generator.entityFolderName}/${generator.entityServiceFileName}.service.ts
                     context.entityServiceFileName = context.entityServiceFileName + '-management';
+
+                    context.entityStateName = context.entityStateName + '-management';
+                    context.entityUrl = 'admin/' + context.entityStateName;
 
                     // Angular model
                     // `shared/model/${generator.entityModelFileName}.model.ts`

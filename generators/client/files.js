@@ -38,6 +38,7 @@ function writeFiles() {
         ],
         tenantManagement: [
             {
+                condition: generator => !generator.configOptions.experimentalTenantManagement,
                 path: this.angularDir,
                 templates: [
                     {
@@ -95,6 +96,7 @@ function writeFiles() {
         ],
         admin: [
             {
+                condition: generator => !generator.configOptions.experimentalTenantManagement,
                 path: this.angularDir,
                 templates: [
                     'admin/admin.route.ts',
@@ -118,6 +120,7 @@ function writeFiles() {
         ],
         tests: [
             {
+                condition: generator => !generator.configOptions.experimentalTenantManagement,
                 path: this.CLIENT_TEST_SRC_DIR,
                 templates: [
                     {
@@ -127,7 +130,7 @@ function writeFiles() {
                 ]
             },
             {
-                condition: generator => generator.protractorTests,
+                condition: generator => generator.protractorTests && !generator.configOptions.experimentalTenantManagement,
                 path: this.CLIENT_TEST_SRC_DIR,
                 templates: [
                     {
@@ -137,7 +140,7 @@ function writeFiles() {
                 ]
             },
             {
-                condition: generator => generator.protractorTests,
+                condition: generator => generator.protractorTests && !generator.configOptions.experimentalTenantManagement,
                 path: this.CLIENT_TEST_SRC_DIR,
                 templates: [
                     {

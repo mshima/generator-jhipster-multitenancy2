@@ -69,8 +69,14 @@ module.exports = class extends ClientGenerator {
     }
 
     get configuring() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._configuring();
+        const configuring = super._configuring()
+        const myCustomPhaseSteps = {
+            setUpVariables() {
+                this.experimentalTenantManagement = this.options.experimentalTenantManagement;
+            },
+        }
+        return Object.assign(configuring, myCustomPhaseSteps);
+
     }
 
     get default() {
