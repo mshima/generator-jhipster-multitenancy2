@@ -94,14 +94,12 @@ module.exports = class extends EntityServerGenerator {
         const writeCustomPhaseSteps = {
                 // make the necessary server code changes
                 customServerCode() {
-                    if(!this.isTenant && !this.tenantAware) return
-
-                    files.writeFiles.call(this);
-
                     if(this.tenantAware){
+                        files.writeTenantAwareFiles.call(this);
                         mtUtils.processPartialTemplates(files.partials.entityTenantAwareTemplates(this), this);
 
                     }else if(this.isTenant){
+                        files.writeTenantFiles.call(this);
                         mtUtils.processPartialTemplates(files.partials.tenantTemplates(this), this);
                     }
                 },

@@ -10,9 +10,9 @@ const tenantTemplates = [
     '_Tenant.java',
 ] 
 
-
 module.exports = {
-    writeFiles,
+    writeTenantFiles,
+    writeTenantAwareFiles,
     partials: {
         entityTenantAwareTemplates: function (context) {
             return mtUtils.requireTemplates('./entity-server/partials/server/', entityTenantAwareTemplates, context);
@@ -23,8 +23,8 @@ module.exports = {
     }
 };
 
-function writeFiles() {
-    const files = {
+function writeTenantAwareFiles() {
+    const tenantAwarefiles = {
             templates:
                 [{
                     condition: generator => generator.tenantAware,
@@ -35,8 +35,16 @@ function writeFiles() {
                             renameTo: generator => `${this.packageFolder}/aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`
                         }
                         ]
-                },
-                {
+                }],
+    };
+
+    this.writeFilesToDisk(tenantAwarefiles, this, false);
+}
+
+function writeTenantFiles() {
+    const tenantFiles = {
+            templates:
+                [{
                     condition: generator => generator.isTenant,
                     path: this.SERVER_MAIN_SRC_DIR,
                     templates: [
@@ -48,6 +56,5 @@ function writeFiles() {
                 }],
     };
 
-    // parse the templates and write files to the appropriate locations
-    this.writeFilesToDisk(files, this, false);
+    this.writeFilesToDisk(tenantFiles, this, false);
 }
