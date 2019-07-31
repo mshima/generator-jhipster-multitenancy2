@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.webappDir}app/core/auth/account.service.ts`;
+    return `${context.CLIENT_MAIN_SRC_DIR}app/core/auth/account.service.ts`;
 };
 
 const tmpls = [

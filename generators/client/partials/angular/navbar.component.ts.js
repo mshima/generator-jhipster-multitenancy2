@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.webappDir}app/layouts/navbar/navbar.component.ts`;
+    return `${context.CLIENT_MAIN_SRC_DIR}app/layouts/navbar/navbar.component.ts`;
 };
 
 const tmpls = [

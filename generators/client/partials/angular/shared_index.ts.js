@@ -1,5 +1,5 @@
 const file = (context) => {
-    return `${context.webappDir}app/shared/index.ts`;
+    return `${context.CLIENT_MAIN_SRC_DIR}app/shared/index.ts`;
 };
 
 const tmpls = [
