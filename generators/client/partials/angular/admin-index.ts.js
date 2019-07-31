@@ -14,7 +14,7 @@ export * from './${context.tenantNameLowerFirst}-management/${context.tenantName
 export * from './${context.tenantNameLowerFirst}-management/${context.tenantNameLowerFirst}-management-update.component';
 export * from './${context.tenantNameLowerFirst}-management/${context.tenantNameLowerFirst}-management-delete-dialog.component';
 export * from './${context.tenantNameLowerFirst}-management/${context.tenantNameLowerFirst}-management.route';
-export * from './${context.tenantNameLowerFirst}-management/${context.tenantNameLowerFirst}.model';`;
+export * from '../${context.tenantModelPath}/${context.tenantNameLowerFirst}.model';`;
         }
     },
 ]
