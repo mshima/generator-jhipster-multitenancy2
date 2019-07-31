@@ -25,6 +25,8 @@ function tenantVariables(tenantName, context) {
     const tenantNamePluralizedAndSpinalCased = _.kebabCase(pluralize(tenantName));
 
     context.tenantClientRootFolder = '../admin';
+    context.tenantFileSuffix = '-management';
+
     context.tenantName = _.lowerFirst(tenantName);
 
     context.tenantNameCapitalized = _.upperFirst(tenantName);
@@ -36,7 +38,7 @@ function tenantVariables(tenantName, context) {
     context.tenantInstancePlural = pluralize(context.tenantInstance);
     context.tenantApiUrl = tenantNamePluralizedAndSpinalCased;
     context.tenantFileName = _.kebabCase(context.tenantNameCapitalized + _.upperFirst(context.entityAngularJSSuffix));
-    context.tenantFolderName = this.getEntityFolderName(context.clientRootFolder, context.tenantFileName);
+    context.tenantFolderName = this.getEntityFolderName(context.clientRootFolder, context.tenantFileName) + context.tenantFileSuffix;
     context.tenantModelFileName = context.tenantFolderName;
     //context.tenantParentPathAddition = context.getEntityParentPathAddition(context.clientRootFolder);
     context.tenantPluralFileName = tenantNamePluralizedAndSpinalCased + context.entityAngularJSSuffix;
@@ -44,7 +46,6 @@ function tenantVariables(tenantName, context) {
     context.tenantAngularName = context.tenantClass + this.upperFirstCamelCase(context.entityAngularJSSuffix);
     context.tenantReactName = context.tenantClass + this.upperFirstCamelCase(context.entityAngularJSSuffix);
 
-    context.tenantFileSuffix = '-management';
     context.tenantStateName = 'admin/' + _.kebabCase(context.tenantAngularName) + context.tenantFileSuffix;
 
     context.tenantTranslationKey = context.tenantClientRootFolder

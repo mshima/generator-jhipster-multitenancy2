@@ -247,7 +247,6 @@ module.exports = class extends EntityGenerator {
                         let tenantRelationship;
                         // if any relationship exisits already in the entity to the tenant remove it and regenerated
                         for (let i = relationships.length - 1; i >= 0; i--) {
-                            this.log(relationships[i].otherEntityName);
                             if (relationships[i].otherEntityName === context.tenantName) {
                                 tenantRelationship = relationships[i];
                             }
