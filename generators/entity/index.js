@@ -112,6 +112,7 @@ module.exports = class extends EntityGenerator {
                             otherEntityField: 'login',
                             //relationshipValidateRules: 'required',
                             ownerSide: true,
+                            otherEntityStateName: 'admin/' + this._.toLower(this.tenantName) + '-management',
                             otherEntityRelationshipName: this._.toLower(this.tenantName)
                         }];
                     }else{
