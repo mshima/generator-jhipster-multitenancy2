@@ -158,8 +158,6 @@ module.exports = class extends EntityClientGenerator {
 
                     // e2e test
                     if (this.testFrameworks.indexOf('protractor') !== -1) {
-                        this.CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
-//                        mtUtils.processPartialTemplates(files.angular.testTemplates(this), this);
                     }
                 }
             }

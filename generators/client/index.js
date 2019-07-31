@@ -83,9 +83,6 @@ module.exports = class extends ClientGenerator {
         const myCustomPhaseSteps = {
             // sets up all the variables we'll need for the templating
             setUpVariables() {
-                // Ok
-                this.CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
-
                 // template variables
                 mtUtils.tenantVariables(this.config.get('tenantName'), this);
 

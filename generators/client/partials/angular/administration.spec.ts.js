@@ -1,5 +1,7 @@
+const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+
 const file = (context) => {
-    return `${context.CLIENT_TEST_SRC_DIR}e2e/admin/administration.spec.ts`;
+    return `${jhipsterConstants.CLIENT_TEST_SRC_DIR}e2e/admin/administration.spec.ts`;
 };
 
 const tmpls = [
