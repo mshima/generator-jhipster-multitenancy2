@@ -3,7 +3,7 @@ const file = (context) => {
 };
 
 const tmpls = [
-    {
+    { // Add tenant route access to secure the tenant management
         type: 'rewriteFile',
         target: (context) => {
             return `export * from './auth/user-route-access-service';`;

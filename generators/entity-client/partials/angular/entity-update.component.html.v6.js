@@ -3,17 +3,7 @@ const file = (context) => {
 };
 
 const tmpls = [
-    {
-        type: 'replaceContent',
-        regex: true,
-        target: (context) => {
-            return `jhiTranslate="(.*\\.)${context.tenantNameLowerFirst}"`;
-        },
-        tmpl: (context) => {
-            return `jhiTranslate="userManagement${context.tenantNameUpperFirst}"`;
-        }
-    },
-    {
+    { // Hide the company if the current account is from a company (field)
         type: 'replaceContent',
         regex: true,
         target: (context) => {
@@ -23,7 +13,7 @@ const tmpls = [
             return `<div class="form-group" *ngIf="!currentAccount.${context.tenantNameLowerFirst}">$1$2$3"`;
         }
     },
-    {
+    {  // Hide the company if the current account is from a company (requirements)
         type: 'replaceContent',
         regex: false,
         target: (context) => {

@@ -3,17 +3,7 @@ const file = (context) => {
 };
 
 const tmpls = [
-    {
-        type: 'replaceContent',
-        regex: true,
-        target: (context) => {
-            return `jhiTranslate="(.*\\.)${context.tenantNameLowerFirst}"`;
-        },
-        tmpl: (context) => {
-            return `jhiTranslate="userManagement${context.tenantNameUpperFirst}"`;
-        }
-    },
-    {
+    { // Hide if currentAccount has a tenant
         type: 'replaceContent',
         regex: true,
         target: (context) => {
@@ -23,7 +13,7 @@ const tmpls = [
             return `<th *ngIf="!currentAccount.${context.tenantNameLowerFirst}"><span$1>${context.tenantNameUpperFirst}</span>`;
         }
     },
-    {
+    { // Hide if currentAccount has a tenant
         type: 'replaceContent',
         regex: true,
         target: (context) => {
@@ -33,17 +23,7 @@ const tmpls = [
             return `<td *ngIf="!currentAccount.${context.tenantNameLowerFirst}">\n$1$2`;
         }
     },
-    {
-        type: 'replaceContent',
-        regex: false,
-        target: (context) => {
-            return `[routerLink]="['../${context.tenantNameLowerFirst}'`;
-        },
-        tmpl: (context) => {
-            return `[routerLink]="['/admin/${context.tenantNameLowerFirst}-management'`;
-        }
-    },
-    {
+    { // Show tenant name
         type: 'replaceContent',
         regex: false,
         target: (context) => {

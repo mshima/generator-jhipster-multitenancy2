@@ -3,7 +3,7 @@ const file = (context) => {
 };
 
 const tmpls = [
-    {
+    { // Export tenant on admin module
         type: 'rewriteFile',
         target: (context) => {
             return `export * from './admin.route';`;

@@ -3,27 +3,17 @@ const file = (context) => {
 };
 
 const tmpls = [
-    {
+    { // Hide tenant if is defined
         type: 'replaceContent',
         regex: true,
         target: (context) => {
-            return `jhiTranslate="(.*\\.)${context.tenantNameLowerFirst}"`;
+            return `<dt>(<span(.*)>${context.tenantNameUpperFirst}</span></dt>(\\s*)<dd>)`;
         },
         tmpl: (context) => {
-            return `jhiTranslate="userManagement${context.tenantNameUpperFirst}"`;
+            return `<dt *ngIf="${context.entityInstance}.${context.tenantNameLowerFirst}">$1`;
         }
     },
-    {
-        type: 'replaceContent',
-        regex: true,
-        target: (context) => {
-            return `<dt><span(.*)>${context.tenantNameUpperFirst}</span></dt>(\\s*)<dd>`;
-        },
-        tmpl: (context) => {
-            return `<dt *ngIf="${context.entityInstance}.${context.tenantNameLowerFirst}"><span$1>${context.tenantNameUpperFirst}</span></dt>$2<dd>`;
-        }
-    },
-    {
+    { // Show tenant name
         type: 'replaceContent',
         regex: false,
         target: (context) => {
@@ -31,16 +21,6 @@ const tmpls = [
         },
         tmpl: (context) => {
             return `{{${context.entityInstance}.${context.tenantNameLowerFirst}?.name}}`;
-        }
-    },
-    {
-        type: 'replaceContent',
-        regex: false,
-        target: (context) => {
-            return `[routerLink]="['/${context.tenantNameLowerFirst}'`;
-        },
-        tmpl: (context) => {
-            return `[routerLink]="['/admin/${context.tenantNameLowerFirst}-management'`;
         }
     },
 ]

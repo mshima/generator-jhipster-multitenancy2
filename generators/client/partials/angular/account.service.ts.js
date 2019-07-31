@@ -3,7 +3,7 @@ const file = (context) => {
 };
 
 const tmpls = [
-    {
+    { // Add tenant getter to account
         type: 'rewriteFile',
         regex: true,
         target: (context) => {

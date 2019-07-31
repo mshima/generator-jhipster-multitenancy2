@@ -5,7 +5,7 @@ const file = (context) => {
 };
 
 const tmpls = [
-    {
+    { // Add test of admin/tenant menu
         condition: (context) => context.protractorTests && !context.enableTranslation,
         type: 'rewriteFile',
         target: (context) => {

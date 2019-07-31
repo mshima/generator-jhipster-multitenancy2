@@ -3,7 +3,7 @@ const file = (context) => {
 };
 
 const tmpls = [
-    {
+    { // Add tenant to account
         type: 'rewriteFile',
         target: (context) => {
             return `public imageUrl: string`;

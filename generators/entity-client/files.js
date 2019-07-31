@@ -1,7 +1,6 @@
 const mtUtils = require('../multitenancy-utils');
 
 const angularTemplates = [
-    'entity.model.ts',
     'entity.component.html',
     'entity-detail.component.html',
     'entity-update.component.html',
