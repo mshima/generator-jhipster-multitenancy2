@@ -33,6 +33,10 @@ function tenantVariables(tenantName, context) {
 
     context.angularTenantComponentSuffix = '';
     context.angularTenantSelectorSuffix = '';
+
+    // relative to app root
+    context.tenantModelPath = 'shared/admin';
+    context.tenantServicePath = 'admin/' + context.tenantNameLowerFirst + '-management';
 }
 
 function processPartialTemplates(partialTemplates, context) {

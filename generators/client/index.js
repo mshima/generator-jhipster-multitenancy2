@@ -85,10 +85,6 @@ module.exports = class extends ClientGenerator {
             setUpVariables() {
                 // template variables
                 mtUtils.tenantVariables(this.config.get('tenantName'), this);
-
-                // relative to app root
-                this.tenantModelPath = 'shared/admin';
-                this.tenantServicePath = 'admin/' + this.tenantNameLowerFirst + '-management';
             },
             writeAdditionalFile() {
                 files.writeFiles.call(this);
