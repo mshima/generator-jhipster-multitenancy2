@@ -216,14 +216,12 @@ module.exports = class extends EntityGenerator {
 
                     this.tenantName = this.config.get('tenantName');
 
-                    let tenantAware;
-                    if (this.newTenantAware === undefined){
-                        tenantAware = context.fileData ? context.fileData.tenantAware : false;
-                    }else {
-                        tenantAware = this.newTenantAware;
-                    }
                     // pass to entity-* subgen
-                    context.tenantAware = tenantAware;
+                    if (this.newTenantAware === undefined){
+                        context.tenantAware = context.fileData ? context.fileData.tenantAware : false;
+                    }else {
+                        context.tenantAware = this.newTenantAware;
+                    }
 
                     /* tenant variables */
                     mtUtils.tenantVariables(this.tenantName, this);

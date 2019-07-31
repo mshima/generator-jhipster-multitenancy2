@@ -91,6 +91,7 @@ module.exports = class extends CommonGenerator {
                 }
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
 
+                // This will be used by entity-server to crate "@Before" annotation in TenantAspect
                 this.configOptions.tenantAwareEntities = [];
             },
         };
