@@ -26,7 +26,7 @@ function writeFiles() {
     const files = {
         userManagement: [
             {
-                path: this.angularDir,
+                path: jhipsterConstants.ANGULAR_DIR,
                 templates: [
                     { file: 'admin/user-management/user-management.component.html', method: 'processHtml' },
                     { file: 'admin/user-management/user-management-detail.component.html', method: 'processHtml' },
@@ -37,7 +37,7 @@ function writeFiles() {
         ],
         shared: [
             {
-                path: this.angularDir,
+                path: jhipsterConstants.ANGULAR_DIR,
                 templates: [
                     {
                         file: 'core/auth/_tenant-route-access-service.ts',

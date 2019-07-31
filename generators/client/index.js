@@ -84,7 +84,6 @@ module.exports = class extends ClientGenerator {
             // sets up all the variables we'll need for the templating
             setUpVariables() {
                 // Ok
-                this.angularDir = jhipsterConstants.ANGULAR_DIR;
                 this.CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
 
                 // template variables
