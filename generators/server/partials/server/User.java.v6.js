@@ -48,19 +48,18 @@ $1`;
         type: 'replaceContent',
         regex: true,
         target: (context) => {
-            return `(\n(.*)this\\.persistentTokens = persistentTokens;
-(.*)\\})`;
+            return `(@Override\n(.*)public boolean equals\\(Object o\\) \\{\n(.*)if)`;
         },
         tmpl: (context) => {
-            return `$1
+            return `public ${context.tenantNameUpperFirst} get${context.tenantNameUpperFirst}() {
+$3return ${context.tenantNameLowerFirst};
+$2}
 
-$3public ${context.tenantNameUpperFirst} get${context.tenantNameUpperFirst}() {
-$2return ${context.tenantNameLowerFirst};
-$3}
+$2public void set${context.tenantNameUpperFirst}(${context.tenantNameUpperFirst} ${context.tenantNameLowerFirst}) {
+$3this.${context.tenantNameLowerFirst} = ${context.tenantNameLowerFirst};
+$2}
 
-$3public void set${context.tenantNameUpperFirst}(${context.tenantNameUpperFirst} ${context.tenantNameLowerFirst}) {
-$2this.${context.tenantNameLowerFirst} = ${context.tenantNameLowerFirst};
-$3}`;
+$2$1`;
         }
     },
     {
