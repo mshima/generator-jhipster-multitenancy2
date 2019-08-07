@@ -86,7 +86,7 @@ module.exports = class extends EntityGenerator {
 
                 if (!this.isTenant) {
                     // if tenantAware is undefined (first pass), then override changelogDate
-                    if (context.fileData.tenantAware == undefined) {
+                    if (context.fileData && context.fileData.tenantAware === undefined) {
                         const nextChangelogDate = this.config.get('nextChangelogDate');
                         if (nextChangelogDate !== undefined) {
                             context.changelogDate = `${Number(nextChangelogDate) + 1}`;

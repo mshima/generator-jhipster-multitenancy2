@@ -15,6 +15,7 @@ describe('Subgenerator entity of multitenancy2 JHipster blueprint', () => {
                     'from-cli': true,
                     skipInstall: true,
                     blueprint: 'multitenancy2',
+                    tenantName: 'Company',
                     skipChecks: true
                 })
                 .withGenerators([

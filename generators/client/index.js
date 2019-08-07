@@ -83,7 +83,7 @@ module.exports = class extends ClientGenerator {
             // sets up all the variables we'll need for the templating
             setUpVariables() {
                 // template variables
-                mtUtils.tenantVariables.call(this, this.config.get('tenantName'), this);
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
             },
             writeAdditionalFile() {
                 files.writeFiles.call(this);

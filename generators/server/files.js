@@ -17,15 +17,17 @@ function writeFiles() {
     // references to the various directories we'll be copying files to
 
     this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))`;
-    this.configOptions.tenantAwareEntities.forEach(tenantAwareEntity => {
-        this.tenantisedEntityServices = `${this.tenantisedEntityServices} || execution(* ${
-            this.packageName
-        }.service.${tenantAwareEntity}Service.*(..))`;
-    });
+    if (this.configOptions.tenantAwareEntities) {
+        this.configOptions.tenantAwareEntities.forEach(tenantAwareEntity => {
+            this.tenantisedEntityServices = `${this.tenantisedEntityServices} || execution(* ${
+                this.packageName
+                }.service.${tenantAwareEntity}Service.*(..))`;
+        });
+    }
     this.tenantisedEntityServices = `${this.tenantisedEntityServices}")`;
 
     // template variables
-    mtUtils.tenantVariables.call(this, this.config.get('tenantName'), this);
+    mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
     this.changelogDate = this.config.get('tenantChangelogDate');
 
     // configs for the template files

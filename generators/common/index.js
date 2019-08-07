@@ -21,7 +21,7 @@ module.exports = class extends CommonGenerator {
             defaults: undefined
         });
 
-        this.tenantName = this.options['tenant-name'] || this.config.get('tenantName');
+        this.tenantName = this.options.tenantName || this.config.get('tenantName');
         this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
 
         const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
@@ -89,6 +89,7 @@ module.exports = class extends CommonGenerator {
 
                 /* tenant variables */
                 mtUtils.tenantVariables.call(this, this.config.get('tenantName'), this);
+
             },
         };
         return Object.assign(initializing, myCustomPhaseSteps);
@@ -137,6 +138,8 @@ module.exports = class extends CommonGenerator {
                         this.tenantExists = true;
                     }
                 });
+
+                this.configOptions.tenantName = this.tenantName;
 
                 this.config.set('tenantName', this.tenantName);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
