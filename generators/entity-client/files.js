@@ -6,22 +6,20 @@ const angularTemplates = [
     'entity-detail.component.html',
     'entity-update.component.html',
     'entity-update.component.ts',
-    'navbar.component.html',
-] 
+    'navbar.component.html'
+];
 
-const angularTestTemplates = [
-    '_tenant-management.spec.ts',
-] 
+const angularTestTemplates = ['_tenant-management.spec.ts'];
 
 module.exports = {
     writeFiles,
     angular: {
-        templates: function (context) {
+        templates(context) {
             return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTemplates, context);
         },
-        protractor: function (context) {
+        protractor(context) {
             return mtUtils.requireTemplates('./entity-client/partials/angular/protractor/', angularTestTemplates, context);
-        },
+        }
     }
 };
 
@@ -35,10 +33,11 @@ function writeFiles() {
                 templates: [
                     {
                         file: 'e2e/admin/_tenant-management.spec.ts',
-                        renameTo: generator => `e2e/admin/${this.tenantNameLowerFirst}-management/${this.tenantNameLowerFirst}-management-tenant.spec.ts`
+                        renameTo: generator =>
+                            `e2e/admin/${this.tenantNameLowerFirst}-management/${this.tenantNameLowerFirst}-management-tenant.spec.ts`
                     }
                 ]
-            },
+            }
         ]
     };
 

@@ -13,14 +13,14 @@ module.exports = {
 
 // Expose some of the jhipster config vars for the templates
 function readConfig(config, context) {
-    Object.keys(config).forEach((key) => {
+    Object.keys(config).forEach(key => {
         context[key] = config[key];
     });
 }
 
 // Variations in tenant name
 function tenantVariables(tenantName, context) {
-    if(tenantName === undefined) return;
+    if (tenantName === undefined) return;
     /* tenant variables */
     const tenantNamePluralizedAndSpinalCased = _.kebabCase(pluralize(tenantName));
 
@@ -40,17 +40,17 @@ function tenantVariables(tenantName, context) {
     context.tenantFileName = _.kebabCase(context.tenantNameCapitalized + _.upperFirst(context.entityAngularJSSuffix));
     context.tenantFolderName = this.getEntityFolderName(context.clientRootFolder, context.tenantFileName) + context.tenantFileSuffix;
     context.tenantModelFileName = context.tenantFolderName;
-    //context.tenantParentPathAddition = context.getEntityParentPathAddition(context.clientRootFolder);
+    // context.tenantParentPathAddition = context.getEntityParentPathAddition(context.clientRootFolder);
     context.tenantPluralFileName = tenantNamePluralizedAndSpinalCased + context.entityAngularJSSuffix;
     context.tenantServiceFileName = context.tenantFileName;
     context.tenantAngularName = context.tenantClass + this.upperFirstCamelCase(context.entityAngularJSSuffix);
     context.tenantReactName = context.tenantClass + this.upperFirstCamelCase(context.entityAngularJSSuffix);
 
-    context.tenantStateName = 'admin/' + _.kebabCase(context.tenantAngularName) + context.tenantFileSuffix;
+    context.tenantStateName = `admin/${_.kebabCase(context.tenantAngularName)}${context.tenantFileSuffix}`;
 
     context.tenantTranslationKey = context.tenantClientRootFolder
-    ? _.camelCase(`${context.tenantClientRootFolder}-${context.tenantInstance}`)
-    : context.tenantInstance;
+        ? _.camelCase(`${context.tenantClientRootFolder}-${context.tenantInstance}`)
+        : context.tenantInstance;
 
     context.tenantName = _.camelCase(tenantName);
     context.tenantNameUpperCase = _.toUpper(tenantName);
@@ -67,64 +67,53 @@ function tenantVariables(tenantName, context) {
 
     // relative to app root
     context.tenantModelPath = 'shared/admin';
-    context.tenantServicePath = 'admin/' + context.tenantFileName + '-management';
-
+    context.tenantServicePath = `admin/${context.tenantFileName}-management`;
 }
 
 function processPartialTemplates(partialTemplates, context) {
-    partialTemplates.forEach((templates) => {
-        var file = (typeof templates.file === "function") ? templates.file(context) : templates.file;
-        templates.tmpls.forEach((item) => {
+    partialTemplates.forEach(templates => {
+        const file = typeof templates.file === 'function' ? templates.file(context) : templates.file;
+        templates.tmpls.forEach(item => {
             // ignore if version is not compatible
-            if(item.versions && !item.versions.includes(context.jhipsterVersion)){
+            if (item.versions && !item.versions.includes(context.jhipsterVersion)) {
                 return;
             }
-            if(item.disabled){
+            if (item.disabled) {
                 return;
             }
-            if(typeof item.condition === "function"){
-                if(!item.condition(context)){
+            if (typeof item.condition === 'function') {
+                if (!item.condition(context)) {
                     return;
                 }
             }
-            var target = (typeof item.target === "function") ? item.target(context) : item.target;
-            var tmpl = (typeof item.tmpl === "function") ? item.tmpl(context) : item.tmpl;
-            if(item.type === 'replaceContent'){
-                context.replaceContent(
-                    file,
-                    target,
-                    tmpl,
-                    item.regex
-                );
-            }else if(item.type === 'rewriteFile'){
-                context.rewriteFile(
-                    file,
-                    target,
-                    tmpl
-                );
+            const target = typeof item.target === 'function' ? item.target(context) : item.target;
+            const tmpl = typeof item.tmpl === 'function' ? item.tmpl(context) : item.tmpl;
+            if (item.type === 'replaceContent') {
+                context.replaceContent(file, target, tmpl, item.regex);
+            } else if (item.type === 'rewriteFile') {
+                context.rewriteFile(file, target, tmpl);
             }
         });
     });
 }
 
-function requireTemplates(prefix, templates, context){
-    var ret = [];
-    templates.forEach((file) => {
+function requireTemplates(prefix, templates, context) {
+    const ret = [];
+    templates.forEach(file => {
         // Look for specific version
-        var template = prefix + file;
-        var version = context.config.get('jhipsterVersion');
+        const template = prefix + file;
+        let version = context.config.get('jhipsterVersion');
         while (version != '') {
-            try{
-                ret.push(require(template + '.v' + version + '.js'))
+            try {
+                ret.push(require(`${template}.v${version}.js`));
                 return;
-            }catch (e) {
+            } catch (e) {
                 version = version.substring(0, version.lastIndexOf('.'));
             }
         }
-        try{
-            ret.push(require(template + '.js'));
-        }catch (e) {
-        }
+        try {
+            ret.push(require(`${template}.js`));
+        } catch (e) {}
     });
     return ret;
 }
