@@ -1,18 +1,13 @@
-const file = (context) => {
-    return `${context.webappDir}app/core/user/account.model.ts`;
-};
+const file = context => `${context.CLIENT_MAIN_SRC_DIR}app/core/user/account.model.ts`;
 
 const tmpls = [
     {
+        // Add tenant to account
         type: 'rewriteFile',
-        target: (context) => {
-            return `public imageUrl: string`;
-        },
-        tmpl: (context) => {
-            return `public company: string,`;
-        }
-    },
-]
+        target: context => 'public imageUrl: string',
+        tmpl: context => 'public company: string,'
+    }
+];
 
 module.exports = {
     file,

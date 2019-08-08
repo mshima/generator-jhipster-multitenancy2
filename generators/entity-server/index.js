@@ -82,29 +82,23 @@ module.exports = class extends EntityServerGenerator {
         const writing = super._writing();
 
         const setupCustomPhaseSteps = {
-                // sets up all the variables we'll need for the templating
-                setUpVariables() {
-                    this.SERVER_MAIN_SRC_DIR = jhipsterConstants.SERVER_MAIN_SRC_DIR;
-
-                    // template variables
-                    mtUtils.tenantVariables(this.config.get('tenantName'), this);
-                },
+            // sets up all the variables we'll need for the templating
+            setUpVariables() {
+                this.SERVER_MAIN_SRC_DIR = jhipsterConstants.SERVER_MAIN_SRC_DIR;
+            }
         };
 
         const writeCustomPhaseSteps = {
-                // make the necessary server code changes
-                customServerCode() {
-                    if(!this.isTenant && !this.tenantAware) return
-
-                    files.writeFiles.call(this);
-
-                    if(this.tenantAware){
-                        mtUtils.processPartialTemplates(files.partials.entityTenantAwareTemplates(this), this);
-
-                    }else if(this.isTenant){
-                        mtUtils.processPartialTemplates(files.partials.tenantTemplates(this), this);
-                    }
-                },
+            // make the necessary server code changes
+            customServerCode() {
+                if (this.tenantAware) {
+                    files.writeTenantAwareFiles.call(this);
+                    mtUtils.processPartialTemplates(files.partials.entityTenantAwareTemplates(this), this);
+                } else if (this.isTenant) {
+                    files.writeTenantFiles.call(this);
+                    mtUtils.processPartialTemplates(files.partials.tenantTemplates(this), this);
+                }
+            }
         };
         return Object.assign(writing, setupCustomPhaseSteps, writeCustomPhaseSteps);
     }

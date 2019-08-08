@@ -3,6 +3,8 @@ const _ = require('lodash');
 const chalk = require('chalk');
 const CommonGenerator = require('generator-jhipster/generators/common');
 
+const mtUtils = require('../multitenancy-utils');
+
 module.exports = class extends CommonGenerator {
     constructor(args, opts) {
         super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
@@ -19,24 +21,8 @@ module.exports = class extends CommonGenerator {
             defaults: undefined
         });
 
-        this.option('experimental-tenant-management', {
-            desc: 'Create experimental tenant management client',
-            type: Boolean,
-            defaults: false
-        });
-
-        this.option('tenant-management', {
-            desc: 'Create tenant management client',
-            type: Boolean,
-            defaults: true
-        });
-
-        this.tenantName = this.options['tenant-name'] || this.config.get('tenantName');
+        this.tenantName = this.options.tenantName || this.config.get('tenantName');
         this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
-
-        // INFO Saved config is never used for now, doesn't work with current option config
-        this.tenantManagement = this.options['tenant-management'] || this.config.get('tenantManagement');
-        this.experimentalTenantManagement = this.options['experimental-tenant-management'] || this.config.get('experimentalTenantManagement');
 
         const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
 
@@ -98,7 +84,12 @@ module.exports = class extends CommonGenerator {
                 }
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
 
+                // This will be used by entity-server to crate "@Before" annotation in TenantAspect
                 this.configOptions.tenantAwareEntities = [];
+
+                /* tenant variables */
+                mtUtils.tenantVariables.call(this, this.config.get('tenantName'), this);
+
             },
         };
         return Object.assign(initializing, myCustomPhaseSteps);
@@ -125,7 +116,7 @@ module.exports = class extends CommonGenerator {
                 const done = this.async();
                 this.prompt(prompts).then(props => {
                     if(props.tenantName){
-                        this.tenantName = props.tenantName;
+                        mtUtils.tenantVariables.call(this, props.tenantName, this);
                     }
                     done();
                 });
@@ -148,19 +139,7 @@ module.exports = class extends CommonGenerator {
                     }
                 });
 
-                if(this.tenantManagement === undefined){
-                    this.tenantManagement = !this.tenantExists;
-                }
-                if(this.experimentalTenantManagement === undefined){
-                    this.experimentalTenantManagement = false;
-                }
-
-                // Pass to others subgens
-                this.configOptions.tenantManagement = this.tenantManagement;
-                this.configOptions.experimentalTenantManagement = this.experimentalTenantManagement;
-
-                this.config.set('tenantManagement', this.tenantManagement);
-                this.config.set('experimentalTenantManagement', this.experimentalTenantManagement);
+                this.configOptions.tenantName = this.tenantName;
 
                 this.config.set('tenantName', this.tenantName);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);

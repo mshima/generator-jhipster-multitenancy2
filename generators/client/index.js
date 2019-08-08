@@ -1,8 +1,8 @@
 /* eslint-disable consistent-return */
 const chalk = require('chalk');
 const ClientGenerator = require('generator-jhipster/generators/client');
-const files = require('./files');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const files = require('./files');
 
 const mtUtils = require('../multitenancy-utils');
 
@@ -59,7 +59,7 @@ module.exports = class extends ClientGenerator {
          *      return Object.assign(phaseFromJHipster, myCustomPhaseSteps);
          * ```
          */
-       // Here we are not overriding this phase and hence its being handled by JHipster
+        // Here we are not overriding this phase and hence its being handled by JHipster
         return super._initializing();
     }
 
@@ -69,7 +69,6 @@ module.exports = class extends ClientGenerator {
     }
 
     get configuring() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
         return super._configuring();
     }
 
@@ -79,24 +78,18 @@ module.exports = class extends ClientGenerator {
     }
 
     get writing() {
-        const writing = super._writing()
+        const writing = super._writing();
         const myCustomPhaseSteps = {
             // sets up all the variables we'll need for the templating
             setUpVariables() {
-                // Ok
-                this.webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
-                this.angularDir = jhipsterConstants.ANGULAR_DIR;
-                this.CLIENT_TEST_SRC_DIR = jhipsterConstants.CLIENT_TEST_SRC_DIR;
-
                 // template variables
-                mtUtils.tenantVariables(this.config.get('tenantName'), this);
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
             },
             writeAdditionalFile() {
                 files.writeFiles.call(this);
             },
             // make the necessary client code changes and adds the tenant UI
             generateClientCode() {
-
                 // Rewrites to existing files
                 mtUtils.processPartialTemplates(files.angular.templates(this), this);
             }
