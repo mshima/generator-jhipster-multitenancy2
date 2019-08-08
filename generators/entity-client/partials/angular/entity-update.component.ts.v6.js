@@ -27,8 +27,8 @@ const tmpls = [
         // Add currentAccount field
         type: 'replaceContent',
         regex: false,
-        target: "admin/${context.tenantNameLowerFirst}'",
-        tmpl: "admin/${context.tenantNameLowerFirst}-management'"
+        target: context => `admin/${context.tenantNameLowerFirst}'`,
+        tmpl: context => `admin/${context.tenantNameLowerFirst}-management'`
     },
     {
         // Load currentAccount

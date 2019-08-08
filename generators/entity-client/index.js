@@ -160,10 +160,14 @@ module.exports = class extends EntityClientGenerator {
                         'companyManagement'
                     );
 
+                    // tests
+                    mtUtils.processPartialTemplates(files.angular.angularTestTemplates(this), this);
+
                     // e2e test
                     if (this.testFrameworks.indexOf('protractor') !== -1) {
                         mtUtils.processPartialTemplates(files.angular.protractor(this), this);
                     }
+
                     files.writeFiles.call(this);
 
                     return;
