@@ -75,7 +75,7 @@ function processPartialTemplates(partialTemplates, context) {
         const file = typeof templates.file === 'function' ? templates.file(context) : templates.file;
         templates.tmpls.forEach(item => {
             // ignore if version is not compatible
-            if (item.versions && !item.versions.includes(context.jhipsterVersion)) {
+            if (item.versions && !item.versions.includes(context.config.get('jhipsterVersion'))) {
                 return;
             }
             if (item.disabled) {

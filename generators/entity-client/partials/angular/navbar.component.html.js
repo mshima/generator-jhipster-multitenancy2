@@ -5,8 +5,14 @@ const tmpls = [
         type: 'replaceContent',
         regex: true,
         target: context => `<li>\n(\\s*)(<a class="dropdown-item" routerLink="admin/${context.tenantNameLowerFirst}-management")`,
-        // return `<td>\n(\\s*)(<div \\*ngIf="${context.entityInstance}.${context.tenantNameLowerFirst}">)`;
         tmpl: context => `<li [hidden]="has${context.tenantNameUpperFirst}()">\n$1$2`
+    },
+    {
+        type: 'replaceContent',
+        versions: ['6.1.2', '6.2.0'],
+        regex: false,
+        target: context => 'global.menu.admin.admin/company-management',
+        tmpl: context => 'global.menu.admin.companyManagement'
     }
 ];
 

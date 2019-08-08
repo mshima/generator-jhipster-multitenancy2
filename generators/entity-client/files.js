@@ -2,20 +2,32 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 const mtUtils = require('../multitenancy-utils');
 
 const angularTemplates = [
-    'entity.component.html',
+    'entity.component.html'
+];
+
+const tenantAwareAngularTemplates = [
     'entity-detail.component.html',
     'entity-update.component.html',
     'entity-update.component.ts',
     'navbar.component.html'
 ];
 
-const angularTestTemplates = ['_tenant-management.spec.ts'];
+const angularTestTemplates = [
+    '_tenant-management-delete-dialog.component.spec.ts',
+    '_tenant-management-detail.component.spec.ts',
+    '_tenant-management-update.component.spec.ts',
+    '_tenant-management.component.spec.ts',
+    '_tenant-management.spec.ts'
+];
 
 module.exports = {
     writeFiles,
     angular: {
-        templates(context) {
+        angularTemplates(context) {
             return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTemplates, context);
+        },
+        tenantAwareAngularTemplates(context) {
+            return mtUtils.requireTemplates('./entity-client/partials/angular/', tenantAwareAngularTemplates, context);
         },
         protractor(context) {
             return mtUtils.requireTemplates('./entity-client/partials/angular/protractor/', angularTestTemplates, context);

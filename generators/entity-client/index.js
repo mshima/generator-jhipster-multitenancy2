@@ -149,6 +149,7 @@ module.exports = class extends EntityClientGenerator {
         const phaseFromJHipster = super._writing();
         const myCustomPhaseSteps = {
             generateClientCode() {
+                mtUtils.processPartialTemplates(files.angular.angularTemplates(this), this);
                 if (this.isTenant) {
                     // this.addEntityToMenu(this.entityStateName, this.enableTranslation, this.clientFramework, this.entityTranslationKeyMenu);
                     this.addElementToAdminMenu(
@@ -168,7 +169,7 @@ module.exports = class extends EntityClientGenerator {
                     return;
                 }
                 if (this.tenantAware) {
-                    mtUtils.processPartialTemplates(files.angular.templates(this), this);
+                    mtUtils.processPartialTemplates(files.angular.tenantAwareAngularTemplates(this), this);
                 }
             }
         };

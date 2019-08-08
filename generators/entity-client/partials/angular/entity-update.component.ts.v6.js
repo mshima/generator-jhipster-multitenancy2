@@ -9,11 +9,26 @@ const tmpls = [
         tmpl: context => "import { AccountService } from 'app/core';"
     },
     {
+        // Add imports account
+        type: 'replaceContent',
+        versions: ['6.1.2', '6.2.0'],
+        regex: false,
+        target: context => `'app/entities/../admin/${context.tenantNameLowerFirst}'`,
+        tmpl: context => `'app/entities/../admin/${context.tenantNameLowerFirst}-management'`
+    },
+    {
         // Add currentAccount field
         type: 'replaceContent',
         regex: true,
         target: '\n(\\s*)isSaving: boolean;',
         tmpl: '\n$1currentAccount: any;\n$1isSaving: boolean;'
+    },
+    {
+        // Add currentAccount field
+        type: 'replaceContent',
+        regex: false,
+        target: "admin/${context.tenantNameLowerFirst}'",
+        tmpl: "admin/${context.tenantNameLowerFirst}-management'"
     },
     {
         // Load currentAccount
