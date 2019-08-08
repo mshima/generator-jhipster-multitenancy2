@@ -4,8 +4,6 @@ const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n')
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const mtUtils = require('../multitenancy-utils');
 
-let isTenant;
-
 module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
         super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
@@ -17,8 +15,6 @@ module.exports = class extends EntityI18nGenerator {
         }
 
         this.configOptions = jhContext.configOptions || {};
-
-        isTenant = this.isTenant;
     }
 
     get initializing() {
@@ -70,11 +66,9 @@ module.exports = class extends EntityI18nGenerator {
     get configuring() {
         const configuring = super._configuring();
 
-        if (!isTenant) return configuring;
-
         const myCustomPhaseSteps = {
-            configure() {
-                if (isTenant) {
+            customConfigure() {
+                if (this.isTenant) {
                     this.entityTranslationKey = `${this.entityTranslationKey}Management`;
                     this.entityTranslationKeyMenu = `${this.entityTranslationKeyMenu}Management`;
                 }
