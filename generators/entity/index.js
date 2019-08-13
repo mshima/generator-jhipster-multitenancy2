@@ -41,10 +41,9 @@ module.exports = class extends EntityGenerator {
         this._getAllJhipsterConfig = this.getAllJhipsterConfig;
         this.getAllJhipsterConfig = function (generator = this, force) {
             const configuration = this._getAllJhipsterConfig(generator, force);
-//            return {...configOptions, ...configuration};
             configuration._get = configuration.get;
             configuration.get = function(key) {
-                return = configOptions[key] || configuration._get(key);
+                return configOptions[key] || configuration._get(key);
             }
             return configuration;
         }
@@ -92,8 +91,8 @@ module.exports = class extends EntityGenerator {
             setUpVariables() {
                 const context = this.context;
 
-                this.log('@@@');
-                this.log(this.configOptions);
+//                this.log('@@@');
+//                this.log(this.configOptions);
 
                 if (context.enableTranslation === undefined) {
                     context.enableTranslation = this.configOptions.enableTranslation;
