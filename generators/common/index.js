@@ -24,17 +24,17 @@ module.exports = class extends CommonGenerator {
         this.tenantName = this.options.tenantName || this.config.get('tenantName');
         this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
 
-        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
+//        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
+//
+//        if (!this.jhipsterContext) {
+//            this.error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint multitenancy2')}`);
+//        }
 
-        if (!jhContext) {
-            this.error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint multitenancy2')}`);
-        }
-
-        this.configOptions = jhContext.configOptions || {};
+        //this.configOptions = jhContext.configOptions || {};
 
         // This sets up options for this sub generator and is being reused from JHipster
-        jhContext.setupServerOptions(this, jhContext);
-        jhContext.setupClientOptions(this, jhContext);
+//        jhContext.setupServerOptions(this, jhContext);
+//        jhContext.setupClientOptions(this, jhContext);
     }
 
     get initializing() {
@@ -144,21 +144,22 @@ module.exports = class extends CommonGenerator {
                 this.config.set('tenantName', this.tenantName);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
             },
-            generateTenant() {
-                if(this.tenantExists && !this.firstExec) return;
-
-                const options = this.options;
-                const configOptions = this.configOptions;
-
-                this.composeWith(require.resolve('../entity'), {
-                    ...options,
-                    configOptions,
-                    regenerate: false,
-                    'skip-install': false,
-                    debug: this.isDebugEnabled,
-                    arguments: [this.tenantName]
-                });
-            },
+//            generateTenant() {
+//                if(this.tenantExists && !this.firstExec) return;
+//
+//                const options = this.options;
+//                const configOptions = this.configOptions;
+//                this.log(this);
+//
+//                this.composeWith(require.resolve('../entity'), {
+//                    ...options,
+//                    configOptions,
+//                    regenerate: false,
+//                    'skip-install': false,
+//                    debug: this.isDebugEnabled,
+//                    arguments: [this.tenantName]
+//                });
+//            },
         };
         // configuringCustomPhaseSteps should be run after configuring, otherwise tenantName will be overridden
         return Object.assign(configuring, configuringCustomPhaseSteps);
@@ -170,7 +171,25 @@ module.exports = class extends CommonGenerator {
     }
 
     get writing() {
-        return super._writing();
+        const writingPreCustomPhaseSteps = {
+                generateTenant() {
+                    if(this.tenantExists && !this.firstExec) return;
+
+                    const options = this.options;
+                    const configOptions = this.configOptions;
+                    this.log(this);
+
+                    this.composeWith(require.resolve('../entity'), {
+                        ...options,
+                        configOptions,
+                        regenerate: false,
+                        'skip-install': false,
+                        debug: this.isDebugEnabled,
+                        arguments: [this.tenantName]
+                    });
+                },
+            };
+        return {...writingPreCustomPhaseSteps, ...super._writing()};
     }
 
     get install() {

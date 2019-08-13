@@ -8,24 +8,20 @@ const files = require('./files');
 
 const CLIENT_MAIN_SRC_DIR = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
 
-let isTenant;
-
 module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {
-        super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
+        super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
 
-        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
+//        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
 
-        if (!jhContext) {
-            this.error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint multitenancy2')}`);
-        }
+//        if (!this.jhipsterContext) {
+//            this.error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint multitenancy2')}`);
+//        }
 
-        this.configOptions = jhContext.configOptions || {};
+//        this.configOptions = jhContext.configOptions || {};
 
         // This sets up options for this sub generator and is being reused from JHipster
-        jhContext.setupEntityOptions(this, jhContext, this);
-
-        isTenant = this.isTenant;
+//        jhContext.setupEntityOptions(this, jhContext, this);
     }
 
     get initializing() {

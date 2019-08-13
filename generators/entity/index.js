@@ -9,7 +9,7 @@ const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends EntityGenerator {
     constructor(args, opts) {
-        super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
+        super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
 
         this.option('default-tenant-aware', {
             desc: 'Always discover relationship with tenant',
@@ -17,16 +17,18 @@ module.exports = class extends EntityGenerator {
             defaults: false
         });
 
-        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
-
-        if (!jhContext) {
-            this.error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint multitenancy2')}`);
-        }
-
-        this.configOptions = jhContext.configOptions || {};
-
-        // This sets up options for this sub generator and is being reused from JHipster
-        jhContext.setupEntityOptions(this, jhContext, this);
+//        this.log(this);
+//        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
+//
+//        if (!jhContext) {
+//            this.error('This is a JHipster blueprint and should be used only like jhipster --blueprint myblueprint');
+//        }
+//
+//        this.configOptions = jhContext.configOptions || {};
+//        this.log(this.configOptions);
+//
+//        // This sets up options for this sub generator and is being reused from JHipster
+//        jhContext.setupEntityOptions(this, jhContext, this);
 
         // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get('tenantName'));
@@ -76,6 +78,18 @@ module.exports = class extends EntityGenerator {
         const postCustomPhaseSteps = {
             setUpVariables() {
                 const context = this.context;
+
+                this.log('@@@');
+                this.log(this.configOptions);
+
+                if (context.enableTranslation === undefined) {
+                    context.enableTranslation = this.configOptions.enableTranslation;
+                }
+//                this.log(context.enableTranslation);
+//                this.log(this.getAllJhipsterConfig(this, true).get('enableTranslation'));
+//                this.log(this.getAllJhipsterConfig(this, true));
+//                this.log(this);
+//                this.log(this.config);
 
                 if (this.isTenant) {
                     context.clientRootFolder = '../admin';
