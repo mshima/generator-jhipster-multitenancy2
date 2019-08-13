@@ -8,7 +8,8 @@ const angularTemplates = [
     'administration.spec.ts',
     'core_index.ts',
     'navbar.component.ts',
-    'shared_index.ts'
+    'shared_index.ts',
+    'navbar.component.html'
 ];
 
 module.exports = {

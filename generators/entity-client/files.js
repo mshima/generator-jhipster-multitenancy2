@@ -8,8 +8,7 @@ const angularTemplates = [
 const tenantAwareAngularTemplates = [
     'entity-detail.component.html',
     'entity-update.component.html',
-    'entity-update.component.ts',
-    'navbar.component.html'
+    'entity-update.component.ts'
 ];
 
 const angularTestTemplates = [

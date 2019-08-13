@@ -8,11 +8,12 @@ const tmpls = [
         tmpl: context => `<li [hidden]="has${context.tenantNameUpperFirst}()">\n$1$2`
     },
     {
+        // https://github.com/jhipster/generator-jhipster/pull/10155
         type: 'replaceContent',
         versions: ['6.1.2', '6.2.0'],
-        regex: false,
-        target: context => 'global.menu.admin.admin/company-management',
-        tmpl: context => 'global.menu.admin.companyManagement'
+        regex: true,
+        target: context => `global.menu.admin.admin/${context.tenantNameLowerFirst}-management`,
+        tmpl: context => `global.menu.admin.${context.tenantNameLowerFirst}Management`
     }
 ];
 
