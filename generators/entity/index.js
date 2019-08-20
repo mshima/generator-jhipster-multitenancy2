@@ -241,7 +241,7 @@ module.exports = class extends EntityGenerator {
                 });
             }
         };
-        return Object.assign(myCustomPhaseSteps);
+        return Object.assign(prompting, myCustomPhaseSteps);
     }
 
     get configuring() {
