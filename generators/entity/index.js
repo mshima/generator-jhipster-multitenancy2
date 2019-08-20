@@ -37,13 +37,18 @@ module.exports = class extends EntityGenerator {
         this.context.isTenant = this.isTenant;
 
         // Workaround https://github.com/jhipster/generator-jhipster/issues/10205
+        const generator = this;
+        const options = this.options;
         const configOptions = this.configOptions;
         this._getAllJhipsterConfig = this.getAllJhipsterConfig;
         this.getAllJhipsterConfig = function (generator = this, force) {
             const configuration = this._getAllJhipsterConfig(generator, force);
             configuration._get = configuration.get;
             configuration.get = function(key) {
-                return configOptions[key] || configuration._get(key);
+
+                const ret = options[key] || configOptions[key] || configuration._get(key);
+                // generator.log(`${key} = ${ret}`);
+                return ret;
             }
             return configuration;
         }
