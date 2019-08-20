@@ -189,7 +189,6 @@ module.exports = class extends CommonGenerator {
 
                     const options = this.options;
                     const configOptions = this.configOptions;
-                    this.log(this);
 
                     this.composeWith(require.resolve('../entity'), {
                         ...options,
