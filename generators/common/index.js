@@ -26,11 +26,7 @@ module.exports = class extends CommonGenerator {
 
 //        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
 //
-//        if (!this.jhipsterContext) {
-//            this.error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint multitenancy2')}`);
-//        }
-
-        //this.configOptions = jhContext.configOptions || {};
+        // this.configOptions = jhContext.configOptions || {};
 
         // This sets up options for this sub generator and is being reused from JHipster
 //        jhContext.setupServerOptions(this, jhContext);
@@ -76,7 +72,23 @@ module.exports = class extends CommonGenerator {
          */
         const initializing = super._initializing()
         const myCustomPhaseSteps = {
+            askForModuleName() {
+                if (this.baseName) return;
+
+                this.askModuleName(this);
+            },
             loadConf() {
+//                if (!this.options.baseName) {
+//                    this.error(`This is a JHipster blueprint and should be used only like 1 ${this.options.baseName}`);
+//                }
+                if (!this.baseName) {
+                    this.error(`This is a JHipster blueprint and should be used only like 2 ${this.configOptions.baseName}`);
+                }
+                this.configOptions.baseName = this.baseName;
+                if (!this.configOptions.baseName) {
+                    this.error(`This is a JHipster blueprint and should be used only like 2 ${this.configOptions.baseName}`);
+                }
+
                 if(this.options['tenant-changelog-date'] !== undefined){
                     this.config.set('nextChangelogDate', this.tenantChangelogDate);
                 }else if(this.tenantChangelogDate === undefined){
