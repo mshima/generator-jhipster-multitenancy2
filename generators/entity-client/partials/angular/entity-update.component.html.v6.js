@@ -3,14 +3,14 @@ const file = context =>
 
 const tmpls = [
     {
-        // Hide the company if the current account is from a company (field)
+        // Hide the tenant if the current account is from a tenant (field)
         type: 'replaceContent',
         regex: true,
         target: context => `<div class="form-group">(\\s*)(.*)(for="field_${context.tenantNameLowerFirst})"`,
         tmpl: context => `<div class="form-group" *ngIf="!currentAccount.${context.tenantNameLowerFirst}">$1$2$3"`
     },
     {
-        // Hide the company if the current account is from a company (requirements)
+        // Hide the tenant if the current account is from a tenant (requirements)
         type: 'replaceContent',
         regex: false,
         target: context => `<div *ngIf="editForm.get('${context.tenantNameLowerFirst}`,

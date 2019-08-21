@@ -88,7 +88,7 @@ module.exports = class extends EntityClientGenerator {
                          */
 
                         // addAdminToModule(appName, adminAngularName, adminFolderName, adminFileName, enableTranslation, clientFramework)
-                        // this.addAdminToModule(this.angularXAppName, 'Company', 'company-management', 'company-management', this.enableTranslation, this.clientFramework);
+                        // this.addAdminToModule(this.angularXAppName, this.tenantNameUpperFirst, `${this.tenantNameLowerFirst}-management`, `${this.tenantNameLowerFirst}-management`, this.enableTranslation, this.clientFramework);
 
                         const moduleNeedle = 'jhipster-needle-add-admin-module';
                         const appName = this.getAngularXAppName();
@@ -149,11 +149,11 @@ module.exports = class extends EntityClientGenerator {
                 if (this.isTenant) {
                     // this.addEntityToMenu(this.entityStateName, this.enableTranslation, this.clientFramework, this.entityTranslationKeyMenu);
                     this.addElementToAdminMenu(
-                        'admin/company-management',
+                        `admin/${this.tenantNameLowerFirst}-management`,
                         'asterisk',
                         this.enableTranslation,
                         this.clientFramework,
-                        'companyManagement'
+                        `${this.tenantNameLowerFirst}Management`
                     );
 
                     // tests
