@@ -2,7 +2,8 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 const mtUtils = require('../multitenancy-utils');
 
 const angularTemplates = [
-    'entity.component.html'
+    'entity.component.html',
+    'navbar.component.html'
 ];
 
 const tenantAwareAngularTemplates = [
