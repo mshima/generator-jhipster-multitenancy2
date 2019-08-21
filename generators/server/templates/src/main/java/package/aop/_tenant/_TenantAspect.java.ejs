@@ -1,5 +1,6 @@
 package <%=packageName%>.aop.<%= tenantNameLowerFirst %>;
 
+import <%=packageName%>.web.rest.errors.BadRequestAlertException;
 import <%=packageName%>.security.SecurityUtils;
 import <%=packageName%>.repository.UserRepository;
 import <%=packageName%>.domain.User;
@@ -42,12 +43,17 @@ public class <%= tenantNameUpperFirst %>Aspect {
         Optional<String> login = SecurityUtils.getCurrentUserLogin();
 
         if(login.isPresent()) {
-			User user = userRepository.findOneByLogin(login.get()).get();
+            Optional<User> optionalUser = userRepository.findOneByLogin(login.get());
+            if(!optionalUser.isPresent()) {
+                // Self registration.
+                throw new BadRequestAlertException("Self registration is disabled", "userRegistration", "selfregistrationdisabled");
+            }
+            User user = optionalUser.get();
 
-			if (user.get<%= tenantNameUpperFirst %>() != null) {
-				Filter filter = entityManager.unwrap(Session.class).enableFilter("<%= tenantNameUpperCase %>_FILTER");
-				filter.setParameter(fieldName, user.get<%= tenantNameUpperFirst %>().getId());
-			}
-		}
+            if (user.get<%= tenantNameUpperFirst %>() != null) {
+                Filter filter = entityManager.unwrap(Session.class).enableFilter("<%= tenantNameUpperCase %>_FILTER");
+                filter.setParameter(fieldName, user.get<%= tenantNameUpperFirst %>().getId());
+            }
+        }
     }
 }
