@@ -148,13 +148,17 @@ module.exports = class extends EntityClientGenerator {
                 mtUtils.processPartialTemplates(files.angular.angularTemplates(this), this);
                 if (this.isTenant) {
                     // this.addEntityToMenu(this.entityStateName, this.enableTranslation, this.clientFramework, this.entityTranslationKeyMenu);
-                    this.addElementToAdminMenu(
-                        `admin/${this.tenantNameLowerFirst}-management`,
-                        'asterisk',
-                        this.enableTranslation,
-                        this.clientFramework,
-                        `${this.tenantNameLowerFirst}Management`
-                    );
+                    if (!this.configOptions.tenantMenu) {
+                        // Removes this condition when creating moves to entity-tenant, this is to ensure this is executed only once.
+                        this.configOptions.tenantMenu = true;
+                        this.addElementToAdminMenu(
+                            `admin/${this.tenantNameLowerFirst}-management`,
+                            'asterisk',
+                            this.enableTranslation,
+                            this.clientFramework,
+                            `global.menu.admin.${this.tenantMenuTranslationKey}`
+                        );
+                    }
 
                     // tests
                     mtUtils.processPartialTemplates(files.angular.angularTestTemplates(this), this);

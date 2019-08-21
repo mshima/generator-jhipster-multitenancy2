@@ -28,7 +28,7 @@ function tenantVariables(tenantName, context) {
     context.tenantClientRootFolder = '../admin';
     context.tenantFileSuffix = '-management';
 
-    context.tenantName = _.lowerFirst(tenantName);
+    context.tenantName = _.camelCase(tenantName);
 
     context.tenantNameCapitalized = _.upperFirst(tenantName);
     context.tenantClass = context.tenantNameCapitalized;
@@ -52,6 +52,8 @@ function tenantVariables(tenantName, context) {
     context.tenantTranslationKey = context.tenantClientRootFolder
         ? _.camelCase(`${context.tenantClientRootFolder}-${context.tenantInstance}`)
         : context.tenantInstance;
+
+    context.tenantMenuTranslationKey = `${context.tenantName}Management`;
 
     context.tenantName = _.camelCase(tenantName);
     context.tenantNameUpperCase = _.toUpper(tenantName);

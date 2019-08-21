@@ -23,7 +23,7 @@ const tmpls = [
         versions: ['6.1.2', '6.2.0'],
         regex: true,
         target: context => `global.menu.admin.admin/${context.tenantNameLowerFirst}-management`,
-        tmpl: context => `global.menu.admin.${context.tenantNameLowerFirst}Management`
+        tmpl: context => `global.menu.admin.${context.tenantMenuTranslationKey}`
     }
 ];
 

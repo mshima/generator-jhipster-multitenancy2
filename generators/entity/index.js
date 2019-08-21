@@ -110,6 +110,8 @@ module.exports = class extends EntityGenerator {
 
                 if (this.isTenant) {
                     context.clientRootFolder = '../admin';
+                    // Maybe will be implemente for 6.2.1
+                    context.skipMenu = true;
                 }
 
                 /* tenant variables */

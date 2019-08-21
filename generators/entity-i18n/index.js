@@ -2,6 +2,9 @@
 const chalk = require('chalk');
 const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const debug = require('debug')('jhipster:multitenancy:entity-i18n');
+
+const files = require('./files');
 const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends EntityI18nGenerator {
@@ -69,8 +72,8 @@ module.exports = class extends EntityI18nGenerator {
         const myCustomPhaseSteps = {
             customConfigure() {
                 if (this.isTenant) {
-                    this.entityTranslationKey = `${this.entityTranslationKey}Management`;
-                    this.entityTranslationKeyMenu = `${this.entityTranslationKeyMenu}Management`;
+                    this.entityTranslationKey = `${this.entityTranslationKey}`;
+                    this.entityTranslationKeyMenu = `${this.entityTranslationKeyMenu}`;
                 }
             }
         };
@@ -91,38 +94,20 @@ module.exports = class extends EntityI18nGenerator {
             writeAdditionalEntries() {
                 if (!this.enableTranslation || !this.isTenant) return;
 
+                // templates
+                debug(`Removing menu ${this.entityTranslationKeyMenu}: ${this.tenantNameUpperFirst}`);
+                this.languages.forEach(language => {
+                    this.language = language;
+                    mtUtils.processPartialTemplates(files.i18n.i18nTemplates(this), this);
+                })
+
+                debug(`Adding menu ${this.tenantMenuTranslationKey}: ${this.tenantNameUpperFirst}`);
                 this.addTranslationKeyToAllLanguages(
-                    `${this.tenantNameLowerFirst}Management`,
-                    `${this.tenantNameUpperFirst} Management`,
+                    `${this.tenantMenuTranslationKey}`,
+                    `${this.tenantNameUpperFirst}`,
                     'addAdminElementTranslationKey',
                     this.enableTranslation
                 );
-                this.addTranslationKeyToAllLanguages(
-                    `userManagement${this.tenantNameUpperFirst}`,
-                    `${this.tenantNameUpperFirst}`,
-                    'addGlobalTranslationKey',
-                    this.enableTranslation
-                );
-
-                //                const languageFiles = {
-                //                        languages: [
-                //                            {
-                //                                condition: generator => generator.enableTranslation,
-                //                                path: jhipsterConstants.CLIENT_MAIN_SRC_DIR,
-                //                                templates: [
-                //                                    {
-                //                                        file: 'i18n/en/_tenant-management.json',
-                //                                        renameTo: generator => `i18n/${this.currentLanguage}/${this.tenantNameLowerFirst}-management.json`
-                //                                    }
-                //                                ]
-                //                            }
-                //                        ]
-                //                }
-                //
-                //                this.languages.forEach((language) => {
-                //                    this.currentLanguage = language;
-                //                    this.writeFilesToDisk(languageFiles, this, false);
-                //                });
             }
         };
 
