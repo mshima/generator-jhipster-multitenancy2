@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const pluralize = require('pluralize');
+const debug = require('debug')('jhipster:multitenancy:utils');
 
 /**
  * Utils file to hold methods common to both generator and sub generator
@@ -74,20 +75,29 @@ function processPartialTemplates(partialTemplates, context) {
     partialTemplates.forEach(templates => {
         const file = typeof templates.file === 'function' ? templates.file(context) : templates.file;
         templates.tmpls.forEach(item => {
+            debug(`======== Template ${file}`);
             // ignore if version is not compatible
             if (item.versions && !item.versions.includes(context.config.get('jhipsterVersion'))) {
+                debug(`Version not compatible`);
                 return;
             }
             if (item.disabled) {
+                debug(`Template disabled`);
                 return;
             }
             if (typeof item.condition === 'function') {
                 if (!item.condition(context)) {
+                    debug(`Template condition ${item.condition}`);
                     return;
                 }
             }
+            debug(`type: ${item.type}`);
+            debug(`regex: ${item.regex}`);
             const target = typeof item.target === 'function' ? item.target(context) : item.target;
+            debug(`target: ${target}`);
+
             const tmpl = typeof item.tmpl === 'function' ? item.tmpl(context) : item.tmpl;
+            debug(`tmpl: ${tmpl}`);
             if (item.type === 'replaceContent') {
                 context.replaceContent(file, target, tmpl, item.regex);
             } else if (item.type === 'rewriteFile') {
@@ -99,6 +109,7 @@ function processPartialTemplates(partialTemplates, context) {
 
 function requireTemplates(prefix, templates, context) {
     const ret = [];
+    debug(`============ Loading templates from ${prefix}`)
     templates.forEach(file => {
         // Look for specific version
         const template = prefix + file;
@@ -106,6 +117,7 @@ function requireTemplates(prefix, templates, context) {
         while (version != '') {
             try {
                 ret.push(require(`${template}.v${version}.js`));
+                debug(`Success loading ${template}.v${version}`)
                 return;
             } catch (e) {
                 version = version.substring(0, version.lastIndexOf('.'));
@@ -113,7 +125,9 @@ function requireTemplates(prefix, templates, context) {
         }
         try {
             ret.push(require(`${template}.js`));
-        } catch (e) {}
+        } catch (e) {
+            debug(`Error loading ${template}`)
+        }
     });
     return ret;
 }
