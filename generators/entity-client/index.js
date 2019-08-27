@@ -160,6 +160,9 @@ module.exports = class extends EntityClientGenerator {
                         );
                     }
 
+                    // tenant
+                    mtUtils.processPartialTemplates(files.angular.tenantAngularTemplates(this), this);
+
                     // tests
                     mtUtils.processPartialTemplates(files.angular.angularTestTemplates(this), this);
 

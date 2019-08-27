@@ -6,6 +6,10 @@ const angularTemplates = [
     'navbar.component.html'
 ];
 
+const tenantAngularTemplates = [
+    '_tenant-management.route.ts'
+];
+
 const tenantAwareAngularTemplates = [
     'entity-detail.component.html',
     'entity-update.component.html',
@@ -28,6 +32,9 @@ module.exports = {
     angular: {
         angularTemplates(context) {
             return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTemplates, context);
+        },
+        tenantAngularTemplates(context) {
+            return mtUtils.requireTemplates('./entity-client/partials/angular/', tenantAngularTemplates, context);
         },
         tenantAwareAngularTemplates(context) {
             return mtUtils.requireTemplates('./entity-client/partials/angular/', tenantAwareAngularTemplates, context);

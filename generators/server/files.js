@@ -1,7 +1,14 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const mtUtils = require('../multitenancy-utils');
 
-const serverTemplates = ['UserDTO.java', 'User.java'];
+const serverTemplates = [
+    // Tenant relationship
+    'User.java',
+    'UserDTO.java',
+    // ROLE
+    'AuthoritiesConstants.java',
+    'UserResource.java'
+];
 
 module.exports = {
     writeFiles,
@@ -43,6 +50,46 @@ function writeFiles() {
                             `config/liquibase/changelog/${this.changelogDate}__user_${this.tenantNameUpperFirst}_constraints.xml`
                     }
                 ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/changelog/_tenant_user_data.xml',
+                        renameTo: generator =>
+                            `config/liquibase/changelog/${this.changelogDate}__${this.tenantNameLowerCase}_user_data.xml`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/data/_tenant_user.csv',
+                        renameTo: generator =>
+                            `config/liquibase/data/${this.tenantNameLowerCase}_user.csv`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/data/_tenant_authority.csv',
+                        renameTo: generator =>
+                            `config/liquibase/data/${this.tenantNameLowerCase}_authority.csv`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/data/_tenant_user_authority.csv',
+                        renameTo: generator =>
+                            `config/liquibase/data/${this.tenantNameLowerCase}_user_authority.csv`
+                    }
+                ]
             }
         ],
         aop: [
@@ -72,4 +119,5 @@ function writeFiles() {
     this.writeFilesToDisk(files, this, false);
 
     this.addChangelogToLiquibase(`${this.changelogDate}__user_${this.tenantNameUpperFirst}_constraints`);
+    this.addChangelogToLiquibase(`${this.changelogDate}__${this.tenantNameLowerCase}_user_data`);
 }
