@@ -80,11 +80,11 @@ function processPartialTemplates(partialTemplates, context) {
             debug(`======== Template ${file}`);
             // ignore if version is not compatible
             if (item.versions && !item.versions.includes(context.config.get('jhipsterVersion'))) {
-                debug(`Version not compatible`);
+                debug('Version not compatible');
                 return;
             }
             if (item.disabled) {
-                debug(`Template disabled`);
+                debug('Template disabled');
                 return;
             }
             if (typeof item.condition === 'function') {
@@ -111,15 +111,15 @@ function processPartialTemplates(partialTemplates, context) {
 
 function requireTemplates(prefix, templates, context) {
     const ret = [];
-    debug(`============ Loading templates from ${prefix}`)
+    debug(`============ Loading templates from ${prefix}`);
     templates.forEach(file => {
         // Look for specific version
         const template = prefix + file;
         let version = context.config.get('jhipsterVersion');
-        while (version != '') {
+        while (version !== '') {
             try {
                 ret.push(require(`${template}.v${version}.js`));
-                debug(`Success loading ${template}.v${version}`)
+                debug(`Success loading ${template}.v${version}`);
                 return;
             } catch (e) {
                 version = version.substring(0, version.lastIndexOf('.'));
@@ -128,7 +128,7 @@ function requireTemplates(prefix, templates, context) {
         try {
             ret.push(require(`${template}.js`));
         } catch (e) {
-            debug(`Error loading ${template}`)
+            debug(`Error loading ${template}`);
         }
     });
     return ret;

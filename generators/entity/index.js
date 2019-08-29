@@ -2,9 +2,6 @@
 const chalk = require('chalk');
 const EntityGenerator = require('generator-jhipster/generators/entity');
 
-const pluralize = require('pluralize');
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-
 const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends EntityGenerator {
@@ -17,18 +14,18 @@ module.exports = class extends EntityGenerator {
             defaults: false
         });
 
-//        this.log(this);
-//        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
-//
-//        if (!jhContext) {
-//            this.error('This is a JHipster blueprint and should be used only like jhipster --blueprint myblueprint');
-//        }
-//
-//        this.configOptions = jhContext.configOptions || {};
-//        this.log(this.configOptions);
-//
-//        // This sets up options for this sub generator and is being reused from JHipster
-//        jhContext.setupEntityOptions(this, jhContext, this);
+        //        this.log(this);
+        //        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
+        //
+        //        if (!jhContext) {
+        //            this.error('This is a JHipster blueprint and should be used only like jhipster --blueprint myblueprint');
+        //        }
+        //
+        //        this.configOptions = jhContext.configOptions || {};
+        //        this.log(this.configOptions);
+        //
+        //        // This sets up options for this sub generator and is being reused from JHipster
+        //        jhContext.setupEntityOptions(this, jhContext, this);
 
         // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get('tenantName'));
@@ -37,21 +34,19 @@ module.exports = class extends EntityGenerator {
         this.context.isTenant = this.isTenant;
 
         // Workaround https://github.com/jhipster/generator-jhipster/issues/10205
-        const generator = this;
         const options = this.options;
         const configOptions = this.configOptions;
         this._getAllJhipsterConfig = this.getAllJhipsterConfig;
-        this.getAllJhipsterConfig = function (generator = this, force) {
+        this.getAllJhipsterConfig = function(generator = this, force) {
             const configuration = this._getAllJhipsterConfig(generator, force);
             configuration._get = configuration.get;
             configuration.get = function(key) {
-
                 const ret = options[key] || configOptions[key] || configuration._get(key);
                 // generator.log(`${key} = ${ret}`);
                 return ret;
-            }
+            };
             return configuration;
-        }
+        };
     }
 
     get initializing() {
@@ -96,17 +91,17 @@ module.exports = class extends EntityGenerator {
             setUpVariables() {
                 const context = this.context;
 
-//                this.log('@@@');
-//                this.log(this.configOptions);
+                //                this.log('@@@');
+                //                this.log(this.configOptions);
 
                 if (context.enableTranslation === undefined) {
                     context.enableTranslation = this.configOptions.enableTranslation;
                 }
-//                this.log(context.enableTranslation);
-//                this.log(this.getAllJhipsterConfig(this, true).get('enableTranslation'));
-//                this.log(this.getAllJhipsterConfig(this, true));
-//                this.log(this);
-//                this.log(this.config);
+                //                this.log(context.enableTranslation);
+                //                this.log(this.getAllJhipsterConfig(this, true).get('enableTranslation'));
+                //                this.log(this.getAllJhipsterConfig(this, true));
+                //                this.log(this);
+                //                this.log(this.config);
 
                 if (this.isTenant) {
                     context.clientRootFolder = '../admin';

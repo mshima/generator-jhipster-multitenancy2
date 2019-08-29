@@ -1,7 +1,5 @@
 /* eslint-disable consistent-return */
-const chalk = require('chalk');
 const ClientGenerator = require('generator-jhipster/generators/client');
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const files = require('./files');
 
 const mtUtils = require('../multitenancy-utils');
@@ -10,16 +8,16 @@ module.exports = class extends ClientGenerator {
     constructor(args, opts) {
         super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
 
-//        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
-//
-//        if (!jhContext) {
-//            this.error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint multitenancy2')}`);
-//        }
-//
-//        this.configOptions = jhContext.configOptions || {};
+        //        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
+        //
+        //        if (!jhContext) {
+        //            this.error(`This is a JHipster blueprint and should be used only like ${chalk.yellow('jhipster --blueprint multitenancy2')}`);
+        //        }
+        //
+        //        this.configOptions = jhContext.configOptions || {};
 
         // This sets up options for this sub generator and is being reused from JHipster
-//        jhContext.setupClientOptions(this, jhContext);
+        //        jhContext.setupClientOptions(this, jhContext);
     }
 
     get initializing() {

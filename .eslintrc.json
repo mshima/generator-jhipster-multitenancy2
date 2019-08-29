@@ -5,6 +5,8 @@
     },
     "extends": ["airbnb-base", "plugin:prettier/recommended"],
     "rules": {
+        "global-require": "off",
+        "import/no-dynamic-require": "off",
         "prettier/prettier": "error",
         "linebreak-style": 0,
         "eol-last": 2,

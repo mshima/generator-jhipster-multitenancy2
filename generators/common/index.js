@@ -1,6 +1,5 @@
 /* eslint-disable consistent-return */
 const _ = require('lodash');
-const chalk = require('chalk');
 const CommonGenerator = require('generator-jhipster/generators/common');
 
 const mtUtils = require('../multitenancy-utils');
@@ -24,13 +23,13 @@ module.exports = class extends CommonGenerator {
         this.tenantName = this.options.tenantName || this.config.get('tenantName');
         this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
 
-//        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
-//
+        //        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
+        //
         // this.configOptions = jhContext.configOptions || {};
 
         // This sets up options for this sub generator and is being reused from JHipster
-//        jhContext.setupServerOptions(this, jhContext);
-//        jhContext.setupClientOptions(this, jhContext);
+        //        jhContext.setupServerOptions(this, jhContext);
+        //        jhContext.setupClientOptions(this, jhContext);
     }
 
     get initializing() {
@@ -70,7 +69,7 @@ module.exports = class extends CommonGenerator {
          *      return Object.assign(phaseFromJHipster, myCustomPhaseSteps);
          * ```
          */
-        const initializing = super._initializing()
+        const initializing = super._initializing();
         const myCustomPhaseSteps = {
             askForModuleName() {
                 if (this.baseName) return;
@@ -78,9 +77,9 @@ module.exports = class extends CommonGenerator {
                 this.askModuleName(this);
             },
             loadConf() {
-//                if (!this.options.baseName) {
-//                    this.error(`This is a JHipster blueprint and should be used only like 1 ${this.options.baseName}`);
-//                }
+                //                if (!this.options.baseName) {
+                //                    this.error(`This is a JHipster blueprint and should be used only like 1 ${this.options.baseName}`);
+                //                }
                 if (!this.baseName) {
                     this.error(`This is a JHipster blueprint and should be used only like 2 ${this.configOptions.baseName}`);
                 }
@@ -89,9 +88,9 @@ module.exports = class extends CommonGenerator {
                     this.error(`This is a JHipster blueprint and should be used only like 2 ${this.configOptions.baseName}`);
                 }
 
-                if(this.options['tenant-changelog-date'] !== undefined){
+                if (this.options['tenant-changelog-date'] !== undefined) {
                     this.config.set('nextChangelogDate', this.tenantChangelogDate);
-                }else if(this.tenantChangelogDate === undefined){
+                } else if (this.tenantChangelogDate === undefined) {
                     this.tenantChangelogDate = this.dateFormatForLiquibase();
                 }
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
@@ -101,14 +100,13 @@ module.exports = class extends CommonGenerator {
 
                 /* tenant variables */
                 mtUtils.tenantVariables.call(this, this.config.get('tenantName'), this);
-
-            },
+            }
         };
         return Object.assign(initializing, myCustomPhaseSteps);
     }
 
     get prompting() {
-        const prompting = super._prompting()
+        const prompting = super._prompting();
         const myCustomPhaseSteps = {
             askTenantAware() {
                 const prompts = [
@@ -117,7 +115,7 @@ module.exports = class extends CommonGenerator {
                         name: 'tenantName',
                         message: 'What is the alias given tenants in your application?',
                         default: 'Company',
-                        validate: (input) => {
+                        validate: input => {
                             if (_.toLower(input) === 'account') {
                                 return `${input} is a reserved word.`;
                             }
@@ -127,26 +125,26 @@ module.exports = class extends CommonGenerator {
                 ];
                 const done = this.async();
                 this.prompt(prompts).then(props => {
-                    if(props.tenantName){
+                    if (props.tenantName) {
                         mtUtils.tenantVariables.call(this, props.tenantName, this);
                     }
                     done();
                 });
-            },
+            }
         };
         return Object.assign(prompting, myCustomPhaseSteps);
     }
 
     get configuring() {
         // Here we are not overriding this phase and hence its being handled by JHipster
-        const configuring = super._configuring()
+        const configuring = super._configuring();
         const configuringCustomPhaseSteps = {
             saveConf() {
                 this.firstExec = this.config.get('tenantName') === undefined;
 
                 this.tenantExists = false;
                 this.getExistingEntities().forEach(entity => {
-                    if(this._.toLower(entity.definition.name) === this._.toLower(this.tenantName)){
+                    if (this._.toLower(entity.definition.name) === this._.toLower(this.tenantName)) {
                         this.tenantExists = true;
                     }
                 });
@@ -155,23 +153,23 @@ module.exports = class extends CommonGenerator {
 
                 this.config.set('tenantName', this.tenantName);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
-            },
-//            generateTenant() {
-//                if(this.tenantExists && !this.firstExec) return;
-//
-//                const options = this.options;
-//                const configOptions = this.configOptions;
-//                this.log(this);
-//
-//                this.composeWith(require.resolve('../entity'), {
-//                    ...options,
-//                    configOptions,
-//                    regenerate: false,
-//                    'skip-install': false,
-//                    debug: this.isDebugEnabled,
-//                    arguments: [this.tenantName]
-//                });
-//            },
+            }
+            //            generateTenant() {
+            //                if(this.tenantExists && !this.firstExec) return;
+            //
+            //                const options = this.options;
+            //                const configOptions = this.configOptions;
+            //                this.log(this);
+            //
+            //                this.composeWith(require.resolve('../entity'), {
+            //                    ...options,
+            //                    configOptions,
+            //                    regenerate: false,
+            //                    'skip-install': false,
+            //                    debug: this.isDebugEnabled,
+            //                    arguments: [this.tenantName]
+            //                });
+            //            },
         };
         // configuringCustomPhaseSteps should be run after configuring, otherwise tenantName will be overridden
         return Object.assign(configuring, configuringCustomPhaseSteps);
@@ -184,23 +182,23 @@ module.exports = class extends CommonGenerator {
 
     get writing() {
         const writingPreCustomPhaseSteps = {
-                generateTenant() {
-                    if(this.tenantExists && !this.firstExec) return;
+            generateTenant() {
+                if (this.tenantExists && !this.firstExec) return;
 
-                    const options = this.options;
-                    const configOptions = this.configOptions;
+                const options = this.options;
+                const configOptions = this.configOptions;
 
-                    this.composeWith(require.resolve('../entity'), {
-                        ...options,
-                        configOptions,
-                        regenerate: false,
-                        'skip-install': false,
-                        debug: this.isDebugEnabled,
-                        arguments: [this.tenantName]
-                    });
-                },
-            };
-        return {...writingPreCustomPhaseSteps, ...super._writing()};
+                this.composeWith(require.resolve('../entity'), {
+                    ...options,
+                    configOptions,
+                    regenerate: false,
+                    'skip-install': false,
+                    debug: this.isDebugEnabled,
+                    arguments: [this.tenantName]
+                });
+            }
+        };
+        return { ...writingPreCustomPhaseSteps, ...super._writing() };
     }
 
     get install() {

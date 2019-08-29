@@ -28,7 +28,7 @@ function writeFiles() {
         this.configOptions.tenantAwareEntities.forEach(tenantAwareEntity => {
             this.tenantisedEntityServices = `${this.tenantisedEntityServices} || execution(* ${
                 this.packageName
-                }.service.${tenantAwareEntity}Service.*(..))`;
+            }.service.${tenantAwareEntity}Service.*(..))`;
         });
     }
     this.tenantisedEntityServices = `${this.tenantisedEntityServices}")`;
@@ -56,8 +56,7 @@ function writeFiles() {
                 templates: [
                     {
                         file: 'config/liquibase/changelog/_tenant_user_data.xml',
-                        renameTo: generator =>
-                            `config/liquibase/changelog/${this.changelogDate}__${this.tenantNameLowerCase}_user_data.xml`
+                        renameTo: generator => `config/liquibase/changelog/${this.changelogDate}__${this.tenantNameLowerCase}_user_data.xml`
                     }
                 ]
             },
@@ -66,8 +65,7 @@ function writeFiles() {
                 templates: [
                     {
                         file: 'config/liquibase/data/_tenant_user.csv',
-                        renameTo: generator =>
-                            `config/liquibase/data/${this.tenantNameLowerCase}_user.csv`
+                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_user.csv`
                     }
                 ]
             },
@@ -76,8 +74,7 @@ function writeFiles() {
                 templates: [
                     {
                         file: 'config/liquibase/data/_tenant_authority.csv',
-                        renameTo: generator =>
-                            `config/liquibase/data/${this.tenantNameLowerCase}_authority.csv`
+                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_authority.csv`
                     }
                 ]
             },
@@ -86,8 +83,7 @@ function writeFiles() {
                 templates: [
                     {
                         file: 'config/liquibase/data/_tenant_user_authority.csv',
-                        renameTo: generator =>
-                            `config/liquibase/data/${this.tenantNameLowerCase}_user_authority.csv`
+                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_user_authority.csv`
                     }
                 ]
             }

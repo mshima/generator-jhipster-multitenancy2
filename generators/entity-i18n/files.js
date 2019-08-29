@@ -1,8 +1,6 @@
 const mtUtils = require('../multitenancy-utils');
 
-const i18nTemplates = [
-    'global.json'
-];
+const i18nTemplates = ['global.json'];
 
 module.exports = {
     i18n: {
