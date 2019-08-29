@@ -7,7 +7,7 @@ const files = require('./files');
 
 module.exports = class extends EntityServerGenerator {
     constructor(args, opts) {
-        super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
+        super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
     }
 
     get initializing() {
@@ -27,16 +27,11 @@ module.exports = class extends EntityServerGenerator {
     }
 
     get writing() {
-        const writing = super._writing();
-
-        const setupCustomPhaseSteps = {
+        const postWritingSteps = {
             // sets up all the variables we'll need for the templating
             setUpVariables() {
                 this.SERVER_MAIN_SRC_DIR = jhipsterConstants.SERVER_MAIN_SRC_DIR;
-            }
-        };
-
-        const writeCustomPhaseSteps = {
+            },
             // make the necessary server code changes
             customServerCode() {
                 if (this.tenantAware) {
@@ -48,7 +43,7 @@ module.exports = class extends EntityServerGenerator {
                 }
             }
         };
-        return Object.assign(writing, setupCustomPhaseSteps, writeCustomPhaseSteps);
+        return { ...super._writing(), ...postWritingSteps };
     }
 
     get install() {

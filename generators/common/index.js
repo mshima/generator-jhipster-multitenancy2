@@ -6,7 +6,7 @@ const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends CommonGenerator {
     constructor(args, opts) {
-        super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
+        super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
         this.option('tenant-name', {
             desc: 'Set tenant name',
@@ -25,7 +25,6 @@ module.exports = class extends CommonGenerator {
     }
 
     get initializing() {
-        const initializing = super._initializing();
         const myCustomPhaseSteps = {
             askForModuleName() {
                 if (this.baseName) return;
@@ -58,11 +57,10 @@ module.exports = class extends CommonGenerator {
                 mtUtils.tenantVariables.call(this, this.config.get('tenantName'), this);
             }
         };
-        return Object.assign(initializing, myCustomPhaseSteps);
+        return { ...super._initializing(), ...myCustomPhaseSteps };
     }
 
     get prompting() {
-        const prompting = super._prompting();
         const myCustomPhaseSteps = {
             askTenantAware() {
                 const prompts = [
@@ -88,12 +86,11 @@ module.exports = class extends CommonGenerator {
                 });
             }
         };
-        return Object.assign(prompting, myCustomPhaseSteps);
+        return { ...super._prompting(), ...myCustomPhaseSteps };
     }
 
     get configuring() {
         // Here we are not overriding this phase and hence its being handled by JHipster
-        const configuring = super._configuring();
         const configuringCustomPhaseSteps = {
             saveConf() {
                 this.firstExec = this.config.get('tenantName') === undefined;
@@ -112,7 +109,7 @@ module.exports = class extends CommonGenerator {
             }
         };
         // configuringCustomPhaseSteps should be run after configuring, otherwise tenantName will be overridden
-        return Object.assign(configuring, configuringCustomPhaseSteps);
+        return { ...super._configuring(), ...configuringCustomPhaseSteps };
     }
 
     get default() {

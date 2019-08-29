@@ -5,7 +5,7 @@ const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends ServerGenerator {
     constructor(args, opts) {
-        super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
+        super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
     }
 
     get initializing() {
@@ -25,7 +25,6 @@ module.exports = class extends ServerGenerator {
     }
 
     get writing() {
-        const writing = super._writing();
         const myCustomPhaseSteps = {
             // make the necessary server code changes
             writeAdditionalFile() {
@@ -34,7 +33,7 @@ module.exports = class extends ServerGenerator {
             }
         };
 
-        return Object.assign(writing, myCustomPhaseSteps);
+        return { ...super._writing(), ...myCustomPhaseSteps };
     }
 
     get install() {

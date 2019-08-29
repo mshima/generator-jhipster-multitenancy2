@@ -6,7 +6,7 @@ const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends EntityGenerator {
     constructor(args, opts) {
-        super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
+        super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
         this.option('default-tenant-aware', {
             desc: 'Always discover relationship with tenant',
@@ -37,8 +37,7 @@ module.exports = class extends EntityGenerator {
     }
 
     get initializing() {
-        const phaseFromJHipster = super._initializing();
-        const postCustomPhaseSteps = {
+        const postInitializingSteps = {
             setUpVariables() {
                 const context = this.context;
 
@@ -132,12 +131,11 @@ module.exports = class extends EntityGenerator {
             }
         };
 
-        return Object.assign(phaseFromJHipster, postCustomPhaseSteps);
+        return { ...super._initializing(), ...postInitializingSteps };
     }
 
     get prompting() {
-        const prompting = super._prompting();
-        const myCustomPhaseSteps = {
+        const postPromptingSteps = {
             askTenantAware() {
                 const context = this.context;
 
@@ -181,11 +179,11 @@ module.exports = class extends EntityGenerator {
                 });
             }
         };
-        return Object.assign(prompting, myCustomPhaseSteps);
+        return { ...super._prompting(), ...postPromptingSteps };
     }
 
     get configuring() {
-        const myCustomPrePhaseSteps = {
+        const preConfiguringSteps = {
             loadTenantDef() {
                 const context = this.context;
 
@@ -256,9 +254,8 @@ module.exports = class extends EntityGenerator {
                 }
             }
         };
-        const configuring = super._configuring();
 
-        const myCustomPostPhaseSteps = {
+        const postConfiguringSteps = {
             configureTenantFolder() {
                 const context = this.context;
 
@@ -306,7 +303,7 @@ module.exports = class extends EntityGenerator {
                 this.updateEntityConfig(this.context.filename, 'tenantAware', this.context.tenantAware);
             }
         };
-        return Object.assign(myCustomPrePhaseSteps, configuring, myCustomPostPhaseSteps);
+        return { ...preConfiguringSteps, ...super._configuring(), ...postConfiguringSteps };
     }
 
     get default() {

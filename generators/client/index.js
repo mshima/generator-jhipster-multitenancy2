@@ -6,7 +6,7 @@ const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends ClientGenerator {
     constructor(args, opts) {
-        super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
+        super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
     }
 
     get initializing() {
@@ -26,7 +26,6 @@ module.exports = class extends ClientGenerator {
     }
 
     get writing() {
-        const writing = super._writing();
         const myCustomPhaseSteps = {
             // sets up all the variables we'll need for the templating
             setUpVariables() {
@@ -42,7 +41,7 @@ module.exports = class extends ClientGenerator {
                 mtUtils.processPartialTemplates(files.angular.templates(this), this);
             }
         };
-        return Object.assign(writing, myCustomPhaseSteps);
+        return { ...super._writing(), ...myCustomPhaseSteps };
     }
 
     get install() {

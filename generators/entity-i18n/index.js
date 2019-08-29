@@ -7,7 +7,7 @@ const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
-        super(args, Object.assign({ fromBlueprint: true }, opts)); // fromBlueprint variable is important
+        super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
     }
 
     get initializing() {
@@ -19,9 +19,7 @@ module.exports = class extends EntityI18nGenerator {
     }
 
     get configuring() {
-        const configuring = super._configuring();
-
-        const myCustomPhaseSteps = {
+        const postConfiguringSteps = {
             customConfigure() {
                 if (this.isTenant) {
                     this.entityTranslationKey = `${this.entityTranslationKey}`;
@@ -30,7 +28,7 @@ module.exports = class extends EntityI18nGenerator {
             }
         };
 
-        return Object.assign(configuring, myCustomPhaseSteps);
+        return { ...super._configuring(), ...postConfiguringSteps };
     }
 
     get default() {
@@ -38,9 +36,7 @@ module.exports = class extends EntityI18nGenerator {
     }
 
     get writing() {
-        const writing = super._writing();
-
-        const myCustomPhaseSteps = {
+        const postWritingSteps = {
             writeAdditionalEntries() {
                 if (!this.enableTranslation || !this.isTenant) return;
 
@@ -61,7 +57,7 @@ module.exports = class extends EntityI18nGenerator {
             }
         };
 
-        return Object.assign(writing, myCustomPhaseSteps);
+        return { ...super._writing(), ...postWritingSteps };
     }
 
     get install() {
