@@ -9,7 +9,7 @@ module.exports = class extends EntityGenerator {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
         // current subgen
-        this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get('tenantName'));
+        this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.options.tenantName || this.config.get('tenantName'));
 
         // pass to entity-* subgen
         this.context.isTenant = this.isTenant;
