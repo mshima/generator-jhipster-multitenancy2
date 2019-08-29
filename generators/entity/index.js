@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 const chalk = require('chalk');
 const EntityGenerator = require('generator-jhipster/generators/entity');
+const debug = require('debug')('jhipster:multitenancy2:entity');
 
 const mtUtils = require('../multitenancy-utils');
 const workarounds = require('../workarounds');
@@ -57,14 +58,8 @@ module.exports = class extends EntityGenerator {
                     context.service = 'serviceClass';
                     context.changelogDate = this.config.get('tenantChangelogDate');
 
-                    let containsName = false;
-
-                    context.fields.forEach(field => {
-                        if (field.fieldName !== undefined && this._.toLower(field.fieldName) === 'name') {
-                            containsName = true;
-                        }
-                    });
-                    if (!containsName) {
+                    // Add name field if doesn´t exists.
+                    if (mtUtils.getArrayItemWithFieldValue(this, context.fields, 'fieldName', 'name') === undefined) {
                         context.fields.push({
                             fieldName: 'name',
                             fieldType: 'String',
@@ -72,13 +67,8 @@ module.exports = class extends EntityGenerator {
                         });
                     }
 
-                    let containsUsers = false;
-                    context.relationships.forEach(relationship => {
-                        if (relationship.relationshipName !== undefined && this._.toLower(relationship.relationshipName) === 'users') {
-                            containsUsers = true;
-                        }
-                    });
-                    if (!containsUsers) {
+                    // Add users relationship if doesn´t exists.
+                    if (!mtUtils.containsRelationship(this, context.relationships, 'users')) {
                         context.relationships.push({
                             relationshipName: 'users',
                             otherEntityName: 'user',
@@ -108,21 +98,17 @@ module.exports = class extends EntityGenerator {
                     return;
                 }
 
-                // look for tenantAware entities
-                let relationWithTenant = false;
+                let defaultValue = false;
 
                 if (this.options.defaultTenantAware !== undefined) {
                     this.newTenantAware = this.options.defaultTenantAware;
                 } else if (this.options.relationTenantAware) {
-                    // Always use relation value if exists
-                    if (context.fileData !== undefined && context.fileData.relationships !== undefined) {
-                        context.relationships.forEach(field => {
-                            if (this._.toLower(field.otherEntityName) === this._.toLower(context.tenantName)) {
-                                relationWithTenant = true;
-                            }
-                        });
-                    }
-                    this.newTenantAware = relationWithTenant;
+                    // look for tenantAware entities
+                    // eslint-disable-next-line prettier/prettier
+                    this.newTenantAware = mtUtils.getArrayItemWithFieldValue(this, context.relationships, 'otherEntityName', context.tenantName) !== undefined;
+                } else {
+                    // eslint-disable-next-line prettier/prettier
+                    defaultValue = mtUtils.getArrayItemWithFieldValue(this, context.relationships, 'otherEntityName', context.tenantName) !== undefined;
                 }
 
                 const prompts = [
@@ -131,7 +117,7 @@ module.exports = class extends EntityGenerator {
                         type: 'confirm',
                         name: 'tenantAware',
                         message: `Do you want to make ${context.name} tenant aware?`,
-                        default: relationWithTenant
+                        default: defaultValue
                     }
                 ];
                 const done = this.async();
@@ -177,15 +163,16 @@ module.exports = class extends EntityGenerator {
 
                     const relationships = context.relationships;
 
-                    let tenantRelationship;
-                    // if any relationship exisits already in the entity to the tenant remove it and regenerated
-                    for (let i = relationships.length - 1; i >= 0; i--) {
-                        if (relationships[i].otherEntityName === context.tenantName) {
-                            tenantRelationship = relationships[i];
-                        }
-                    }
+                    const tenantRelationship = mtUtils.getArrayItemWithFieldValue(
+                        this,
+                        context.relationships,
+                        'otherEntityName',
+                        context.tenantName
+                    );
 
+                    // if tenant relationship already exists in the entity then set options
                     if (tenantRelationship) {
+                        debug('Found relationship with tenant');
                         if (!tenantRelationship.clientRootFolder) {
                             tenantRelationship.clientRootFolder = '../admin';
                         }
@@ -225,36 +212,15 @@ module.exports = class extends EntityGenerator {
 
                 if (!this.isTenant) return;
 
-                // Angular client
-                // `entities/${generator.entityFolderName}/${generator.entityFileName}`
-                // Tests
-                // `spec/app/entities/${generator.entityFolderName}/${generator.entityFileName}
-                // Protractor
-                // `e2e/entities/${generator.entityFolderName}/${generator.entityFileName}`
                 context.entityFolderName += '-management';
                 context.entityFileName += '-management';
 
-                // Angular service
-                // entities/${generator.entityFolderName}/${generator.entityServiceFileName}.service.ts
                 context.entityServiceFileName += '-management';
 
                 context.entityStateName += '-management';
                 context.entityUrl = `admin/${context.entityStateName}`;
-
-                // Angular model
-                // `shared/model/${generator.entityModelFileName}.model.ts`
-                // this.entityModelFileName = this.entityModelFileName;
             },
             postJson() {
-                if (this.isTenant) {
-                    // jhipster will override tenant's changelogDate
-                    if (!this.context.useConfigurationFile) {
-                        this.context.changelogDate = this.config.get('tenantChangelogDate');
-                        this.updateEntityConfig(this.context.filename, 'changelogDate', this.context.changelogDate);
-                    }
-                    return;
-                }
-
                 if (this.context.tenantAware) {
                     if (this.configOptions.tenantAwareEntities === undefined) {
                         this.configOptions.tenantAwareEntities = [];

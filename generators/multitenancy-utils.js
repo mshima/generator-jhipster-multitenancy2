@@ -6,17 +6,31 @@ const debug = require('debug')('jhipster:multitenancy:utils');
  * Utils file to hold methods common to both generator and sub generator
  */
 module.exports = {
-    readConfig,
+    containsRelationship,
+    getRelationship,
+    getArrayItemWithFieldValue,
     tenantVariables,
     processPartialTemplates,
     requireTemplates
 };
 
-// Expose some of the jhipster config vars for the templates
-function readConfig(config, context) {
-    Object.keys(config).forEach(key => {
-        context[key] = config[key];
+function containsRelationship(generator, relationships, value) {
+    return getRelationship(generator, relationships, value) !== undefined;
+}
+
+function getRelationship(generator, relationships, value) {
+    return getArrayItemWithFieldValue(generator, relationships, 'relationshipName', value);
+}
+
+function getArrayItemWithFieldValue(generator, array, fieldName, value) {
+    value = generator._.toLower(value);
+    let found;
+    array.forEach(item => {
+        if (item[fieldName] !== undefined && generator._.toLower(item[fieldName]) === value) {
+            found = item;
+        }
     });
+    return found;
 }
 
 // Variations in tenant name
@@ -115,7 +129,7 @@ function requireTemplates(prefix, templates, context) {
     templates.forEach(file => {
         // Look for specific version
         const template = prefix + file;
-        let version = context.config.get('jhipsterVersion');
+        let version = context.config.get('jhipsterVersion') || '6.2.0';
         while (version !== '') {
             try {
                 ret.push(require(`${template}.v${version}.js`));
