@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 const _ = require('lodash');
 const CommonGenerator = require('generator-jhipster/generators/common');
+const debug = require('debug')('jhipster:multitenancy2:common');
 
 const mtUtils = require('../multitenancy-utils');
 
@@ -91,14 +92,7 @@ module.exports = class extends CommonGenerator {
         // Here we are not overriding this phase and hence its being handled by JHipster
         const configuringCustomPhaseSteps = {
             saveConf() {
-                this.firstExec = this.config.get('tenantName') === undefined;
-
-                this.tenantExists = false;
-                this.getExistingEntities().forEach(entity => {
-                    if (this._.toLower(entity.definition.name) === this._.toLower(this.tenantName)) {
-                        this.tenantExists = true;
-                    }
-                });
+                this.tenantNameExists = this.config.get('tenantName') !== undefined;
 
                 this.configOptions.tenantName = this.tenantName;
 
@@ -118,7 +112,10 @@ module.exports = class extends CommonGenerator {
     get writing() {
         const writingPreCustomPhaseSteps = {
             generateTenant() {
-                if (this.tenantExists && !this.firstExec) return;
+                if (this.tenantNameExists) {
+                    debug('Ignoring entity-tenant since tenantName already is saved to .yo-rc.json');
+                    return;
+                }
 
                 const options = this.options;
                 const configOptions = this.configOptions;
