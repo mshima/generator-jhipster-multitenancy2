@@ -8,12 +8,6 @@ module.exports = class extends EntityGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
-        this.option('default-tenant-aware', {
-            desc: 'Always discover relationship with tenant',
-            type: Boolean,
-            defaults: false
-        });
-
         // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get('tenantName'));
 
@@ -148,16 +142,18 @@ module.exports = class extends EntityGenerator {
 
                 // look for tenantAware entities
                 let relationWithTenant = false;
-                if (context.fileData !== undefined && context.fileData.relationships !== undefined) {
-                    context.relationships.forEach(field => {
-                        if (this._.toLower(field.otherEntityName) === this._.toLower(context.tenantName)) {
-                            relationWithTenant = true;
-                        }
-                    });
-                }
 
-                // Always use default value
-                if (this.options.defaultTenantAware) {
+                if (this.options.defaultTenantAware !== undefined) {
+                    this.newTenantAware = this.options.defaultTenantAware;
+                } else if (this.options.relationTenantAware) {
+                    // Always use relation value if exists
+                    if (context.fileData !== undefined && context.fileData.relationships !== undefined) {
+                        context.relationships.forEach(field => {
+                            if (this._.toLower(field.otherEntityName) === this._.toLower(context.tenantName)) {
+                                relationWithTenant = true;
+                            }
+                        });
+                    }
                     this.newTenantAware = relationWithTenant;
                 }
 

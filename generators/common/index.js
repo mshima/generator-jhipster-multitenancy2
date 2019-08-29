@@ -11,13 +11,25 @@ module.exports = class extends CommonGenerator {
         this.option('tenant-name', {
             desc: 'Set tenant name',
             type: String,
-            defaults: undefined
+            required: false
         });
 
         this.option('tenant-changelog-date', {
             desc: 'Use liquibase changelog date to reproducible builds',
             type: String,
-            defaults: undefined
+            required: false
+        });
+
+        this.option('default-tenant-aware', {
+            desc: 'Default for whether you make an entity tenant aware or not',
+            type: Boolean,
+            required: false
+        });
+
+        this.option('relation-tenant-aware', {
+            desc: 'Use existing relationship with tenant',
+            type: Boolean,
+            defaults: false
         });
 
         this.tenantName = this.options.tenantName || this.config.get('tenantName');
@@ -26,22 +38,8 @@ module.exports = class extends CommonGenerator {
 
     get initializing() {
         const myCustomPhaseSteps = {
-            askForModuleName() {
-                if (this.baseName) return;
-
-                this.askModuleName(this);
-            },
             loadConf() {
-                //                if (!this.options.baseName) {
-                //                    this.error(`This is a JHipster blueprint and should be used only like 1 ${this.options.baseName}`);
-                //                }
-                if (!this.baseName) {
-                    this.error(`This is a JHipster blueprint and should be used only like 2 ${this.configOptions.baseName}`);
-                }
                 this.configOptions.baseName = this.baseName;
-                if (!this.configOptions.baseName) {
-                    this.error(`This is a JHipster blueprint and should be used only like 2 ${this.configOptions.baseName}`);
-                }
 
                 if (this.options['tenant-changelog-date'] !== undefined) {
                     this.config.set('nextChangelogDate', this.tenantChangelogDate);
@@ -128,7 +126,7 @@ module.exports = class extends CommonGenerator {
                 this.composeWith(require.resolve('../entity'), {
                     ...options,
                     configOptions,
-                    regenerate: false,
+                    regenerate: true,
                     'skip-install': false,
                     debug: this.isDebugEnabled,
                     arguments: [this.tenantName]
