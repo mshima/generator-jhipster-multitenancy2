@@ -14,19 +14,6 @@ module.exports = class extends EntityGenerator {
             defaults: false
         });
 
-        //        this.log(this);
-        //        const jhContext = (this.jhipsterContext = this.options.jhipsterContext);
-        //
-        //        if (!jhContext) {
-        //            this.error('This is a JHipster blueprint and should be used only like jhipster --blueprint myblueprint');
-        //        }
-        //
-        //        this.configOptions = jhContext.configOptions || {};
-        //        this.log(this.configOptions);
-        //
-        //        // This sets up options for this sub generator and is being reused from JHipster
-        //        jhContext.setupEntityOptions(this, jhContext, this);
-
         // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get('tenantName'));
 
@@ -50,58 +37,14 @@ module.exports = class extends EntityGenerator {
     }
 
     get initializing() {
-        /**
-         * Any method beginning with _ can be reused from the superclass `EntityGenerator`
-         *
-         * There are multiple ways to customize a phase from JHipster.
-         *
-         * 1. Let JHipster handle a phase, blueprint doesnt override anything.
-         * ```
-         *      return super._initializing();
-         * ```
-         *
-         * 2. Override the entire phase, this is when the blueprint takes control of a phase
-         * ```
-         *      return {
-         *          myCustomInitPhaseStep() {
-         *              // Do all your stuff here
-         *          },
-         *          myAnotherCustomInitPhaseStep(){
-         *              // Do all your stuff here
-         *          }
-         *      };
-         * ```
-         *
-         * 3. Partially override a phase, this is when the blueprint gets the phase from JHipster and customizes it.
-         * ```
-         *      const phaseFromJHipster = super._initializing();
-         *      const myCustomPhaseSteps = {
-         *          displayLogo() {
-         *              // override the displayLogo method from the _initializing phase of JHipster
-         *          },
-         *          myCustomInitPhaseStep() {
-         *              // Do all your stuff here
-         *          },
-         *      }
-         *      return Object.assign(phaseFromJHipster, myCustomPhaseSteps);
-         * ```
-         */
         const phaseFromJHipster = super._initializing();
         const postCustomPhaseSteps = {
             setUpVariables() {
                 const context = this.context;
 
-                //                this.log('@@@');
-                //                this.log(this.configOptions);
-
                 if (context.enableTranslation === undefined) {
                     context.enableTranslation = this.configOptions.enableTranslation;
                 }
-                //                this.log(context.enableTranslation);
-                //                this.log(this.getAllJhipsterConfig(this, true).get('enableTranslation'));
-                //                this.log(this.getAllJhipsterConfig(this, true));
-                //                this.log(this);
-                //                this.log(this.config);
 
                 if (this.isTenant) {
                     context.clientRootFolder = '../admin';
@@ -367,22 +310,18 @@ module.exports = class extends EntityGenerator {
     }
 
     get default() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
         return super._default();
     }
 
     get writing() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
         return super._writing();
     }
 
     get install() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
         return super._install();
     }
 
     get end() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
         return super._end();
     }
 };
