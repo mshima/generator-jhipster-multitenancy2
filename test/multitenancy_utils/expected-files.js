@@ -32,7 +32,7 @@ const expectedFiles = {
         server: [
             '.jhipster/Company.json',
             `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/domain/Company.java`,
-            `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/domain/Company.java`,
+            `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/domain/CompanyParameter.java`,
             `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/repository/CompanyRepository.java`,
             `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/web/rest/CompanyResource.java`,
             `${SERVER_MAIN_SRC_DIR}com/mycompany/myapp/aop/company/CompanyAspect.java`,
