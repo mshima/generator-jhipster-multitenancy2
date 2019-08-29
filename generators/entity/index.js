@@ -3,6 +3,7 @@ const chalk = require('chalk');
 const EntityGenerator = require('generator-jhipster/generators/entity');
 
 const mtUtils = require('../multitenancy-utils');
+const workarounds = require('../workarounds');
 
 module.exports = class extends EntityGenerator {
     constructor(args, opts) {
@@ -15,19 +16,7 @@ module.exports = class extends EntityGenerator {
         this.context.isTenant = this.isTenant;
 
         // Workaround https://github.com/jhipster/generator-jhipster/issues/10205
-        const options = this.options;
-        const configOptions = this.configOptions;
-        this._getAllJhipsterConfig = this.getAllJhipsterConfig;
-        this.getAllJhipsterConfig = function(generator = this, force) {
-            const configuration = this._getAllJhipsterConfig(generator, force);
-            configuration._get = configuration.get;
-            configuration.get = function(key) {
-                const ret = options[key] || configOptions[key] || configuration._get(key);
-                // generator.log(`${key} = ${ret}`);
-                return ret;
-            };
-            return configuration;
-        };
+        workarounds.fixGetAllJhipsterConfig(this);
     }
 
     get initializing() {
