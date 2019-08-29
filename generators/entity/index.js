@@ -52,33 +52,9 @@ module.exports = class extends EntityGenerator {
                     return;
                 }
 
-                if (!context.fileData) {
+                // We should force some tenant options.
+                if (context.fileData) {
                     context.service = 'serviceClass';
-                    context.pagination = 'pagination';
-                    context.changelogDate = this.config.get('tenantChangelogDate');
-
-                    context.fields = [
-                        {
-                            fieldName: 'name',
-                            fieldType: 'String',
-                            fieldValidateRules: ['required']
-                        }
-                    ];
-
-                    context.relationships = [
-                        {
-                            relationshipName: 'users',
-                            otherEntityName: 'user',
-                            relationshipType: 'one-to-many',
-                            otherEntityField: 'login',
-                            // relationshipValidateRules: 'required',
-                            ownerSide: true,
-                            otherEntityRelationshipName: context.tenantName
-                        }
-                    ];
-                } else {
-                    context.service = 'serviceClass';
-                    context.pagination = 'pagination';
                     context.changelogDate = this.config.get('tenantChangelogDate');
 
                     let containsName = false;

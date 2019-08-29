@@ -123,10 +123,10 @@ module.exports = class extends CommonGenerator {
                 const options = this.options;
                 const configOptions = this.configOptions;
 
-                this.composeWith(require.resolve('../entity'), {
+                this.composeWith(require.resolve('../entity-tenant'), {
                     ...options,
                     configOptions,
-                    regenerate: true,
+                    regenerate: false,
                     'skip-install': false,
                     debug: this.isDebugEnabled,
                     arguments: [this.tenantName]
