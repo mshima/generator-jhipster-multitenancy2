@@ -206,7 +206,7 @@ module.exports = class extends EntityGenerator {
                         relationshipName: context.tenantName,
                         otherEntityName: context.tenantName,
                         relationshipType: 'many-to-one',
-                        otherEntityField: 'id',
+                        otherEntityField: 'name',
                         relationshipValidateRules: 'required',
                         ownerSide: true,
                         clientRootFolder: '../admin',
