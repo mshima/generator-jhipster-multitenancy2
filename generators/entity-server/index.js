@@ -1,6 +1,9 @@
 /* eslint-disable consistent-return */
 const EntityServerGenerator = require('generator-jhipster/generators/entity-server');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const debug = require('debug')('jhipster:multitenancy2:entity:server');
+
+const TenantisedNeedle = require('./needle-api/needle-server-tenantised-entities-services');
 
 const mtUtils = require('../multitenancy-utils');
 const files = require('./files');
@@ -34,12 +37,25 @@ module.exports = class extends EntityServerGenerator {
             },
             // make the necessary server code changes
             customServerCode() {
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
+
+                const tenantisedNeedle = new TenantisedNeedle(this);
                 if (this.tenantAware) {
                     files.writeTenantAwareFiles.call(this);
                     mtUtils.processPartialTemplates(files.partials.entityTenantAwareTemplates(this), this);
+
+                    tenantisedNeedle.addEntityToTenantAspect(this, this.name);
                 } else if (this.isTenant) {
                     files.writeTenantFiles.call(this);
                     mtUtils.processPartialTemplates(files.partials.tenantTemplates(this), this);
+
+                    debug('Adding already tenantised entities');
+                    if (this.configOptions.tenantAwareEntities) {
+                        this.configOptions.tenantAwareEntities.forEach(tenantAwareEntity => {
+                            debug(`Adding entity ${tenantAwareEntity}`);
+                            tenantisedNeedle.addEntityToTenantAspect(this, tenantAwareEntity);
+                        });
+                    }
                 }
             }
         };

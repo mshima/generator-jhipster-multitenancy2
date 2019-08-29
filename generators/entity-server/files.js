@@ -49,6 +49,23 @@ function writeTenantFiles() {
                     }
                 ]
             }
+        ],
+        aop: [
+            // copy over aspect
+            {
+                path: this.SERVER_MAIN_SRC_DIR,
+                templates: [
+                    {
+                        file: 'package/domain/_TenantParameter.java',
+                        renameTo: generator => `${this.packageFolder}/domain/${this.tenantNameUpperFirst}Parameter.java`
+                    },
+                    {
+                        file: 'package/aop/_tenant/_TenantAspect.java',
+                        renameTo: generator =>
+                            `${this.packageFolder}/aop/${this.tenantNameLowerFirst}/${this.tenantNameUpperFirst}Aspect.java`
+                    }
+                ]
+            }
         ]
     };
 

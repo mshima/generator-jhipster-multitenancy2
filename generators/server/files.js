@@ -23,16 +23,6 @@ function writeFiles() {
     this.packageFolder = this.config.get('packageFolder');
     // references to the various directories we'll be copying files to
 
-    this.tenantisedEntityServices = `@Before("execution(* ${this.packageName}.service.UserService.*(..))`;
-    if (this.configOptions.tenantAwareEntities) {
-        this.configOptions.tenantAwareEntities.forEach(tenantAwareEntity => {
-            this.tenantisedEntityServices = `${this.tenantisedEntityServices} || execution(* ${
-                this.packageName
-            }.service.${tenantAwareEntity}Service.*(..))`;
-        });
-    }
-    this.tenantisedEntityServices = `${this.tenantisedEntityServices}")`;
-
     // template variables
     mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
     this.changelogDate = this.config.get('tenantChangelogDate');
@@ -93,15 +83,6 @@ function writeFiles() {
             {
                 path: jhipsterConstants.SERVER_MAIN_SRC_DIR,
                 templates: [
-                    {
-                        file: 'package/domain/_TenantParameter.java',
-                        renameTo: generator => `${this.packageFolder}/domain/${this.tenantNameUpperFirst}Parameter.java`
-                    },
-                    {
-                        file: 'package/aop/_tenant/_TenantAspect.java',
-                        renameTo: generator =>
-                            `${this.packageFolder}/aop/${this.tenantNameLowerFirst}/${this.tenantNameUpperFirst}Aspect.java`
-                    },
                     {
                         file: 'package/aop/_tenant/_UserAspect.java',
                         renameTo: generator => `${this.packageFolder}/aop/${this.tenantNameLowerFirst}/UserAspect.java`
