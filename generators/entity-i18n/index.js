@@ -19,16 +19,7 @@ module.exports = class extends EntityI18nGenerator {
     }
 
     get configuring() {
-        const postConfiguringSteps = {
-            customConfigure() {
-                if (this.isTenant) {
-                    this.entityTranslationKey = `${this.entityTranslationKey}`;
-                    this.entityTranslationKeyMenu = `${this.entityTranslationKeyMenu}`;
-                }
-            }
-        };
-
-        return { ...super._configuring(), ...postConfiguringSteps };
+        return super._configuring();
     }
 
     get default() {
