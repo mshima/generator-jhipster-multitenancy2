@@ -13,7 +13,7 @@ const tmpls = [
         type: 'replaceContent',
         versions: ['6.1.2', '6.2.0'],
         regex: true,
-        target: context => `\n(.*)"admin${context.tenantNameUpperFirst}": "${context.tenantNameUpperFirst}",`,
+        target: context => `\n(.*)"${context.tenantMenuTranslationKey}": "${context.tenantNameUpperFirst}",`,
         tmpl: context => ''
     }
 ];

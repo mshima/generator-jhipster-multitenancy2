@@ -50,7 +50,7 @@ const expectedFiles = {
         `${SERVER_MAIN_RES_DIR}config/liquibase/data/company_user.csv`
     ],
 
-    i18nJson: [`${CLIENT_MAIN_SRC_DIR}i18n/fr/adminCompany.json`]
+    i18nJson: [`${CLIENT_MAIN_SRC_DIR}i18n/fr/company.json`]
 };
 
 module.exports = expectedFiles;

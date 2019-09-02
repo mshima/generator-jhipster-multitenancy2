@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 const EntityGenerator = require('generator-jhipster/generators/entity');
+const debug = require('debug')('jhipster:multitenancy2:entity-tenant');
 
 const mtUtils = require('../multitenancy-utils');
 const workarounds = require('../workarounds');
@@ -15,6 +16,8 @@ module.exports = class extends EntityGenerator {
 
         // pass to entity-* subgen
         this.context.isTenant = this.isTenant;
+
+        debug('Initializing entity-tenant');
     }
 
     get initializing() {
@@ -31,7 +34,8 @@ module.exports = class extends EntityGenerator {
                 context.skipMenu = true;
 
                 /* tenant variables */
-                mtUtils.tenantVariables.call(this, this.config.get('tenantName'), context);
+                const configuration = this.getAllJhipsterConfig(this, true);
+                mtUtils.tenantVariables(configuration.get('tenantName'), context, this);
             }
         };
 
@@ -76,25 +80,17 @@ module.exports = class extends EntityGenerator {
             configureTenantFolder() {
                 const context = this.context;
 
-                // Angular client
-                // `entities/${generator.entityFolderName}/${generator.entityFileName}`
-                // Tests
-                // `spec/app/entities/${generator.entityFolderName}/${generator.entityFileName}
-                // Protractor
-                // `e2e/entities/${generator.entityFolderName}/${generator.entityFileName}`
-                context.entityFolderName += '-management';
-                context.entityFileName += '-management';
+                context.entityFolderName = context.tenantFolderName;
+                context.entityFileName = context.tenantFileName;
 
-                // Angular service
-                // entities/${generator.entityFolderName}/${generator.entityServiceFileName}.service.ts
-                context.entityServiceFileName += '-management';
+                context.entityServiceFileName = context.tenantFileName;
 
-                context.entityStateName += '-management';
-                context.entityUrl = `admin/${context.entityStateName}`;
+                context.entityStateName = context.tenantStateName;
+                context.entityUrl = context.entityStateName;
 
-                // Angular model
-                // `shared/model/${generator.entityModelFileName}.model.ts`
-                // this.entityModelFileName = this.entityModelFileName;
+                context.entityTranslationKey = context.tenantTranslationKey;
+                context.entityTranslationKeyMenu = context.tenantMenuTranslationKey;
+                context.i18nKeyPrefix = `${context.angularAppName}.${context.entityTranslationKey}`;
             },
             postJson() {
                 // jhipster will override tenant's changelogDate

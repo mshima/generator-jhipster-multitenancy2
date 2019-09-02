@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const pluralize = require('pluralize');
-const debug = require('debug')('jhipster:multitenancy:utils');
+const debug = require('debug')('jhipster:multitenancy2:utils');
 
 const packagejs = require('generator-jhipster/package.json');
 
@@ -38,13 +38,25 @@ function getArrayItemWithFieldValue(generator, array, fieldName, value) {
 }
 
 // Variations in tenant name
-function tenantVariables(tenantName, context) {
-    if (tenantName === undefined) return;
+function tenantVariables(tenantName, context, generator = this) {
+    if (tenantName === undefined) {
+        debug('tenantName is undefined');
+        return;
+    }
     /* tenant variables */
     const tenantNamePluralizedAndSpinalCased = _.kebabCase(pluralize(tenantName));
 
     context.tenantClientRootFolder = '../admin';
-    context.tenantFileSuffix = '-management';
+
+    if (context.tenantFileSuffix === undefined) {
+        const configuration = generator.getAllJhipsterConfig(generator, true);
+
+        debug('Loading tenantFileSuffix');
+        context.tenantFileSuffix = configuration.get('tenantFileSuffix');
+        // eslint-disable-next-line prettier/prettier
+        context.tenantFileSuffix = context.tenantFileSuffix ? context.tenantFileSuffix = `-${context.tenantFileSuffix}` : '';
+        debug(`Using tenantFileSuffix: ${context.tenantFileSuffix}`);
+    }
 
     context.tenantName = _.camelCase(tenantName);
 
@@ -56,20 +68,20 @@ function tenantVariables(tenantName, context) {
     context.tenantInstance = _.lowerFirst(tenantName);
     context.tenantInstancePlural = pluralize(context.tenantInstance);
     context.tenantApiUrl = tenantNamePluralizedAndSpinalCased;
-    context.tenantFileName = _.kebabCase(context.tenantNameCapitalized + _.upperFirst(context.entityAngularJSSuffix));
-    context.tenantFolderName = this.getEntityFolderName(context.clientRootFolder, context.tenantFileName) + context.tenantFileSuffix;
+    context.tenantFileName =
+        _.kebabCase(context.tenantNameCapitalized + _.upperFirst(context.entityAngularJSSuffix)) + context.tenantFileSuffix;
+    context.tenantFolderName = generator.getEntityFolderName(context.clientRootFolder, context.tenantFileName);
     context.tenantModelFileName = context.tenantFolderName;
     // context.tenantParentPathAddition = context.getEntityParentPathAddition(context.clientRootFolder);
     context.tenantPluralFileName = tenantNamePluralizedAndSpinalCased + context.entityAngularJSSuffix;
     context.tenantServiceFileName = context.tenantFileName;
-    context.tenantAngularName = context.tenantClass + this.upperFirstCamelCase(context.entityAngularJSSuffix);
-    context.tenantReactName = context.tenantClass + this.upperFirstCamelCase(context.entityAngularJSSuffix);
+    context.tenantAngularName =
+        context.tenantClass + generator.upperFirstCamelCase(context.entityAngularJSSuffix + context.tenantFileSuffix);
+    context.tenantReactName = context.tenantClass + generator.upperFirstCamelCase(context.entityAngularJSSuffix + context.tenantFileSuffix);
 
-    context.tenantStateName = `admin/${_.kebabCase(context.tenantAngularName)}${context.tenantFileSuffix}`;
+    context.tenantStateName = `admin/${context.tenantFileName}`;
 
-    context.tenantTranslationKey = context.tenantClientRootFolder
-        ? _.camelCase(`${context.tenantClientRootFolder}-${context.tenantInstance}`)
-        : context.tenantInstance;
+    context.tenantTranslationKey = context.tenantInstance;
 
     context.tenantMenuTranslationKey = `${context.tenantName}Management`;
 
@@ -88,7 +100,7 @@ function tenantVariables(tenantName, context) {
 
     // relative to app root
     context.tenantModelPath = 'shared/admin';
-    context.tenantServicePath = `admin/${context.tenantFileName}-management`;
+    context.tenantServicePath = `admin/${context.tenantFileName}`;
 }
 
 function processPartialTemplates(partialTemplates, context) {

@@ -38,7 +38,7 @@ module.exports = class extends EntityGenerator {
                 }
 
                 /* tenant variables */
-                mtUtils.tenantVariables.call(this, this.config.get('tenantName'), context);
+                mtUtils.tenantVariables.call(this, this.config.get('tenantName'), context, this);
 
                 if (!this.isTenant) {
                     // if tenantAware is undefined (first pass), then override changelogDate
@@ -184,6 +184,9 @@ module.exports = class extends EntityGenerator {
                         if (!tenantRelationship.otherEntityRelationshipName) {
                             tenantRelationship.otherEntityRelationshipName = context.tenantInstance;
                         }
+                        if (!tenantRelationship.otherEntityAngularName) {
+                            tenantRelationship.otherEntityAngularName = context.tenantAngularName;
+                        }
                         return;
                     }
 
@@ -198,6 +201,7 @@ module.exports = class extends EntityGenerator {
                         clientRootFolder: '../admin',
                         otherEntityStateName: context.tenantStateName,
                         otherEntityFolderName: context.tenantFolderName,
+                        otherEntityAngularName: context.tenantAngularName,
                         otherEntityRelationshipName: context.tenantInstance
                     };
                     relationships.push(real);
@@ -211,13 +215,19 @@ module.exports = class extends EntityGenerator {
 
                 if (!this.isTenant) return;
 
-                context.entityFolderName += '-management';
-                context.entityFileName += '-management';
+                context.entityFolderName = context.tenantFolderName;
+                context.entityFileName = context.tenantFileName;
 
-                context.entityServiceFileName += '-management';
+                context.entityServiceFileName = context.tenantFileName;
 
-                context.entityStateName += '-management';
-                context.entityUrl = `admin/${context.entityStateName}`;
+                context.entityStateName = context.tenantStateName;
+                context.entityUrl = context.entityStateName;
+                // context.entityStateName = context.tenantStateName;
+                // context.entityUrl = context.tenantStateName;
+
+                context.entityTranslationKey = context.tenantTranslationKey;
+                context.entityTranslationKeyMenu = context.tenantMenuTranslationKey;
+                context.i18nKeyPrefix = `${context.angularAppName}.${context.entityTranslationKey}`;
             },
             postJson() {
                 if (this.context.tenantAware) {

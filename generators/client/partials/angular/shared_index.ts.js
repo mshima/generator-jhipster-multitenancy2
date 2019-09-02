@@ -4,8 +4,7 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: context => "export * from './util/datepicker-adapter';",
-        tmpl: context =>
-            `export * from '../admin/${context.tenantNameLowerFirst}-management/${context.tenantNameLowerFirst}-management.service';`
+        tmpl: context => `export * from '../admin/${context.tenantFolderName}/${context.tenantFileName}.service';`
     }
 ];
 

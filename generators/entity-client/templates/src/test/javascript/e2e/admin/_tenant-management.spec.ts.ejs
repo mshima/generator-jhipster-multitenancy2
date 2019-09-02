@@ -23,7 +23,7 @@ import { <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>Component
 
 const expect = chai.expect;
 
-describe('<%= tenantNameLowerFirst %>-management e2e test', () => {
+describe('<%= tenantFileName %> e2e test', () => {
 
     let navBarPage: NavBarPage;
     let signInPage: SignInPage;
@@ -40,7 +40,7 @@ describe('<%= tenantNameLowerFirst %>-management e2e test', () => {
 
     it('should load <%= tenantNameLowerFirst %> management', async () => {
         await navBarPage.clickOnAdminMenu();
-        await navBarPage.clickOnAdmin('<%= tenantNameLowerFirst %>-management');
+        await navBarPage.clickOnAdmin('<%= tenantFileName %>');
         <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage = new <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>ComponentsPage();
         await browser.wait(ec.visibilityOf(<%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.title), 5000);
         expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.getTitle()).to.eq('<%= angularAppName %>.<%= entityTranslationKey %>.home.title');
@@ -50,7 +50,7 @@ describe('<%= tenantNameLowerFirst %>-management e2e test', () => {
         await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.clickOnCreateButton();
         <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage = new <%= tenantNameUpperFirst %><%= angularTenantComponentSuffix %>UpdatePage();
         expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getPageTitle()).to.eq('<%= angularAppName %>.<%= entityTranslationKey %>.home.createOrEditLabel');
-        expect(await browser.getCurrentUrl()).to.match(new RegExp('.*/admin/<%= tenantNameLowerFirst %>-management/new'));
+        expect(await browser.getCurrentUrl()).to.match(new RegExp('.*/<%= tenantStateName %>/new'));
         await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.cancel();
     });
 
@@ -64,7 +64,7 @@ describe('<%= tenantNameLowerFirst %>-management e2e test', () => {
         expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
 
         expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
-        expect(await browser.getCurrentUrl()).to.match(new RegExp('.*/admin/<%= tenantNameLowerFirst %>-management'));
+        expect(await browser.getCurrentUrl()).to.match(new RegExp('.*/<%= tenantStateName %>'));
     });
 
     after(async () => {

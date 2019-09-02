@@ -11,6 +11,8 @@ const files = require('./files');
 module.exports = class extends EntityServerGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
+        // Fix {Tenant}Resource.java setting ENTITY_NAME as 'admin{Tenant}'
+        this.skipUiGrouping = true;
     }
 
     get initializing() {
@@ -37,7 +39,7 @@ module.exports = class extends EntityServerGenerator {
             },
             // make the necessary server code changes
             customServerCode() {
-                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this, this);
 
                 const tenantisedNeedle = new TenantisedNeedle(this);
                 if (this.tenantAware) {

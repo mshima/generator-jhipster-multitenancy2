@@ -28,6 +28,7 @@ describe('JHipster generator with multitenancy2 blueprint', () => {
                         skipInstall: true,
                         blueprint: 'multitenancy2',
                         defaultTenantAware: true,
+                        tenantFileSuffix: 'management',
                         skipChecks: true
                     })
                     .withGenerators([

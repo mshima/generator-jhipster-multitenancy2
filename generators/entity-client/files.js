@@ -47,8 +47,7 @@ function writeFiles() {
                 templates: [
                     {
                         file: 'e2e/admin/_tenant-management.spec.ts',
-                        renameTo: generator =>
-                            `e2e/admin/${this.tenantNameLowerFirst}-management/${this.tenantNameLowerFirst}-management-tenant.spec.ts`
+                        renameTo: generator => `e2e/admin/${this.tenantFolderName}/${this.tenantFileName}-tenant.spec.ts`
                     }
                 ]
             }
