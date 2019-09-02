@@ -6,6 +6,8 @@ const debug = require('debug')('jhipster:multitenancy2:entity');
 const mtUtils = require('../multitenancy-utils');
 const workarounds = require('../workarounds');
 
+workarounds.fixGetAllJhipsterConfig(EntityGenerator);
+
 module.exports = class extends EntityGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
@@ -15,9 +17,6 @@ module.exports = class extends EntityGenerator {
 
         // pass to entity-* subgen
         this.context.isTenant = this.isTenant;
-
-        // Workaround https://github.com/jhipster/generator-jhipster/issues/10205
-        workarounds.fixGetAllJhipsterConfig(this);
     }
 
     get initializing() {

@@ -5,20 +5,17 @@ const mtUtils = require('../multitenancy-utils');
 const files = require('./files');
 const workarounds = require('../workarounds');
 
+workarounds.fixGetAllJhipsterConfig(EntityClientGenerator);
+workarounds.fixAddEntityToMenu(EntityClientGenerator);
+workarounds.fixAddEntityToModule(EntityClientGenerator);
+
 module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {
         super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
     }
 
     get initializing() {
-        const postInitializingSteps = {
-            prepare() {
-                if (this.isTenant) {
-                    workarounds.fixAddEntityToModule(this);
-                }
-            }
-        };
-        return { ...super._initializing(), ...postInitializingSteps };
+        return super._initializing();
     }
 
     get prompting() {
@@ -42,13 +39,6 @@ module.exports = class extends EntityClientGenerator {
                     if (!this.configOptions.tenantMenu) {
                         // Removes this condition when creating moves to entity-tenant, this is to ensure this is executed only once.
                         this.configOptions.tenantMenu = true;
-                        this.addElementToAdminMenu(
-                            `admin/${this.tenantNameLowerFirst}-management`,
-                            'asterisk',
-                            this.enableTranslation,
-                            this.clientFramework,
-                            `global.menu.admin.${this.tenantMenuTranslationKey}`
-                        );
                     }
 
                     // tenant
