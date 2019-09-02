@@ -2,6 +2,10 @@ const _ = require('lodash');
 const pluralize = require('pluralize');
 const debug = require('debug')('jhipster:multitenancy:utils');
 
+const packagejs = require('generator-jhipster/package.json');
+
+const jhipsterVersion = packagejs.version;
+
 /**
  * Utils file to hold methods common to both generator and sub generator
  */
@@ -93,8 +97,8 @@ function processPartialTemplates(partialTemplates, context) {
         templates.tmpls.forEach(item => {
             debug(`======== Template ${file}`);
             // ignore if version is not compatible
-            if (item.versions && !item.versions.includes(context.config.get('jhipsterVersion'))) {
-                debug('Version not compatible');
+            if (item.versions && !item.versions.includes(jhipsterVersion)) {
+                debug(`Version not compatible ${jhipsterVersion}`);
                 return;
             }
             if (item.disabled) {
@@ -129,7 +133,7 @@ function requireTemplates(prefix, templates, context) {
     templates.forEach(file => {
         // Look for specific version
         const template = prefix + file;
-        let version = context.config.get('jhipsterVersion') || '6.2.0';
+        let version = jhipsterVersion;
         while (version !== '') {
             try {
                 ret.push(require(`${template}.v${version}.js`));
