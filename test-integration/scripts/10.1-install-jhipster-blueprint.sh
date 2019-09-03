@@ -17,6 +17,7 @@ mkdir -p "$JHI_FOLDER_APP"
 cd "$JHI_FOLDER_APP"
 
 # Create package.json otherwise npm will error and break
+# https://github.com/visionmedia/debug/issues/261
 npm init -f
 
 npm install "$JHI_HOME"
