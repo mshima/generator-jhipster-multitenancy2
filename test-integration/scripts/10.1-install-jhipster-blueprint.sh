@@ -20,7 +20,6 @@ cd "$JHI_FOLDER_APP"
 npm init -f
 
 npm install "$JHI_HOME"
-npm test
 
 # Remove package.json to let jhipster create it's own
 rm package.json
