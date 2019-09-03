@@ -101,7 +101,7 @@ jobs:
           #----------------------------------------------------------------------
           - bash: $(JHI_SCRIPTS)/10-install-jhipster.sh
             displayName: 'GENERATION: install JHipster'
-          - bash: $(JHI_SCRIPTS)/10-install-jhipster-blueprint.sh
+          - bash: $(JHI_SCRIPTS)/10.1-install-jhipster-blueprint.sh
             displayName: 'GENERATION: install Blueprint'
           - bash: $(JHI_SCRIPTS)/11-generate-entities.sh
             displayName: 'GENERATION: entities'
