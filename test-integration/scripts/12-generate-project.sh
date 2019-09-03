@@ -20,6 +20,17 @@ if [[ "$JHI_ENTITY" == "jdl" ]]; then
     cd "$JHI_FOLDER_APP"
     jhipster import-jdl *.jdl --no-insight
 
+elif [[ "$JHI_ENTITY" == "jdl-multitenancy2-company" ]]; then
+    #-------------------------------------------------------------------------------
+    # Generate Multitenancy2 project with JDL
+    #-------------------------------------------------------------------------------
+    mkdir -p "$JHI_FOLDER_APP"
+    cp -f "$JHI_SAMPLES"/"$JHI_APP"/*.jdl "$JHI_FOLDER_APP"/
+    cd "$JHI_FOLDER_APP"
+    jhipster import-jdl *.jdl --no-insight --blueprints multitenancy2 --tenant-name company --relation-tenant-aware
+    # Regenerate to fix errors
+    jhipster --with-entities --no-insight --blueprints multitenancy2 --relation-tenant-aware --force
+
 else
     #-------------------------------------------------------------------------------
     # Generate UAA project with jhipster
