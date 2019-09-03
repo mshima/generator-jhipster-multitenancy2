@@ -33,14 +33,7 @@ module.exports = class extends CommonGenerator {
             defaults: false
         });
 
-        this.option('tenant-file-suffix', {
-            desc: 'Use suffix for tenant files',
-            type: String,
-            required: false
-        });
-
         this.tenantName = this.options.tenantName || this.config.get('tenantName');
-        this.tenantFileSuffix = this.options.tenantFileSuffix || this.config.get('tenantFileSuffix');
         this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
     }
 
@@ -55,8 +48,6 @@ module.exports = class extends CommonGenerator {
                     this.tenantChangelogDate = this.dateFormatForLiquibase();
                 }
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
-                this.config.set('tenantFileSuffix', this.tenantFileSuffix);
-                debug(`Using tenantFileSuffix: ${this.tenantFileSuffix}`);
 
                 // This will be used by entity-server to crate "@Before" annotation in TenantAspect
                 this.configOptions.tenantAwareEntities = [];
@@ -107,7 +98,6 @@ module.exports = class extends CommonGenerator {
 
                 this.config.set('tenantName', this.tenantName);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
-                this.config.set('tenantFileSuffix', this.tenantFileSuffix);
             }
         };
         // configuringCustomPhaseSteps should be run after configuring, otherwise tenantName will be overridden

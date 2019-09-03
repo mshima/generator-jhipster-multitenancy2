@@ -20,7 +20,7 @@ const tmpls = [
     },
     {
         type: 'replaceContent',
-        target: context => `await navBarPage.goToEntity('${context.entityFileName}');`,
+        target: context => `await navBarPage.goToEntity('${context.entityStateName}');`,
         tmpl: context => `await navBarPage.clickOnAdminMenu();
 await navBarPage.clickOnAdmin('${context.entityFileName}');`
     }

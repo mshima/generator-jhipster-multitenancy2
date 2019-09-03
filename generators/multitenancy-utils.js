@@ -48,16 +48,6 @@ function tenantVariables(tenantName, context, generator = this) {
 
     context.tenantClientRootFolder = '../admin';
 
-    if (context.tenantFileSuffix === undefined) {
-        const configuration = generator.getAllJhipsterConfig(generator, true);
-
-        debug('Loading tenantFileSuffix');
-        context.tenantFileSuffix = configuration.get('tenantFileSuffix');
-        // eslint-disable-next-line prettier/prettier
-        context.tenantFileSuffix = context.tenantFileSuffix ? context.tenantFileSuffix = `-${context.tenantFileSuffix}` : '';
-        debug(`Using tenantFileSuffix: ${context.tenantFileSuffix}`);
-    }
-
     context.tenantName = _.camelCase(tenantName);
 
     context.tenantNameCapitalized = _.upperFirst(tenantName);
@@ -68,22 +58,20 @@ function tenantVariables(tenantName, context, generator = this) {
     context.tenantInstance = _.lowerFirst(tenantName);
     context.tenantInstancePlural = pluralize(context.tenantInstance);
     context.tenantApiUrl = tenantNamePluralizedAndSpinalCased;
-    context.tenantFileName =
-        _.kebabCase(context.tenantNameCapitalized + _.upperFirst(context.entityAngularJSSuffix)) + context.tenantFileSuffix;
-    context.tenantFolderName = generator.getEntityFolderName(context.clientRootFolder, context.tenantFileName);
+    context.tenantFileName = _.kebabCase(context.tenantNameCapitalized + _.upperFirst(context.entityAngularJSSuffix));
+    context.tenantFolderName = generator.getEntityFolderName(context.tenantClientRootFolder, context.tenantFileName);
     context.tenantModelFileName = context.tenantFolderName;
     // context.tenantParentPathAddition = context.getEntityParentPathAddition(context.clientRootFolder);
     context.tenantPluralFileName = tenantNamePluralizedAndSpinalCased + context.entityAngularJSSuffix;
     context.tenantServiceFileName = context.tenantFileName;
-    context.tenantAngularName =
-        context.tenantClass + generator.upperFirstCamelCase(context.entityAngularJSSuffix + context.tenantFileSuffix);
-    context.tenantReactName = context.tenantClass + generator.upperFirstCamelCase(context.entityAngularJSSuffix + context.tenantFileSuffix);
+    context.tenantAngularName = context.tenantClass + generator.upperFirstCamelCase(context.entityAngularJSSuffix);
+    context.tenantReactName = context.tenantClass + generator.upperFirstCamelCase(context.entityAngularJSSuffix);
 
     context.tenantStateName = `admin/${context.tenantFileName}`;
 
     context.tenantTranslationKey = context.tenantInstance;
 
-    context.tenantMenuTranslationKey = `${context.tenantName}Management`;
+    context.tenantMenuTranslationKey = `${context.tenantName}`;
 
     context.tenantName = _.camelCase(tenantName);
     context.tenantNameUpperCase = _.toUpper(tenantName);

@@ -91,6 +91,7 @@ module.exports = class extends EntityGenerator {
                 context.entityTranslationKey = context.tenantTranslationKey;
                 context.entityTranslationKeyMenu = context.tenantMenuTranslationKey;
                 context.i18nKeyPrefix = `${context.angularAppName}.${context.entityTranslationKey}`;
+                context.entityModelFileName = context.tenantFolderName;
             },
             postJson() {
                 // jhipster will override tenant's changelogDate

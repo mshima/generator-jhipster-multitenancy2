@@ -160,8 +160,6 @@ module.exports = class extends EntityGenerator {
                 if (this.context.tenantAware) {
                     context.service = 'serviceClass';
 
-                    const relationships = context.relationships;
-
                     const tenantRelationship = mtUtils.getArrayItemWithFieldValue(
                         this,
                         context.relationships,
@@ -204,7 +202,7 @@ module.exports = class extends EntityGenerator {
                         otherEntityAngularName: context.tenantAngularName,
                         otherEntityRelationshipName: context.tenantInstance
                     };
-                    relationships.push(real);
+                    context.relationships.push(real);
                 }
             }
         };
@@ -228,6 +226,7 @@ module.exports = class extends EntityGenerator {
                 context.entityTranslationKey = context.tenantTranslationKey;
                 context.entityTranslationKeyMenu = context.tenantMenuTranslationKey;
                 context.i18nKeyPrefix = `${context.angularAppName}.${context.entityTranslationKey}`;
+                context.entityModelFileName = context.tenantFolderName;
             },
             postJson() {
                 if (this.context.tenantAware) {
