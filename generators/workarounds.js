@@ -85,8 +85,13 @@ function fixAddEntityTranslationKey(clazz) {
  * Workaround entity always been add to entity module
  */
 function fixAddEntityToModule(clazz) {
+    if (clazz.prototype._addEntityToModule !== undefined) {
+        debug('Workaround fixAddEntityToModule already installed');
+        return;
+    }
     const addEntityToModule = clazz.prototype.addEntityToModule;
     clazz.prototype._addEntityToModule = addEntityToModule;
+    debug('Workaround fixAddEntityToModule installed');
     clazz.prototype.addEntityToModule = function(
         entityInstance,
         entityClass,
