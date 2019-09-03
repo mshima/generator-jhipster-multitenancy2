@@ -29,7 +29,7 @@ elif [[ "$JHI_ENTITY" == "jdl-multitenancy2-company" ]]; then
     cd "$JHI_FOLDER_APP"
     jhipster import-jdl *.jdl --no-insight --blueprints multitenancy2 --tenant-name company --relation-tenant-aware
     # Regenerate to fix errors
-    jhipster --with-entities --no-insight --blueprints multitenancy2 --relation-tenant-aware --force
+    jhipster --force --no-insight --skip-checks --with-entities --from-cli --blueprints multitenancy2 --relation-tenant-aware
 
 else
     #-------------------------------------------------------------------------------
