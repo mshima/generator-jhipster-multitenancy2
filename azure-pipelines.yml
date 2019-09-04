@@ -58,6 +58,11 @@ jobs:
                   JHI_ENTITY: jdl-multitenancy2-company
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
+              jdl-multitenancy2-postgres:
+                  JHI_APP: jdl-multitenancy2-postgres
+                  JHI_ENTITY: jdl-multitenancy2-company
+                  JHI_PROFILE: prod
+                  JHI_PROTRACTOR: 1
 
       steps:
           #----------------------------------------------------------------------
