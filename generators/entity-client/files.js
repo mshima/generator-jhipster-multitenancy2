@@ -1,7 +1,11 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const mtUtils = require('../multitenancy-utils');
 
-const angularTemplates = ['angular/entity.component.html', 'angular/navbar.component.html'];
+const angularTemplates = [
+    'angular/entity.component.html',
+    'angular/navbar.component.html',
+    'tenant_move_to_admin_menu/navbar.component.html'
+];
 
 const tenantAngularTemplates = ['change_tenant_management_role/_tenant-management.route.ts'];
 
@@ -20,7 +24,7 @@ const angularTestTemplates = [
 
 const angularProtractorTemplates = [
     'tenant_move_to_admin_folder/protractor/_tenant-management.spec.ts',
-    'angular/protractor/_tenant-management.spec.ts'
+    'tenant_move_to_admin_menu/protractor/_tenant-management.spec.ts'
 ];
 
 module.exports = {
