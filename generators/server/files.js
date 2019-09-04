@@ -3,9 +3,9 @@ const mtUtils = require('../multitenancy-utils');
 
 const serverTemplates = [
     // Tenant relationship
-    'server/User.java',
-    'server/UserDTO.java',
-    'server/UserMapper.java',
+    'user_add_tenant/User.java',
+    'user_add_tenant/UserDTO.java',
+    'user_add_tenant/UserMapper.java',
     // ROLE
     'change_tenant_management_role/AuthoritiesConstants.java',
     'change_tenant_management_role/UserResource.java'
