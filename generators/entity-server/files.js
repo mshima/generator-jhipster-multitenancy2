@@ -120,6 +120,6 @@ function writeTenantFiles() {
 
     this.writeFilesToDisk(tenantFiles, this, false);
 
-    this.addChangelogToLiquibase(`${this.changelogDate}-1__user_${this.tenantNameUpperFirst}_constraints`);
-    this.addChangelogToLiquibase(`${this.changelogDate}-2__${this.tenantNameLowerCase}_user_data`);
+    this.addConstraintsChangelogToLiquibase(`${this.changelogDate}-1__user_${this.tenantNameUpperFirst}_constraints`);
+    this.addConstraintsChangelogToLiquibase(`${this.changelogDate}-2__${this.tenantNameLowerCase}_user_data`);
 }
