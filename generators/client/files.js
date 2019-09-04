@@ -2,20 +2,20 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 const mtUtils = require('../multitenancy-utils');
 
 const angularTemplates = [
-    'account.model.ts',
-    'account.service.ts',
-    'admin-index.ts',
-    'administration.spec.ts',
-    'core_index.ts',
-    'navbar.component.ts',
-    'shared_index.ts'
+    'tenant_add_to_account/account.model.ts',
+    'tenant_add_to_account/account.service.ts',
+    'tenant_add_to_account/navbar.component.ts',
+    'angular/admin-index.ts',
+    'angular/administration.spec.ts',
+    'angular/core_index.ts',
+    'angular/shared_index.ts'
 ];
 
 module.exports = {
     writeFiles,
     angular: {
         templates(context) {
-            return mtUtils.requireTemplates('./client/partials/angular/', angularTemplates, context);
+            return mtUtils.requireTemplates('./client/partials/', angularTemplates, context);
         }
     }
 };
