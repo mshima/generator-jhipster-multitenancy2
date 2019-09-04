@@ -13,13 +13,16 @@
                   separator=";"
                   tableName="<%= tenantNameLowerCase %>">
         </loadData>
+    </changeSet>
 
+    <changeSet id="<%= changelogDate %>-2.1" author="jhipster">
         <loadData file="config/liquibase/data/<%= tenantNameLowerCase %>_user.csv"
                   separator=";"
                   tableName="jhi_user">
             <column name="id" type="numeric"/>
             <column name="activated" type="boolean"/>
             <column name="created_date" type="timestamp"/>
+            <column name="<%= tenantNameLowerCase %>_id" type="numeric"/>
         </loadData>
 
         <loadData
@@ -30,7 +33,9 @@
         <loadData
                   file="config/liquibase/data/<%= tenantNameLowerCase %>_user_authority.csv"
                   separator=";"
-                  tableName="jhi_user_authority"/>
+                  tableName="jhi_user_authority">
+            <column name="user_id" type="numeric"/>
+        </loadData>
 
     </changeSet>
 </databaseChangeLog>
