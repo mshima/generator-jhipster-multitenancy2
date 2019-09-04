@@ -1,3 +1,5 @@
+const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+
 const mtUtils = require('../multitenancy-utils');
 
 const entityTenantAwareTemplates = ['Entity.java'];
@@ -54,8 +56,70 @@ function writeTenantFiles() {
                     }
                 ]
             }
+        ],
+        liquibase: [
+            // User database changes
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/changelog/_user_tenant_constraints.xml',
+                        renameTo: generator =>
+                            `config/liquibase/changelog/${this.changelogDate}-1__user_${this.tenantNameUpperFirst}_constraints.xml`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/changelog/_tenant_user_data.xml',
+                        renameTo: generator =>
+                            `config/liquibase/changelog/${this.changelogDate}-2__${this.tenantNameLowerCase}_user_data.xml`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/data/_tenant.csv',
+                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}.csv`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/data/_tenant_user.csv',
+                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_user.csv`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/data/_tenant_authority.csv',
+                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_authority.csv`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/data/_tenant_user_authority.csv',
+                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_user_authority.csv`
+                    }
+                ]
+            }
         ]
     };
 
     this.writeFilesToDisk(tenantFiles, this, false);
+
+    this.addChangelogToLiquibase(`${this.changelogDate}-1__user_${this.tenantNameUpperFirst}_constraints`);
+    this.addChangelogToLiquibase(`${this.changelogDate}-2__${this.tenantNameLowerCase}_user_data`);
 }
