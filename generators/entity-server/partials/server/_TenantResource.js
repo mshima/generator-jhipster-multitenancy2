@@ -10,18 +10,6 @@ const tmpls = [
         if(${context.tenantNameLowerFirst} == null || !${context.tenantNameLowerFirst}.getUsers().isEmpty()){
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(applicationName, true, ENTITY_NAME, "deletefail", "Delete Failed. Please remove users first")).build();
         }`
-    },
-    {
-        type: 'rewriteFile',
-        target: context => `public class ${context.tenantNameUpperFirst}Resource {`,
-        tmpl: context => '@PreAuthorize("hasRole(\\"" + AuthoritiesConstants.ADMIN + "\\")")'
-    },
-    {
-        type: 'rewriteFile',
-        target: context => 'import io.github.jhipster.web.util.HeaderUtil;',
-        tmpl: context => `import ${context.packageName}.security.AuthoritiesConstants;
-import org.springframework.security.access.prepost.PreAuthorize;
-`
     }
 ];
 

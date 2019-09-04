@@ -1,38 +1,42 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const mtUtils = require('../multitenancy-utils');
 
-const angularTemplates = ['entity.component.html', 'navbar.component.html'];
+const angularTemplates = ['angular/entity.component.html', 'angular/navbar.component.html'];
 
-const tenantAngularTemplates = ['_tenant-management.route.ts'];
+const tenantAngularTemplates = ['change_tenant_management_role/_tenant-management.route.ts'];
 
-const tenantAwareAngularTemplates = ['entity-detail.component.html', 'entity-update.component.html', 'entity-update.component.ts'];
-
-const angularTestTemplates = [
-    '_tenant-management-delete-dialog.component.spec.ts',
-    '_tenant-management-detail.component.spec.ts',
-    '_tenant-management-update.component.spec.ts',
-    '_tenant-management.component.spec.ts'
+const tenantAwareAngularTemplates = [
+    'angular/entity-detail.component.html',
+    'angular/entity-update.component.html',
+    'angular/entity-update.component.ts'
 ];
 
-const angularProtractorTemplates = ['_tenant-management.spec.ts'];
+const angularTestTemplates = [
+    'angular/test/_tenant-management-delete-dialog.component.spec.ts',
+    'angular/test/_tenant-management-detail.component.spec.ts',
+    'angular/test/_tenant-management-update.component.spec.ts',
+    'angular/test/_tenant-management.component.spec.ts'
+];
+
+const angularProtractorTemplates = ['angular/protractor/_tenant-management.spec.ts'];
 
 module.exports = {
     writeFiles,
     angular: {
         angularTemplates(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/angular/', angularTemplates, context);
+            return mtUtils.requireTemplates('./entity-client/partials/', angularTemplates, context);
         },
         tenantAngularTemplates(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/angular/', tenantAngularTemplates, context);
+            return mtUtils.requireTemplates('./entity-client/partials/', tenantAngularTemplates, context);
         },
         tenantAwareAngularTemplates(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/angular/', tenantAwareAngularTemplates, context);
+            return mtUtils.requireTemplates('./entity-client/partials/', tenantAwareAngularTemplates, context);
         },
         angularTestTemplates(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/angular/test/', angularTestTemplates, context);
+            return mtUtils.requireTemplates('./entity-client/partials/', angularTestTemplates, context);
         },
         protractor(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/angular/protractor/', angularProtractorTemplates, context);
+            return mtUtils.requireTemplates('./entity-client/partials/', angularProtractorTemplates, context);
         }
     }
 };

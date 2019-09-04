@@ -2,19 +2,28 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 
 const mtUtils = require('../multitenancy-utils');
 
-const entityTenantAwareTemplates = ['Entity.java'];
+const entityTenantAwareTemplates = ['server/Entity.java'];
 
-const tenantTemplates = ['_TenantResource', '_Tenant.java'];
+const tenantTemplates = [
+    // Add PreAuthorize role to Tenant
+    // TODO change it to allow a Tenant admin to change tenant's data
+    'change_tenant_management_role/_TenantResource',
+    // Add a verification if a tenant has users before removing it.
+    // TODO Remove, use db relationship and non cascade.
+    'server/_TenantResource',
+    // Fetch users eager. TODO Remove?
+    'server/_Tenant.java'
+];
 
 module.exports = {
     writeTenantFiles,
     writeTenantAwareFiles,
     partials: {
         entityTenantAwareTemplates(context) {
-            return mtUtils.requireTemplates('./entity-server/partials/server/', entityTenantAwareTemplates, context);
+            return mtUtils.requireTemplates('./entity-server/partials/', entityTenantAwareTemplates, context);
         },
         tenantTemplates(context) {
-            return mtUtils.requireTemplates('./entity-server/partials/server/', tenantTemplates, context);
+            return mtUtils.requireTemplates('./entity-server/partials/', tenantTemplates, context);
         }
     }
 };

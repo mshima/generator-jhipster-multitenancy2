@@ -3,19 +3,19 @@ const mtUtils = require('../multitenancy-utils');
 
 const serverTemplates = [
     // Tenant relationship
-    'User.java',
-    'UserDTO.java',
-    'UserMapper.java',
+    'server/User.java',
+    'server/UserDTO.java',
+    'server/UserMapper.java',
     // ROLE
-    'AuthoritiesConstants.java',
-    'UserResource.java'
+    'change_tenant_management_role/AuthoritiesConstants.java',
+    'change_tenant_management_role/UserResource.java'
 ];
 
 module.exports = {
     writeFiles,
     server: {
         templates(context) {
-            return mtUtils.requireTemplates('./server/partials/server/', serverTemplates, context);
+            return mtUtils.requireTemplates('./server/partials/', serverTemplates, context);
         }
     }
 };
