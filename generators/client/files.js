@@ -8,6 +8,11 @@ const angularTemplates = [
     'tenant_move_to_admin_folder/admin-index.ts',
     'tenant_move_to_admin_folder/shared_index.ts',
     'tenant_add_test/administration.spec.ts',
+    'user_add_tenant/user-management.component.html',
+    'user_add_tenant/user-management-detail.component.html',
+    'user_add_tenant/user-management-update.component.html',
+    // 'user_add_tenant/user-management-update.component.ts',
+    'user_add_tenant/user.model.ts',
     'tenant_load_route_access/core_index.ts'
 ];
 
@@ -26,12 +31,7 @@ function writeFiles() {
         userManagement: [
             {
                 path: jhipsterConstants.ANGULAR_DIR,
-                templates: [
-                    { file: 'admin/user-management/user-management.component.html', method: 'processHtml' },
-                    { file: 'admin/user-management/user-management-detail.component.html', method: 'processHtml' },
-                    { file: 'admin/user-management/user-management-update.component.ts', method: 'processJs' },
-                    { file: 'admin/user-management/user-management-update.component.html', method: 'processHtml' }
-                ]
+                templates: [{ file: 'admin/user-management/user-management-update.component.ts', method: 'processJs' }]
             }
         ],
         shared: [
@@ -41,9 +41,7 @@ function writeFiles() {
                     {
                         file: 'core/auth/_tenant-route-access-service.ts',
                         renameTo: generator => `core/auth/${this.tenantNameLowerFirst}-route-access-service.ts`
-                    },
-                    'shared/user/user.model.ts',
-                    'core/user/user.model.ts'
+                    }
                 ]
             }
         ]
