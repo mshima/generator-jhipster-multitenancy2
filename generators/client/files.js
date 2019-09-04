@@ -8,7 +8,7 @@ const angularTemplates = [
     'tenant_move_to_admin_folder/admin-index.ts',
     'tenant_move_to_admin_folder/shared_index.ts',
     'tenant_add_test/administration.spec.ts',
-    'angular/core_index.ts'
+    'tenant_load_route_access/core_index.ts'
 ];
 
 module.exports = {
