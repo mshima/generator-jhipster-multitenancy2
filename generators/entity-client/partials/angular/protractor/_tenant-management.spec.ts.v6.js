@@ -5,11 +5,6 @@ const file = context => `${jhipsterConstants.CLIENT_TEST_SRC_DIR}e2e/admin/${con
 const tmpls = [
     {
         type: 'replaceContent',
-        target: context => '../../../page-objects/jhi-page-objects',
-        tmpl: context => '../../page-objects/jhi-page-objects'
-    },
-    {
-        type: 'replaceContent',
         target: context => 'new NavBarPage();',
         tmpl: context => 'new NavBarPage(true);'
     },

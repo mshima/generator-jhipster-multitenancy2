@@ -12,13 +12,16 @@ const tenantAwareAngularTemplates = [
 ];
 
 const angularTestTemplates = [
-    'angular/test/_tenant-management-delete-dialog.component.spec.ts',
-    'angular/test/_tenant-management-detail.component.spec.ts',
-    'angular/test/_tenant-management-update.component.spec.ts',
-    'angular/test/_tenant-management.component.spec.ts'
+    'tenant_move_to_admin_folder/test/_tenant-management-delete-dialog.component.spec.ts',
+    'tenant_move_to_admin_folder/test/_tenant-management-detail.component.spec.ts',
+    'tenant_move_to_admin_folder/test/_tenant-management-update.component.spec.ts',
+    'tenant_move_to_admin_folder/test/_tenant-management.component.spec.ts'
 ];
 
-const angularProtractorTemplates = ['angular/protractor/_tenant-management.spec.ts'];
+const angularProtractorTemplates = [
+    'tenant_move_to_admin_folder/protractor/_tenant-management.spec.ts',
+    'angular/protractor/_tenant-management.spec.ts'
+];
 
 module.exports = {
     writeFiles,
