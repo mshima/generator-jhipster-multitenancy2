@@ -2,17 +2,17 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 const mtUtils = require('../multitenancy-utils');
 
 const angularTemplates = [
-    'angular/entity.component.html',
-    'angular/navbar.component.html',
+    'tenant_hide_if_exists_on_account/entity.component.html',
+    'tenant_hide_if_exists_on_account/navbar.component.html',
     'tenant_move_to_admin_menu/navbar.component.html'
 ];
 
 const tenantAngularTemplates = ['change_tenant_management_role/_tenant-management.route.ts'];
 
 const tenantAwareAngularTemplates = [
-    'angular/entity-detail.component.html',
-    'angular/entity-update.component.html',
-    'angular/entity-update.component.ts'
+    'tenant_hide_if_exists_on_account/entity-detail.component.html',
+    'tenant_hide_if_exists_on_account/entity-update.component.html',
+    'tenant_hide_if_exists_on_account/entity-update.component.ts'
 ];
 
 const angularTestTemplates = [
