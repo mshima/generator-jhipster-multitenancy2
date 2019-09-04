@@ -7,7 +7,7 @@ const angularTemplates = [
     'tenant_add_to_account/navbar.component.ts',
     'tenant_move_to_admin_folder/admin-index.ts',
     'tenant_move_to_admin_folder/shared_index.ts',
-    'angular/administration.spec.ts',
+    'tenant_add_test/administration.spec.ts',
     'angular/core_index.ts'
 ];
 
