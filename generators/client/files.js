@@ -5,10 +5,10 @@ const angularTemplates = [
     'tenant_add_to_account/account.model.ts',
     'tenant_add_to_account/account.service.ts',
     'tenant_add_to_account/navbar.component.ts',
-    'angular/admin-index.ts',
+    'tenant_move_to_admin_folder/admin-index.ts',
+    'tenant_move_to_admin_folder/shared_index.ts',
     'angular/administration.spec.ts',
-    'angular/core_index.ts',
-    'angular/shared_index.ts'
+    'angular/core_index.ts'
 ];
 
 module.exports = {
