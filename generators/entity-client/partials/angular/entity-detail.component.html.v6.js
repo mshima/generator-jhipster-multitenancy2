@@ -8,13 +8,6 @@ const tmpls = [
         regex: true,
         target: context => `<dt>(<span(.*)>${context.tenantNameUpperFirst}</span></dt>(\\s*)<dd>)`,
         tmpl: context => `<dt *ngIf="${context.entityInstance}.${context.tenantNameLowerFirst}">$1`
-    },
-    {
-        // Show tenant name
-        type: 'replaceContent',
-        regex: false,
-        target: context => `{{${context.entityInstance}.${context.tenantNameLowerFirst}?.id}}`,
-        tmpl: context => `{{${context.entityInstance}.${context.tenantNameLowerFirst}?.name}}`
     }
 ];
 
