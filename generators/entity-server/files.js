@@ -2,7 +2,7 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 
 const mtUtils = require('../multitenancy-utils');
 
-const entityTenantAwareTemplates = ['server/Entity.java'];
+const entityTenantAwareTemplates = ['tenant_aware_add_filter/Entity.java'];
 
 const tenantTemplates = [
     // Add PreAuthorize role to Tenant
