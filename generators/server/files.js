@@ -5,6 +5,7 @@ const serverTemplates = [
     // Tenant relationship
     'User.java',
     'UserDTO.java',
+    'UserMapper.java',
     // ROLE
     'AuthoritiesConstants.java',
     'UserResource.java'
