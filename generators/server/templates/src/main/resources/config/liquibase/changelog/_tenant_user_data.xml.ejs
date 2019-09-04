@@ -7,6 +7,11 @@
         Added the constraints for entity <%= tenantNameLowerCase %>.
     -->
     <changeSet id="<%= changelogDate %>-2" author="jhipster">
+        <loadData file="config/liquibase/data/<%= tenantNameLowerCase %>.csv"
+                  separator=";"
+                  tableName="<%= tenantNameLowerCase %>">
+        </loadData>
+
         <loadData file="config/liquibase/data/<%= tenantNameLowerCase %>_user.csv"
                   separator=";"
                   tableName="jhi_user">

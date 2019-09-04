@@ -55,6 +55,15 @@ function writeFiles() {
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,
                 templates: [
                     {
+                        file: 'config/liquibase/data/_tenant.csv',
+                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}.csv`
+                    }
+                ]
+            },
+            {
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
                         file: 'config/liquibase/data/_tenant_user.csv',
                         renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_user.csv`
                     }
