@@ -11,6 +11,7 @@ module.exports = {
 };
 
 /*
+ * getAllJhipsterConfig isn't getting all jhipster config
  * Workaround https://github.com/jhipster/generator-jhipster/issues/10205
  */
 function fixGetAllJhipsterConfig(clazz) {
@@ -35,6 +36,9 @@ function fixGetAllJhipsterConfig(clazz) {
     };
 }
 
+/*
+ * Override addEntityToMenu changing the menu tenant is added to.
+ */
 function fixAddEntityToMenu(clazz) {
     if (clazz.prototype._addEntityToMenu !== undefined) {
         debug('Workaround fixAddEntityToMenu already installed');
@@ -61,6 +65,9 @@ function fixAddEntityToMenu(clazz) {
     };
 }
 
+/*
+ * Override addEntityTranslationKey changing the menu tenant is added to.
+ */
 function fixAddEntityTranslationKey(clazz) {
     if (clazz.prototype._addEntityTranslationKey !== undefined) {
         debug('Workaround fixAddEntityTranslationKey already installed');
@@ -73,8 +80,8 @@ function fixAddEntityTranslationKey(clazz) {
         debug(`Executing addEntityTranslationKey ${args}`);
         if (args.length === 0) return;
         if (this.isTenant) {
-            this.needleApi.clientI18n.addAdminElementTranslationKey(...args);
-            debug('Ignoring addEntityTranslationKey');
+            debug('Using addAdminElementTranslationKey');
+            this.addAdminElementTranslationKey(...args);
             return;
         }
         addEntityTranslationKey.apply(this, args);

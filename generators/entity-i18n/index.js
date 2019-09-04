@@ -2,12 +2,15 @@
 const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
 const debug = require('debug')('jhipster:multitenancy:entity-i18n');
 
-const files = require('./files');
-const mtUtils = require('../multitenancy-utils');
+const workarounds = require('../workarounds');
+
+workarounds.fixAddEntityTranslationKey(EntityI18nGenerator);
 
 module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
+
+        debug('Initializing entity-i18n blueprint');
     }
 
     get initializing() {
@@ -27,28 +30,7 @@ module.exports = class extends EntityI18nGenerator {
     }
 
     get writing() {
-        const postWritingSteps = {
-            writeAdditionalEntries() {
-                if (!this.enableTranslation || !this.isTenant) return;
-
-                // templates
-                debug(`Removing menu ${this.entityTranslationKeyMenu}: ${this.tenantNameUpperFirst}`);
-                this.languages.forEach(language => {
-                    this.language = language;
-                    mtUtils.processPartialTemplates(files.i18n.i18nTemplates(this), this);
-                });
-
-                debug(`Adding menu ${this.tenantMenuTranslationKey}: ${this.tenantNameUpperFirst}`);
-                this.addTranslationKeyToAllLanguages(
-                    `${this.tenantMenuTranslationKey}`,
-                    `${this.tenantNameUpperFirst}`,
-                    'addAdminElementTranslationKey',
-                    this.enableTranslation
-                );
-            }
-        };
-
-        return { ...super._writing(), ...postWritingSteps };
+        return super._writing();
     }
 
     get install() {
