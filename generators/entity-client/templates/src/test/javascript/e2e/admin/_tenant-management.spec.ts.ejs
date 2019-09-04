@@ -61,7 +61,7 @@ describe('<%= tenantFileName %> e2e test', () => {
         await promise.all([<%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.setNameInput('new <%= tenantNameLowerFirst %>')]);
         expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getNameInput()).to.eq('new <%= tenantNameLowerFirst %>', 'Expected Name value to be equals to name');
         await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.save();
-        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;
+        expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>UpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').toBe(false);
 
         expect(await <%= tenantNameLowerFirst %><%= angularTenantComponentSuffix %>ComponentsPage.countDeleteButtons()).to.eq(nbButtonsBeforeCreate + 1, 'Expected one more entry in the table');
         expect(await browser.getCurrentUrl()).to.match(new RegExp('.*/<%= tenantStateName %>'));
