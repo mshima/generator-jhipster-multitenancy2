@@ -1,0 +1,14 @@
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { <%=angularXAppName%>SharedModule } from 'app/shared';
+import { RouterModule } from '@angular/router';
+
+import { UserMgmtComponent, UserMgmtDetailComponent, UserMgmtUpdateComponent, UserMgmtDeleteDialogComponent } from '../';
+
+@NgModule({
+  imports: [<%=angularXAppName%>SharedModule, RouterModule],
+  declarations: [UserMgmtComponent, UserMgmtDetailComponent, UserMgmtUpdateComponent, UserMgmtDeleteDialogComponent],
+  exports: [UserMgmtComponent, UserMgmtDetailComponent, UserMgmtUpdateComponent, UserMgmtDeleteDialogComponent],
+  entryComponents: [UserMgmtDeleteDialogComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class UserMgmtSharedModule {}

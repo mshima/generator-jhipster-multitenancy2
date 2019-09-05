@@ -13,7 +13,10 @@ const angularTemplates = [
     'user_add_tenant/user-management-update.component.html',
     // 'user_add_tenant/user-management-update.component.ts',
     'user_add_tenant/user.model.ts',
-    'tenant_load_route_access/core_index.ts'
+    'tenant_load_route_access/core_index.ts',
+    // Migrate user management to it's on module
+    'user_management_module/admin-index.ts',
+    'user_management_module/admin.module.ts'
 ];
 
 module.exports = {
@@ -31,7 +34,7 @@ function writeFiles() {
         userManagement: [
             {
                 path: jhipsterConstants.ANGULAR_DIR,
-                templates: [{ file: 'admin/user-management/user-management-update.component.ts', method: 'processJs' }]
+                templates: ['admin/user-management/user-management-update.component.ts', 'admin/user-management/user-management.module.ts']
             }
         ],
         shared: [
