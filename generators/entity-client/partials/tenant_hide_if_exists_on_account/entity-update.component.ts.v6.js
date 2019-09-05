@@ -27,6 +27,15 @@ $1this.accountService.identity().then(account => {
 $1$2this.currentAccount = account;
 $1});
 $2}`
+    },
+    {
+        // Load currentAccount
+        type: 'rewriteFile',
+        regex: true,
+        target: 'this.updateForm',
+        tmpl: context => `      if (this.currentAccount.${context.tenantNameLowerFirst}) {
+        ${context.entityInstance}.${context.tenantNameLowerFirst} = this.currentAccount.${context.tenantNameLowerFirst};
+      }`
     }
 ];
 
