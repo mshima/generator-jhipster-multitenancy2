@@ -7,7 +7,10 @@ const angularTemplates = [
     'tenant_move_to_admin_menu/navbar.component.html'
 ];
 
-const tenantAngularTemplates = ['change_tenant_management_role/_tenant-management.route.ts'];
+const tenantAngularTemplates = [
+    'change_tenant_management_role/_tenant-management.route.ts',
+    'tenant_ignore_query_not_admin/_tenant-management.service.ts'
+];
 
 const tenantAwareAngularTemplates = [
     'tenant_hide_if_exists_on_account/entity-detail.component.html',
