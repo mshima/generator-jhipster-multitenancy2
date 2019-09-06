@@ -146,6 +146,7 @@ function requireTemplates(prefix, templates, context) {
         try {
             ret.push(require(`${template}.js`));
         } catch (e) {
+            if (this && this.log) this.log(`Error loading ${template}`);
             debug(`Error loading ${template}`);
         }
     });
