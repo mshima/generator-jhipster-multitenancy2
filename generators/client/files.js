@@ -16,7 +16,12 @@ const angularTemplates = [
     'tenant_load_route_access/core_index.ts',
     // Migrate user management to it's on module
     'user_management_module/admin-index.ts',
-    'user_management_module/admin.module.ts'
+    'user_management_module/admin.module.ts',
+    // Tenant admin menu
+    'tenant_admin_menu/app-routing.module.ts',
+    'tenant_admin_menu/navbar.component.html',
+    'tenant_admin_menu/user-management.component.ts',
+    'tenant_admin_menu/user-management.route.ts'
 ];
 
 module.exports = {
@@ -35,6 +40,21 @@ function writeFiles() {
             {
                 path: jhipsterConstants.ANGULAR_DIR,
                 templates: ['admin/user-management/user-management-update.component.ts', 'admin/user-management/user-management.module.ts']
+            }
+        ],
+        tenantAdmin: [
+            {
+                path: jhipsterConstants.ANGULAR_DIR,
+                templates: [
+                    {
+                        file: 'tenant-admin/_tenant-admin.route.ts',
+                        renameTo: generator => `${this.tenantNameLowerFirst}-admin/${this.tenantNameLowerFirst}-admin.route.ts`
+                    },
+                    {
+                        file: 'tenant-admin/_tenant-admin.module.ts',
+                        renameTo: generator => `${this.tenantNameLowerFirst}-admin/${this.tenantNameLowerFirst}-admin.module.ts`
+                    }
+                ]
             }
         ],
         shared: [

@@ -1,0 +1,18 @@
+import { Routes } from '@angular/router';
+
+import { userMgmtRoute } from '../admin';
+
+import { UserRouteAccessService } from 'app/core';
+
+const <%= tenantNameUpperCase %>_ADMIN_ROUTES = [...userMgmtRoute];
+
+export const <%= tenantNameLowerFirst %>AdminState: Routes = [
+  {
+    path: '',
+    data: {
+      authorities: ['ROLE_<%= tenantNameUpperCase %>_ADMIN']
+    },
+    canActivate: [UserRouteAccessService],
+    children: <%= tenantNameUpperCase %>_ADMIN_ROUTES
+  }
+];
