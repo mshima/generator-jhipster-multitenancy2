@@ -4,16 +4,19 @@ const file = context => `${jhipsterConstants.CLIENT_TEST_SRC_DIR}e2e/admin/${con
 
 const tmpls = [
     {
+        condition: context => context.testFrameworks.indexOf('protractor') !== -1,
         type: 'replaceContent',
         target: context => 'new NavBarPage();',
         tmpl: context => 'new NavBarPage(true);'
     },
     {
+        condition: context => context.testFrameworks.indexOf('protractor') !== -1,
         type: 'replaceContent',
         target: context => 'navBarPage.entityMenu',
         tmpl: context => 'navBarPage.adminMenu'
     },
     {
+        condition: context => context.testFrameworks.indexOf('protractor') !== -1,
         type: 'replaceContent',
         target: context => `await navBarPage.goToEntity('${context.entityStateName}');`,
         tmpl: context => `await navBarPage.clickOnAdminMenu();
