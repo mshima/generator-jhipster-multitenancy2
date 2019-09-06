@@ -1,5 +1,6 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-const mtUtils = require('../multitenancy-utils');
+
+const Patcher = require('../patcher');
 
 const serverTemplates = [
     // Tenant relationship
@@ -11,23 +12,7 @@ const serverTemplates = [
     'change_tenant_management_role/UserResource.java'
 ];
 
-module.exports = {
-    writeFiles,
-    server: {
-        templates(context) {
-            return mtUtils.requireTemplates('./server/partials/', serverTemplates, context);
-        }
-    }
-};
-
 function writeFiles() {
-    this.packageFolder = this.config.get('packageFolder');
-    // references to the various directories we'll be copying files to
-
-    // template variables
-    mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
-    this.changelogDate = this.config.get('tenantChangelogDate');
-
     // configs for the template files
     const files = {
         aop: [
@@ -47,3 +32,9 @@ function writeFiles() {
     // parse the templates and write files to the appropriate locations
     this.writeFilesToDisk(files, this, false);
 }
+
+module.exports = class ServerPatcher extends Patcher {
+    constructor() {
+        super('server', serverTemplates, writeFiles);
+    }
+};

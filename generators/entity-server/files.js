@@ -1,6 +1,6 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 
-const mtUtils = require('../multitenancy-utils');
+const Patcher = require('../patcher');
 
 const entityTenantAwareTemplates = ['tenant_aware_add_filter/Entity.java'];
 
@@ -14,19 +14,6 @@ const tenantTemplates = [
     // Fetch users eager. TODO Remove?
     'server/_Tenant.java'
 ];
-
-module.exports = {
-    writeTenantFiles,
-    writeTenantAwareFiles,
-    partials: {
-        entityTenantAwareTemplates(context) {
-            return mtUtils.requireTemplates('./entity-server/partials/', entityTenantAwareTemplates, context);
-        },
-        tenantTemplates(context) {
-            return mtUtils.requireTemplates('./entity-server/partials/', tenantTemplates, context);
-        }
-    }
-};
 
 function writeTenantAwareFiles() {
     const tenantAwarefiles = {
@@ -132,3 +119,17 @@ function writeTenantFiles() {
     this.addConstraintsChangelogToLiquibase(`${this.changelogDate}-1__user_${this.tenantNameUpperFirst}_constraints`);
     this.addConstraintsChangelogToLiquibase(`${this.changelogDate}-2__${this.tenantNameLowerCase}_user_data`);
 }
+
+module.exports = class EntityServerPatcher extends Patcher {
+    constructor() {
+        super('entity-server');
+    }
+
+    entityTenantAwareTemplates(generator) {
+        this._patch(generator, entityTenantAwareTemplates, writeTenantAwareFiles);
+    }
+
+    tenantTemplates(generator) {
+        this._patch(generator, tenantTemplates, writeTenantFiles);
+    }
+};

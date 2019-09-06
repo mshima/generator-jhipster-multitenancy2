@@ -2,10 +2,6 @@ const _ = require('lodash');
 const pluralize = require('pluralize');
 const debug = require('debug')('jhipster:multitenancy2:utils');
 
-const packagejs = require('generator-jhipster/package.json');
-
-const jhipsterVersion = packagejs.version;
-
 /**
  * Utils file to hold methods common to both generator and sub generator
  */
@@ -13,9 +9,7 @@ module.exports = {
     containsRelationship,
     getRelationship,
     getArrayItemWithFieldValue,
-    tenantVariables,
-    processPartialTemplates,
-    requireTemplates
+    tenantVariables
 };
 
 function containsRelationship(generator, relationships, value) {
@@ -89,66 +83,4 @@ function tenantVariables(tenantName, context, generator = this) {
     // relative to app root
     context.tenantModelPath = 'shared/admin';
     context.tenantServicePath = `admin/${context.tenantFileName}`;
-}
-
-function processPartialTemplates(partialTemplates, context) {
-    partialTemplates.forEach(templates => {
-        const file = typeof templates.file === 'function' ? templates.file(context) : templates.file;
-        templates.tmpls.forEach(item => {
-            debug(`======== Template ${file}`);
-            // ignore if version is not compatible
-            if (item.versions && !item.versions.includes(jhipsterVersion)) {
-                debug(`Version not compatible ${jhipsterVersion}`);
-                return;
-            }
-            if (item.disabled) {
-                debug('Template disabled');
-                return;
-            }
-            if (typeof item.condition === 'function') {
-                if (!item.condition(context)) {
-                    debug(`Template condition ${item.condition}`);
-                    return;
-                }
-            }
-            debug(`type: ${item.type}`);
-            debug(`regex: ${item.regex}`);
-            const target = typeof item.target === 'function' ? item.target(context) : item.target;
-            debug(`target: ${target}`);
-
-            const tmpl = typeof item.tmpl === 'function' ? item.tmpl(context) : item.tmpl;
-            debug(`tmpl: ${tmpl}`);
-            if (item.type === 'replaceContent') {
-                context.replaceContent(file, target, tmpl, item.regex);
-            } else if (item.type === 'rewriteFile') {
-                context.rewriteFile(file, target, tmpl);
-            }
-        });
-    });
-}
-
-function requireTemplates(prefix, templates, context) {
-    const ret = [];
-    debug(`============ Loading templates from ${prefix}`);
-    templates.forEach(file => {
-        // Look for specific version
-        const template = prefix + file;
-        let version = jhipsterVersion;
-        while (version !== '') {
-            try {
-                ret.push(require(`${template}.v${version}.js`));
-                debug(`Success loading ${template}.v${version}`);
-                return;
-            } catch (e) {
-                version = version.substring(0, version.lastIndexOf('.'));
-            }
-        }
-        try {
-            ret.push(require(`${template}.js`));
-        } catch (e) {
-            if (this && this.log) this.log(`Error loading ${template}`);
-            debug(`Error loading ${template}`);
-        }
-    });
-    return ret;
 }

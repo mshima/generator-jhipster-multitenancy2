@@ -1,5 +1,6 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-const mtUtils = require('../multitenancy-utils');
+
+const Patcher = require('../patcher');
 
 const angularTemplates = [
     'tenant_hide_if_exists_on_account/entity.component.html',
@@ -30,28 +31,7 @@ const angularProtractorTemplates = [
     'tenant_move_to_admin_menu/protractor/_tenant-management.spec.ts'
 ];
 
-module.exports = {
-    writeFiles,
-    angular: {
-        angularTemplates(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/', angularTemplates, context);
-        },
-        tenantAngularTemplates(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/', tenantAngularTemplates, context);
-        },
-        tenantAwareAngularTemplates(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/', tenantAwareAngularTemplates, context);
-        },
-        angularTestTemplates(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/', angularTestTemplates, context);
-        },
-        protractor(context) {
-            return mtUtils.requireTemplates('./entity-client/partials/', angularProtractorTemplates, context);
-        }
-    }
-};
-
-function writeFiles() {
+function writeTenantFiles() {
     // configs for the template files
     const files = {
         tests: [
@@ -71,3 +51,25 @@ function writeFiles() {
     // parse the templates and write files to the appropriate locations
     this.writeFilesToDisk(files, this, false);
 }
+
+module.exports = class EntityClientPatcher extends Patcher {
+    constructor() {
+        super('entity-client', angularTemplates);
+    }
+
+    tenantAngularTemplates(generator) {
+        const templates = [
+            ...this.requireTemplates(tenantAngularTemplates, generator),
+            ...this.requireTemplates(angularTestTemplates, generator),
+            ...this.requireTemplates(angularProtractorTemplates, generator)
+        ];
+        this.processPartialTemplates(templates, generator);
+
+        writeTenantFiles.call(generator);
+    }
+
+    tenantAwareAngularTemplates(generator) {
+        const templates = this.requireTemplates(tenantAwareAngularTemplates, generator);
+        this.processPartialTemplates(templates, generator);
+    }
+};

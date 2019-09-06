@@ -3,13 +3,14 @@ const LanguagesGenerator = require('generator-jhipster/generators/languages');
 const debug = require('debug')('jhipster:multitenancy2:languages');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 
-const files = require('./files');
+const LanguagesPatcher = require('./files');
 const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends LanguagesGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
+        this.patcher = new LanguagesPatcher();
         debug('Initializing languages blueprint');
     }
 
@@ -36,7 +37,7 @@ module.exports = class extends LanguagesGenerator {
                 this.CLIENT_MAIN_SRC_DIR = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
                 this.languages.forEach(language => {
                     this.lang = language;
-                    mtUtils.processPartialTemplates(files.angular.templates.call(this, this), this);
+                    this.patcher.patch(this);
                 });
             }
         };

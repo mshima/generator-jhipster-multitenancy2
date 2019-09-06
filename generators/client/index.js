@@ -1,12 +1,14 @@
 /* eslint-disable consistent-return */
 const ClientGenerator = require('generator-jhipster/generators/client');
-const files = require('./files');
 
+const ClientPatcher = require('./files');
 const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends ClientGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
+
+        this.patcher = new ClientPatcher();
     }
 
     get initializing() {
@@ -26,22 +28,14 @@ module.exports = class extends ClientGenerator {
     }
 
     get writing() {
-        const myCustomPhaseSteps = {
-            // sets up all the variables we'll need for the templating
-            setUpVariables() {
+        const postWritingSteps = {
+            patchFiles() {
                 // template variables
                 mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
-            },
-            writeAdditionalFile() {
-                files.writeFiles.call(this);
-            },
-            // make the necessary client code changes and adds the tenant UI
-            generateClientCode() {
-                // Rewrites to existing files
-                mtUtils.processPartialTemplates(files.angular.templates(this), this);
+                this.patcher.patch(this);
             }
         };
-        return { ...super._writing(), ...myCustomPhaseSteps };
+        return { ...super._writing(), ...postWritingSteps };
     }
 
     get install() {

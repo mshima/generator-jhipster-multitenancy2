@@ -1,11 +1,14 @@
 /* eslint-disable consistent-return */
 const ServerGenerator = require('generator-jhipster/generators/server');
-const files = require('./files');
+
+const ServerPatcher = require('./files');
 const mtUtils = require('../multitenancy-utils');
 
 module.exports = class extends ServerGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
+
+        this.patcher = new ServerPatcher();
     }
 
     get initializing() {
@@ -25,15 +28,20 @@ module.exports = class extends ServerGenerator {
     }
 
     get writing() {
-        const myCustomPhaseSteps = {
-            // make the necessary server code changes
+        const postWritingSteps = {
             writeAdditionalFile() {
-                files.writeFiles.call(this);
-                mtUtils.processPartialTemplates(files.server.templates(this), this);
+                this.packageFolder = this.config.get('packageFolder');
+                // references to the various directories we'll be copying files to
+
+                // template variables
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
+                this.changelogDate = this.config.get('tenantChangelogDate');
+
+                this.patcher.patch(this);
             }
         };
 
-        return { ...super._writing(), ...myCustomPhaseSteps };
+        return { ...super._writing(), ...postWritingSteps };
     }
 
     get install() {

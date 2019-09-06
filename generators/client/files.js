@@ -1,5 +1,6 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-const mtUtils = require('../multitenancy-utils');
+
+const Patcher = require('../patcher');
 
 const angularTemplates = [
     'tenant_add_to_account/account.model.ts',
@@ -23,15 +24,6 @@ const angularTemplates = [
     'tenant_admin_menu/user-management.component.ts',
     'tenant_admin_menu/user-management.route.ts'
 ];
-
-module.exports = {
-    writeFiles,
-    angular: {
-        templates(context) {
-            return mtUtils.requireTemplates('./client/partials/', angularTemplates, context);
-        }
-    }
-};
 
 function writeFiles() {
     // configs for the template files
@@ -73,3 +65,9 @@ function writeFiles() {
     // parse the templates and write files to the appropriate locations
     this.writeFilesToDisk(files, this, false);
 }
+
+module.exports = class EntityClientPatcher extends Patcher {
+    constructor() {
+        super('client', angularTemplates, writeFiles);
+    }
+};

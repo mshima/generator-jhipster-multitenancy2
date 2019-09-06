@@ -6,13 +6,15 @@ const debug = require('debug')('jhipster:multitenancy2:entity:server');
 const TenantisedNeedle = require('./needle-api/needle-server-tenantised-entities-services');
 
 const mtUtils = require('../multitenancy-utils');
-const files = require('./files');
+const EntityServerPatcher = require('./files');
 
 module.exports = class extends EntityServerGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
         // Fix {Tenant}Resource.java setting ENTITY_NAME as 'admin{Tenant}'
         this.skipUiGrouping = true;
+
+        this.patcher = new EntityServerPatcher();
     }
 
     get initializing() {
@@ -43,13 +45,11 @@ module.exports = class extends EntityServerGenerator {
 
                 const tenantisedNeedle = new TenantisedNeedle(this);
                 if (this.tenantAware) {
-                    files.writeTenantAwareFiles.call(this);
-                    mtUtils.processPartialTemplates(files.partials.entityTenantAwareTemplates(this), this);
+                    this.patcher.entityTenantAwareTemplates(this);
 
                     tenantisedNeedle.addEntityToTenantAspect(this, this.name);
                 } else if (this.isTenant) {
-                    files.writeTenantFiles.call(this);
-                    mtUtils.processPartialTemplates(files.partials.tenantTemplates(this), this);
+                    this.patcher.tenantTemplates(this);
 
                     debug('Adding already tenantised entities');
                     if (this.configOptions.tenantAwareEntities) {

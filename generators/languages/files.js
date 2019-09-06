@@ -1,11 +1,9 @@
-const mtUtils = require('../multitenancy-utils');
+const Patcher = require('../patcher');
 
 const angularTemplates = ['tenant_admin_menu/global.json'];
 
-module.exports = {
-    angular: {
-        templates(context) {
-            return mtUtils.requireTemplates.call(this, './languages/partials/', angularTemplates, context);
-        }
+module.exports = class LanguagesPatcher extends Patcher {
+    constructor() {
+        super('languages', angularTemplates);
     }
 };

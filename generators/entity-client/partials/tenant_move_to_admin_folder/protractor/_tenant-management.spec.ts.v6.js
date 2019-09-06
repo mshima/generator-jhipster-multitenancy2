@@ -4,9 +4,10 @@ const file = context => `${jhipsterConstants.CLIENT_TEST_SRC_DIR}e2e/admin/${con
 
 const tmpls = [
     {
+        condition: context => context.testFrameworks.indexOf('protractor') !== -1,
         type: 'replaceContent',
-        target: context => '../../../page-objects/jhi-page-objects',
-        tmpl: context => '../../page-objects/jhi-page-objects'
+        target: '../../../page-objects/jhi-page-objects',
+        tmpl: '../../page-objects/jhi-page-objects'
     }
 ];
 

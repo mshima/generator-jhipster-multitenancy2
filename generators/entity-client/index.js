@@ -1,8 +1,6 @@
-/* eslint-disable consistent-return */
 const EntityClientGenerator = require('generator-jhipster/generators/entity-client');
 
-const mtUtils = require('../multitenancy-utils');
-const files = require('./files');
+const EntityClientPatcher = require('./files');
 const workarounds = require('../workarounds');
 
 workarounds.fixGetAllJhipsterConfig(EntityClientGenerator);
@@ -12,6 +10,8 @@ workarounds.fixAddEntityToModule(EntityClientGenerator);
 module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {
         super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
+
+        this.patcher = new EntityClientPatcher();
     }
 
     get initializing() {
@@ -33,7 +33,8 @@ module.exports = class extends EntityClientGenerator {
     get writing() {
         const postWritingSteps = {
             generateClientCode() {
-                mtUtils.processPartialTemplates(files.angular.angularTemplates(this), this);
+                this.patcher.patch(this);
+
                 if (this.isTenant) {
                     // this.addEntityToMenu(this.entityStateName, this.enableTranslation, this.clientFramework, this.entityTranslationKeyMenu);
                     if (!this.configOptions.tenantMenu) {
@@ -42,22 +43,12 @@ module.exports = class extends EntityClientGenerator {
                     }
 
                     // tenant
-                    mtUtils.processPartialTemplates(files.angular.tenantAngularTemplates(this), this);
-
-                    // tests
-                    mtUtils.processPartialTemplates(files.angular.angularTestTemplates(this), this);
-
-                    // e2e test
-                    if (this.testFrameworks.indexOf('protractor') !== -1) {
-                        mtUtils.processPartialTemplates(files.angular.protractor(this), this);
-                    }
-
-                    files.writeFiles.call(this);
+                    this.patcher.tenantAngularTemplates(this);
 
                     return;
                 }
                 if (this.tenantAware) {
-                    mtUtils.processPartialTemplates(files.angular.tenantAwareAngularTemplates(this), this);
+                    this.patcher.tenantAwareAngularTemplates(this);
                 }
             }
         };
