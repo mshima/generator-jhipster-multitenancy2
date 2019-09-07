@@ -29,7 +29,7 @@ function fixGetAllJhipsterConfig(clazz) {
         configuration._get = configuration.get;
         configuration.get = function(key) {
             const ret = options[key] || configOptions[key] || configuration._get(key);
-            debug(`${key} = ${ret}`);
+            // debug(`${key} = ${ret}`);
             return ret;
         };
         return configuration;

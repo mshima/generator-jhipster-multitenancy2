@@ -1,4 +1,5 @@
 const EntityClientGenerator = require('generator-jhipster/generators/entity-client');
+const debug = require('debug')('jhipster:multitenancy2:entity:client');
 
 const EntityClientPatcher = require('./files');
 const workarounds = require('../workarounds');
@@ -12,6 +13,7 @@ module.exports = class extends EntityClientGenerator {
         super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
 
         this.patcher = new EntityClientPatcher();
+        debug(`Initializing entity-client ${this.name}`);
     }
 
     get initializing() {

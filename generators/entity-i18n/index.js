@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
-const debug = require('debug')('jhipster:multitenancy:entity-i18n');
+const debug = require('debug')('jhipster:multitenancy:entity:i18n');
 
 const workarounds = require('../workarounds');
 
@@ -10,7 +10,7 @@ module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
-        debug('Initializing entity-i18n blueprint');
+        debug(`Initializing entity-i18n ${this.name}`);
     }
 
     get initializing() {

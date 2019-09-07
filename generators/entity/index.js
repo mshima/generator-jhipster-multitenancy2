@@ -17,6 +17,7 @@ module.exports = class extends EntityGenerator {
 
         // pass to entity-* subgen
         this.context.isTenant = this.isTenant;
+        debug(`Initializing entity ${args[0]}`);
     }
 
     get initializing() {

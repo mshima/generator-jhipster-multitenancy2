@@ -15,6 +15,7 @@ module.exports = class extends EntityServerGenerator {
         this.skipUiGrouping = true;
 
         this.patcher = new EntityServerPatcher();
+        debug(`Initializing entity-server ${this.name}`);
     }
 
     get initializing() {

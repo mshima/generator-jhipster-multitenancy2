@@ -46,13 +46,13 @@ module.exports = class Patcher {
                         return;
                     }
                 }
-                debug(`type: ${item.type}`);
-                debug(`regex: ${item.regex}`);
+                // debug(`type: ${item.type}`);
+                // debug(`regex: ${item.regex}`);
                 const target = typeof item.target === 'function' ? item.target(generator) : item.target;
-                debug(`target: ${target}`);
+                // debug(`target: ${target}`);
 
                 const tmpl = typeof item.tmpl === 'function' ? item.tmpl(generator) : item.tmpl;
-                debug(`tmpl: ${tmpl}`);
+                // debug(`tmpl: ${tmpl}`);
                 if (item.type === 'replaceContent') {
                     // replaceContent return undefined on 6.2.0
                     // https://github.com/jhipster/generator-jhipster/pull/10366
@@ -63,6 +63,7 @@ module.exports = class Patcher {
                     // https://github.com/jhipster/generator-jhipster/pull/10366
                     if (generator.rewriteFile(file, target, tmpl) === false) generator.error(`Error applying template ${file}`);
                 }
+                debug(`======== Template ${file} Finished`);
             });
         });
     }
