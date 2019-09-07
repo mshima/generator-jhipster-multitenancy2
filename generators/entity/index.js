@@ -58,7 +58,7 @@ module.exports = class extends EntityGenerator {
                     context.changelogDate = this.config.get('tenantChangelogDate');
 
                     // Add name field if doesn´t exists.
-                    if (mtUtils.getArrayItemWithFieldValue(this, context.fields, 'fieldName', 'name') === undefined) {
+                    if (mtUtils.getArrayItemWithFieldValue(context.fields, 'fieldName', 'name') === undefined) {
                         context.fields.push({
                             fieldName: 'name',
                             fieldType: 'String',
@@ -67,7 +67,7 @@ module.exports = class extends EntityGenerator {
                     }
 
                     // Add users relationship if doesn´t exists.
-                    if (!mtUtils.containsRelationship(this, context.relationships, 'users')) {
+                    if (!mtUtils.getArrayItemWithFieldValue(context.relationships, 'relationshipName', 'users')) {
                         context.relationships.push({
                             relationshipName: 'users',
                             otherEntityName: 'user',
@@ -104,10 +104,10 @@ module.exports = class extends EntityGenerator {
                 } else if (this.options.relationTenantAware) {
                     // look for tenantAware entities
                     // eslint-disable-next-line prettier/prettier
-                    this.newTenantAware = mtUtils.getArrayItemWithFieldValue(this, context.relationships, 'otherEntityName', context.tenantName) !== undefined;
+                    this.newTenantAware = mtUtils.getArrayItemWithFieldValue(context.relationships, 'otherEntityName', context.tenantName) !== undefined;
                 } else {
                     // eslint-disable-next-line prettier/prettier
-                    defaultValue = mtUtils.getArrayItemWithFieldValue(this, context.relationships, 'otherEntityName', context.tenantName) !== undefined;
+                    defaultValue = mtUtils.getArrayItemWithFieldValue(context.relationships, 'otherEntityName', context.tenantName) !== undefined;
                 }
 
                 const prompts = [
@@ -161,7 +161,6 @@ module.exports = class extends EntityGenerator {
                     context.service = 'serviceClass';
 
                     const tenantRelationship = mtUtils.getArrayItemWithFieldValue(
-                        this,
                         context.relationships,
                         'otherEntityName',
                         context.tenantName

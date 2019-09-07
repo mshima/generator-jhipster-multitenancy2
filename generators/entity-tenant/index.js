@@ -58,21 +58,25 @@ module.exports = class extends EntityGenerator {
                 context.service = 'serviceClass';
                 context.changelogDate = this.config.get('tenantChangelogDate');
 
-                context.fields.push({
-                    fieldName: 'name',
-                    fieldType: 'String',
-                    fieldValidateRules: ['required']
-                });
+                if (!mtUtils.getArrayItemWithFieldValue(context.fields, 'fieldName', 'name')) {
+                    context.fields.push({
+                        fieldName: 'name',
+                        fieldType: 'String',
+                        fieldValidateRules: ['required']
+                    });
+                }
 
-                context.relationships.push({
-                    relationshipName: 'users',
-                    otherEntityName: 'user',
-                    relationshipType: 'one-to-many',
-                    otherEntityField: 'login',
-                    // relationshipValidateRules: 'required',
-                    ownerSide: true,
-                    otherEntityRelationshipName: context.tenantName
-                });
+                if (!mtUtils.getArrayItemWithFieldValue(context.fields, 'relationshipName', 'users')) {
+                    context.relationships.push({
+                        relationshipName: 'users',
+                        otherEntityName: 'user',
+                        relationshipType: 'one-to-many',
+                        otherEntityField: 'login',
+                        // relationshipValidateRules: 'required',
+                        ownerSide: true,
+                        otherEntityRelationshipName: context.tenantName
+                    });
+                }
             }
         };
 

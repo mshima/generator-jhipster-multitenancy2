@@ -6,25 +6,22 @@ const debug = require('debug')('jhipster:multitenancy2:utils');
  * Utils file to hold methods common to both generator and sub generator
  */
 module.exports = {
-    containsRelationship,
-    getRelationship,
     getArrayItemWithFieldValue,
     tenantVariables
 };
 
-function containsRelationship(generator, relationships, value) {
-    return getRelationship(generator, relationships, value) !== undefined;
-}
-
-function getRelationship(generator, relationships, value) {
-    return getArrayItemWithFieldValue(generator, relationships, 'relationshipName', value);
-}
-
-function getArrayItemWithFieldValue(generator, array, fieldName, value) {
-    value = generator._.toLower(value);
+/**
+ * Look at an array for a item with field name equal fieldName and with field value equals value.
+ * @param {Array} array
+ * @param {string} fieldName
+ * @param {string} value
+ * @returns {boolean} true if found
+ */
+function getArrayItemWithFieldValue(array, fieldName, value) {
+    value = _.toLower(value);
     let found;
     array.forEach(item => {
-        if (item[fieldName] !== undefined && generator._.toLower(item[fieldName]) === value) {
+        if (item[fieldName] !== undefined && _.toLower(item[fieldName]) === value) {
             found = item;
         }
     });
