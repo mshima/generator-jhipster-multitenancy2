@@ -53,33 +53,7 @@ module.exports = class extends EntityGenerator {
                     return;
                 }
 
-                // We should force some tenant options.
-                if (context.fileData) {
-                    context.service = 'serviceClass';
-                    context.changelogDate = this.config.get('tenantChangelogDate');
-
-                    // Add name field if doesn´t exists.
-                    if (mtUtils.getArrayItemWithFieldValue(context.fields, 'fieldName', 'name') === undefined) {
-                        context.fields.push({
-                            fieldName: 'name',
-                            fieldType: 'String',
-                            fieldValidateRules: ['required']
-                        });
-                    }
-
-                    // Add users relationship if doesn´t exists.
-                    if (!mtUtils.getArrayItemWithFieldValue(context.relationships, 'relationshipName', 'users')) {
-                        context.relationships.push({
-                            relationshipName: 'users',
-                            otherEntityName: 'user',
-                            relationshipType: 'one-to-many',
-                            otherEntityField: 'login',
-                            relationshipValidateRules: 'required',
-                            ownerSide: true,
-                            otherEntityRelationshipName: context.tenantName
-                        });
-                    }
-                }
+                mtUtils.validateTenant(this);
             }
         };
 

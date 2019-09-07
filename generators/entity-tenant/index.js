@@ -48,35 +48,8 @@ module.exports = class extends EntityGenerator {
 
     get configuring() {
         const preConfiguringSteps = {
-            loadTenantDef() {
-                this.context.clientRootFolder = '../admin';
-            },
             preJson() {
-                const context = this.context;
-
-                // force tenant to be serviceClass
-                context.service = 'serviceClass';
-                context.changelogDate = this.config.get('tenantChangelogDate');
-
-                if (!mtUtils.getArrayItemWithFieldValue(context.fields, 'fieldName', 'name')) {
-                    context.fields.push({
-                        fieldName: 'name',
-                        fieldType: 'String',
-                        fieldValidateRules: ['required']
-                    });
-                }
-
-                if (!mtUtils.getArrayItemWithFieldValue(context.fields, 'relationshipName', 'users')) {
-                    context.relationships.push({
-                        relationshipName: 'users',
-                        otherEntityName: 'user',
-                        relationshipType: 'one-to-many',
-                        otherEntityField: 'login',
-                        // relationshipValidateRules: 'required',
-                        ownerSide: true,
-                        otherEntityRelationshipName: context.tenantName
-                    });
-                }
+                mtUtils.validateTenant(this);
             }
         };
 

@@ -6,9 +6,41 @@ const debug = require('debug')('jhipster:multitenancy2:utils');
  * Utils file to hold methods common to both generator and sub generator
  */
 module.exports = {
+    validateTenant,
     getArrayItemWithFieldValue,
     tenantVariables
 };
+
+function validateTenant(generator) {
+    const context = generator.context;
+    context.clientRootFolder = '../admin';
+
+    // force tenant to be serviceClass
+    context.service = 'serviceClass';
+    context.changelogDate = generator.config.get('tenantChangelogDate');
+
+    // Add name field if doesn´t exists.
+    if (!getArrayItemWithFieldValue(context.fields, 'fieldName', 'name')) {
+        context.fields.push({
+            fieldName: 'name',
+            fieldType: 'String',
+            fieldValidateRules: ['required']
+        });
+    }
+
+    // Add users relationship if doesn´t exists.
+    if (!getArrayItemWithFieldValue(context.fields, 'relationshipName', 'users')) {
+        context.relationships.push({
+            relationshipName: 'users',
+            otherEntityName: 'user',
+            relationshipType: 'one-to-many',
+            otherEntityField: 'login',
+            // relationshipValidateRules: 'required',
+            ownerSide: true,
+            otherEntityRelationshipName: context.tenantName
+        });
+    }
+}
 
 /**
  * Look at an array for a item with field name equal fieldName and with field value equals value.
