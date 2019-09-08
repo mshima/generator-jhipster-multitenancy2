@@ -27,6 +27,7 @@ describe('JHipster generator with multitenancy2 blueprint', () => {
                         'from-cli': true,
                         skipInstall: true,
                         blueprint: 'multitenancy2',
+                        'tenant-changelog-date': 20190907201713,
                         defaultTenantAware: true,
                         tenantFileSuffix: 'management',
                         skipChecks: true

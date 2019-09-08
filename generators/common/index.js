@@ -34,7 +34,8 @@ module.exports = class extends CommonGenerator {
         });
 
         this.tenantName = this.options.tenantName || this.config.get('tenantName');
-        this.tenantChangelogDate = this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
+        this.tenantChangelogDate =
+            this.options.tenantChangelogDate || this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
     }
 
     get initializing() {
@@ -42,11 +43,13 @@ module.exports = class extends CommonGenerator {
             loadConf() {
                 this.configOptions.baseName = this.baseName;
 
-                if (this.options['tenant-changelog-date'] !== undefined) {
+                // If tenantChangelogDate is set, use reproducible build
+                if (this.options.tenantChangelogDate !== undefined || this.options['tenant-changelog-date'] !== undefined) {
                     this.config.set('nextChangelogDate', this.tenantChangelogDate);
                 } else if (this.tenantChangelogDate === undefined) {
                     this.tenantChangelogDate = this.dateFormatForLiquibase();
                 }
+                debug(`Using tenantChangelogDate ${this.tenantChangelogDate}`);
                 this.config.set('tenantChangelogDate', this.tenantChangelogDate);
 
                 // This will be used by entity-server to crate "@Before" annotation in TenantAspect

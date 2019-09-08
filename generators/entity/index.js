@@ -48,6 +48,9 @@ module.exports = class extends EntityGenerator {
                         if (nextChangelogDate !== undefined) {
                             context.changelogDate = `${Number(nextChangelogDate) + 1}`;
                             this.config.set('nextChangelogDate', context.changelogDate);
+
+                            // When using jdl, it already has a .json file with changelogDate, override it:
+                            this.updateEntityConfig(context.filename, 'changelogDate', context.changelogDate);
                         }
                     }
                     return;

@@ -72,10 +72,8 @@ module.exports = class extends EntityGenerator {
             },
             postJson() {
                 // jhipster will override tenant's changelogDate
-                if (!this.context.useConfigurationFile) {
-                    this.context.changelogDate = this.config.get('tenantChangelogDate');
-                    this.updateEntityConfig(this.context.filename, 'changelogDate', this.context.changelogDate);
-                }
+                this.context.changelogDate = this.options.tenantChangelogDate || this.config.get('tenantChangelogDate');
+                this.updateEntityConfig(this.context.filename, 'changelogDate', this.context.changelogDate);
             }
         };
         return { ...preConfiguringSteps, ...super._configuring(), ...postConfiguringSteps };
