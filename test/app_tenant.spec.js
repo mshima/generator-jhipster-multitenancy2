@@ -30,6 +30,7 @@ describe('JHipster generator with multitenancy2 blueprint', () => {
                         'tenant-changelog-date': 20190907201713,
                         defaultTenantAware: true,
                         tenantFileSuffix: 'management',
+                        'abort-on-patch-error': true,
                         skipChecks: true
                     })
                     .withGenerators([

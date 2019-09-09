@@ -27,10 +27,11 @@ module.exports = class Patcher {
     }
 
     processPartialTemplates(generator, partialTemplates) {
+        const abortOnPatchError = generator.options.abortOnPatchError || generator.options['abort-on-patch-error'] || false;
         partialTemplates.forEach(templates => {
             const file = typeof templates.file === 'function' ? templates.file(generator) : templates.file;
             templates.tmpls.forEach(item => {
-                debug(`======== Template ${file}`);
+                debug(`======== Template ${templates.origin} on ${file}`);
                 // ignore if version is not compatible
                 if (item.versions && !item.versions.includes(jhipsterVersion)) {
                     debug(`Version not compatible ${jhipsterVersion}`);
@@ -53,17 +54,18 @@ module.exports = class Patcher {
 
                 const tmpl = typeof item.tmpl === 'function' ? item.tmpl(generator) : item.tmpl;
                 // debug(`tmpl: ${tmpl}`);
+                let success;
                 if (item.type === 'replaceContent') {
                     // replaceContent return undefined on 6.2.0
                     // https://github.com/jhipster/generator-jhipster/pull/10366
-                    if (generator.replaceContent(file, target, tmpl, item.regex) === false)
-                        generator.error(`Error applying template ${file}`);
+                    success = generator.replaceContent(file, target, tmpl, item.regex);
                 } else if (item.type === 'rewriteFile') {
                     // replaceContent return undefined on 6.2.0
                     // https://github.com/jhipster/generator-jhipster/pull/10366
-                    if (generator.rewriteFile(file, target, tmpl) === false) generator.error(`Error applying template ${file}`);
+                    success = generator.rewriteFile(file, target, tmpl);
                 }
-                debug(`======== Template ${file} Finished`);
+                if (abortOnPatchError && success === false) generator.error(`Error applying template ${templates.origin} on ${file}`);
+                debug(`======== Template ${templates.origin} on ${file} Finished type: ${item.type}, success: ${success}`);
             });
         });
     }
@@ -80,21 +82,30 @@ module.exports = class Patcher {
             // Look for specific version
             const template = `./${this.module}/partials/${file}`;
             let version = jhipsterVersion;
+            let loadedFile;
+            let loadedTemplate;
             while (version !== '') {
                 try {
-                    ret.push(require(`${template}.v${version}.js`));
-                    debug(`Success loading ${template}.v${version}`);
+                    loadedFile = `${template}.v${version}.js`;
+                    loadedTemplate = require(loadedFile);
                     return;
                 } catch (e) {
                     version = version.substring(0, version.lastIndexOf('.'));
                 }
             }
-            try {
-                ret.push(require(`${template}.js`));
-            } catch (e) {
-                if (generator && generator.log) generator.log(`Error loading ${template}`);
-                debug(`Error loading ${template}`);
+            if (loadedTemplate === undefined) {
+                try {
+                    loadedFile = `${template}.js`;
+                    loadedTemplate = require(loadedFile);
+                } catch (e) {
+                    if (generator && generator.log) generator.log(`Error loading ${template}`);
+                    debug(`Error loading ${template}`);
+                    return;
+                }
             }
+            loadedTemplate.origin = loadedFile;
+            ret.push(loadedTemplate);
+            debug(`Success loading ${loadedFile}`);
         });
         return ret;
     }
