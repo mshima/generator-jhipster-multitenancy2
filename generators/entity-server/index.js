@@ -8,6 +8,10 @@ const TenantisedNeedle = require('./needle-api/needle-server-tenantised-entities
 const mtUtils = require('../multitenancy-utils');
 const EntityServerPatcher = require('./files');
 
+const workarounds = require('../workarounds');
+
+workarounds.addReturnRewriteReplace(EntityServerGenerator);
+
 module.exports = class extends EntityServerGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important

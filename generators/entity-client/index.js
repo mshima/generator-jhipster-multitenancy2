@@ -7,6 +7,7 @@ const workarounds = require('../workarounds');
 workarounds.fixGetAllJhipsterConfig(EntityClientGenerator);
 workarounds.fixAddEntityToMenu(EntityClientGenerator);
 workarounds.fixAddEntityToModule(EntityClientGenerator);
+workarounds.addReturnRewriteReplace(EntityClientGenerator);
 
 module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {

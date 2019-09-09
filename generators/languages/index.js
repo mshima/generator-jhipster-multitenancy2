@@ -6,6 +6,10 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 const LanguagesPatcher = require('./files');
 const mtUtils = require('../multitenancy-utils');
 
+const workarounds = require('../workarounds');
+
+workarounds.addReturnRewriteReplace(LanguagesGenerator);
+
 module.exports = class extends LanguagesGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important

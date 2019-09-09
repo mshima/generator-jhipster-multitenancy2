@@ -4,6 +4,10 @@ const ServerGenerator = require('generator-jhipster/generators/server');
 const ServerPatcher = require('./files');
 const mtUtils = require('../multitenancy-utils');
 
+const workarounds = require('../workarounds');
+
+workarounds.addReturnRewriteReplace(ServerGenerator);
+
 module.exports = class extends ServerGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
