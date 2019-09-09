@@ -13,7 +13,7 @@ module.exports = {
 
 function validateTenant(generator) {
     const context = generator.context;
-    context.clientRootFolder = '../admin';
+    context.clientRootFolder = generator.options['tenant-root-folder'] || '';
 
     // force tenant to be serviceClass
     context.service = 'serviceClass';
@@ -69,7 +69,17 @@ function tenantVariables(tenantName, context, generator = this) {
     /* tenant variables */
     const tenantNamePluralizedAndSpinalCased = _.kebabCase(pluralize(tenantName));
 
-    context.tenantClientRootFolder = '../admin';
+    // workaround getEntityJson always look for generator.context
+    const containsContext = generator.context !== undefined;
+    if (!containsContext) generator.context = {};
+
+    const tenantData = generator.getEntityJson(_.upperFirst(tenantName));
+
+    if (!containsContext) generator.context = undefined;
+    if (tenantData === undefined) {
+        debug(`Error loading ${_.upperFirst(tenantName)}`);
+    }
+    context.tenantClientRootFolder = generator.options['tenant-root-folder'] || (tenantData && tenantData.clientRootFolder) || '';
 
     context.tenantName = _.camelCase(tenantName);
 

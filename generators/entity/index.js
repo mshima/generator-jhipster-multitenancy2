@@ -117,7 +117,7 @@ module.exports = class extends EntityGenerator {
                 }
 
                 if (this.isTenant) {
-                    context.clientRootFolder = '../admin';
+                    context.clientRootFolder = context.tenantClientRootFolder;
                 }
             },
             preJson() {
@@ -143,7 +143,7 @@ module.exports = class extends EntityGenerator {
                     if (tenantRelationship) {
                         debug('Found relationship with tenant');
                         if (!tenantRelationship.clientRootFolder) {
-                            tenantRelationship.clientRootFolder = '../admin';
+                            tenantRelationship.clientRootFolder = context.tenantClientRootFolder;
                         }
                         if (!tenantRelationship.otherEntityStateName) {
                             tenantRelationship.otherEntityStateName = context.tenantStateName;
@@ -168,7 +168,7 @@ module.exports = class extends EntityGenerator {
                         otherEntityField: 'name',
                         relationshipValidateRules: 'required',
                         ownerSide: true,
-                        clientRootFolder: '../admin',
+                        clientRootFolder: context.tenantClientRootFolder,
                         otherEntityStateName: context.tenantStateName,
                         otherEntityFolderName: context.tenantFolderName,
                         otherEntityAngularName: context.tenantAngularName,

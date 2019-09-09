@@ -11,6 +11,12 @@ module.exports = class extends EntityGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
+        this.option('tenant-root-folder', {
+            desc: 'Set tenant root folder',
+            type: String,
+            default: '../admin'
+        });
+
         // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.options.tenantName || this.config.get('tenantName'));
 
@@ -29,13 +35,10 @@ module.exports = class extends EntityGenerator {
                     context.enableTranslation = this.configOptions.enableTranslation;
                 }
 
-                context.clientRootFolder = '../admin';
-                // Maybe will be implemente for 6.2.1
-                context.skipMenu = true;
-
                 /* tenant variables */
                 const configuration = this.getAllJhipsterConfig(this, true);
                 mtUtils.tenantVariables(configuration.get('tenantName'), context, this);
+                context.clientRootFolder = context.tenantClientRootFolder;
             }
         };
 

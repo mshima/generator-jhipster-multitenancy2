@@ -5,7 +5,7 @@ import { JhiLanguageHelper } from 'app/core';
 import { <%=angularXAppName%>SharedModule } from 'app/shared';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
-import { UserMgmtSharedModule } from '../admin';
+import { UserMgmtSharedModule } from '<%= tenantClientRootFolder %>';
 import { <%= tenantNameLowerFirst %>AdminState } from './<%= tenantNameLowerFirst %>-admin.route';
 
 @NgModule({
