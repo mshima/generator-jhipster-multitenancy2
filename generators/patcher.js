@@ -18,7 +18,7 @@ module.exports = class Patcher {
     _patch(generator, templates, writeFiles) {
         if (templates) {
             const fileTemplates = this.requireTemplates(templates, generator);
-            this.processPartialTemplates(fileTemplates, generator);
+            this.processPartialTemplates(generator, fileTemplates);
         }
 
         if (writeFiles) {
@@ -26,7 +26,7 @@ module.exports = class Patcher {
         }
     }
 
-    processPartialTemplates(partialTemplates, generator) {
+    processPartialTemplates(generator, partialTemplates) {
         partialTemplates.forEach(templates => {
             const file = typeof templates.file === 'function' ? templates.file(generator) : templates.file;
             templates.tmpls.forEach(item => {

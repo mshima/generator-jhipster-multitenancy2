@@ -63,13 +63,13 @@ module.exports = class EntityClientPatcher extends Patcher {
             ...this.requireTemplates(angularTestTemplates, generator),
             ...this.requireTemplates(angularProtractorTemplates, generator)
         ];
-        this.processPartialTemplates(templates, generator);
+        this.processPartialTemplates(generator, templates);
 
         writeTenantFiles.call(generator);
     }
 
     tenantAwareAngularTemplates(generator) {
         const templates = this.requireTemplates(tenantAwareAngularTemplates, generator);
-        this.processPartialTemplates(templates, generator);
+        this.processPartialTemplates(generator, templates);
     }
 };
