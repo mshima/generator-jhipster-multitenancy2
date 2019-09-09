@@ -29,14 +29,9 @@ module.exports = class extends EntityGenerator {
                     context.enableTranslation = this.configOptions.enableTranslation;
                 }
 
-                if (this.isTenant) {
-                    // Ignore questions to the tenant
-                    context.useConfigurationFile = true;
-
-                    context.clientRootFolder = '../admin';
-                    // Maybe will be implemente for 6.2.1
-                    context.skipMenu = true;
-                }
+                // Ignore some questions and validations
+                // Example: changelogDate will alway be overrided
+                context.useConfigurationFile = true;
 
                 /* tenant variables */
                 mtUtils.tenantVariables.call(this, this.config.get('tenantName'), context, this);
