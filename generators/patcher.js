@@ -69,8 +69,14 @@ module.exports = class Patcher {
     }
 
     requireTemplates(templates, generator) {
+        const disableTenantFeatures = (generator.options['disable-tenant-features'] || '').split(',');
         const ret = [];
         templates.forEach(file => {
+            const feature = file.split('/', 1);
+            if (disableTenantFeatures.includes(feature[0])) {
+                debug(`======== Template ${file} disabled`);
+                return;
+            }
             // Look for specific version
             const template = `./${this.module}/partials/${file}`;
             let version = jhipsterVersion;
