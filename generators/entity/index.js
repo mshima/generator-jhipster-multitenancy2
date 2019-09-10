@@ -12,6 +12,12 @@ module.exports = class extends EntityGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
+        this.option('tenant-root-folder', {
+            desc: 'Set tenant root folder',
+            type: String,
+            default: '../admin'
+        });
+
         // current subgen
         this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get('tenantName'));
 
