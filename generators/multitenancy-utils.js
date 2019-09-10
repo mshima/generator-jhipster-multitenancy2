@@ -29,7 +29,7 @@ function validateTenant(generator) {
     }
 
     // Add users relationship if doesn´t exists.
-    if (!getArrayItemWithFieldValue(context.fields, 'relationshipName', 'users')) {
+    if (!getArrayItemWithFieldValue(context.relationships, 'relationshipName', 'users')) {
         context.relationships.push({
             relationshipName: 'users',
             otherEntityName: 'user',
@@ -53,7 +53,8 @@ function getArrayItemWithFieldValue(array, fieldName, value) {
     value = _.toLower(value);
     let found;
     array.forEach(item => {
-        if (item[fieldName] !== undefined && _.toLower(item[fieldName]) === value) {
+        const valueFound = item[fieldName];
+        if (valueFound !== undefined && _.toLower(valueFound) === _.toLower(value)) {
             found = item;
         }
     });
