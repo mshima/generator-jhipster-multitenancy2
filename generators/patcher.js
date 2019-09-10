@@ -1,3 +1,4 @@
+const chalk = require('chalk');
 const debug = require('debug')('jhipster:multitenancy2:patcher');
 
 const packagejs = require('generator-jhipster/package.json');
@@ -16,6 +17,7 @@ module.exports = class Patcher {
     }
 
     _patch(generator, templates, writeFiles) {
+        if (generator.ignorePatcher) return;
         if (templates) {
             const fileTemplates = this.requireTemplates(templates, generator);
             this.processPartialTemplates(generator, fileTemplates);
@@ -35,8 +37,8 @@ module.exports = class Patcher {
         const abortOnPatchError = generator.options.abortOnPatchError || generator.options['abort-on-patch-error'] || false;
         partialTemplates.forEach(templates => {
             const file = typeof templates.file === 'function' ? templates.file(generator) : templates.file;
-            templates.tmpls.forEach(item => {
-                debug(`======== Template ${templates.origin} on ${file}`);
+            templates.tmpls.forEach((item, index) => {
+                debug(`======== Applying template ${templates.origin}[${index}] on ${file}`);
                 // ignore if version is not compatible
                 if (item.versions && !item.versions.includes(jhipsterVersion)) {
                     debug(`Version not compatible ${jhipsterVersion}`);
@@ -69,8 +71,10 @@ module.exports = class Patcher {
                     // https://github.com/jhipster/generator-jhipster/pull/10366
                     success = generator.rewriteFile(file, target, tmpl);
                 }
+                let successLog = `${success}`;
+                if (!success) successLog = chalk.red(`${success}`);
                 if (abortOnPatchError && success === false) generator.error(`Error applying template ${templates.origin} on ${file}`);
-                debug(`======== Template ${templates.origin} on ${file} Finished type: ${item.type}, success: ${success}`);
+                debug(`======== Template finished type: ${item.type}, success: ${successLog}`);
             });
         });
     }
