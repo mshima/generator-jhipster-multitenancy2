@@ -27,6 +27,11 @@ module.exports = class Patcher {
     }
 
     processPartialTemplates(generator, partialTemplates) {
+        if (!generator || !generator.options) {
+            debug('generator parameter is not a generator');
+            generator.error('Error');
+        }
+
         const abortOnPatchError = generator.options.abortOnPatchError || generator.options['abort-on-patch-error'] || false;
         partialTemplates.forEach(templates => {
             const file = typeof templates.file === 'function' ? templates.file(generator) : templates.file;
@@ -75,6 +80,7 @@ module.exports = class Patcher {
         const ret = [];
         templates.forEach(file => {
             const feature = file.split('/', 1);
+            debug(`======== Loading Template ${file}`);
             if (disableTenantFeatures.includes(feature[0])) {
                 debug(`======== Template ${file} disabled`);
                 return;
@@ -84,13 +90,15 @@ module.exports = class Patcher {
             let version = jhipsterVersion;
             let loadedFile;
             let loadedTemplate;
-            while (version !== '') {
+            while (loadedTemplate === undefined) {
                 try {
                     loadedFile = `${template}.v${version}.js`;
+                    debug(`======== Trying ${loadedFile}`);
                     loadedTemplate = require(loadedFile);
-                    return;
                 } catch (e) {
-                    version = version.substring(0, version.lastIndexOf('.'));
+                    const lastIndex = version.lastIndexOf('.');
+                    if (lastIndex === -1) break;
+                    version = version.substring(0, lastIndex);
                 }
             }
             if (loadedTemplate === undefined) {
@@ -105,7 +113,7 @@ module.exports = class Patcher {
             }
             loadedTemplate.origin = loadedFile;
             ret.push(loadedTemplate);
-            debug(`Success loading ${loadedFile}`);
+            debug(`Success loaded ${loadedFile}`);
         });
         return ret;
     }
