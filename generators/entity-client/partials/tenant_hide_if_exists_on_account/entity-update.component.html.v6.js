@@ -1,6 +1,8 @@
 const file = context =>
     `${context.CLIENT_MAIN_SRC_DIR}app/entities/${context.entityFolderName}/${context.entityFileName}-update.component.html`;
 
+const condition = context => context.tenantAware;
+
 const tmpls = [
     {
         // Hide the tenant if the current account is from a tenant (field)
@@ -20,5 +22,6 @@ const tmpls = [
 
 module.exports = {
     file,
+    condition,
     tmpls
 };
