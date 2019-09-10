@@ -12,6 +12,12 @@ module.exports = class extends ClientGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
+        this.option('tenant-root-folder', {
+            desc: 'Set tenant root folder',
+            type: String,
+            default: '../admin'
+        });
+
         this.patcher = new ClientPatcher();
     }
 
