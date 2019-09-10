@@ -114,6 +114,8 @@ jobs:
             displayName: 'GENERATION: entities'
           - bash: $(JHI_SCRIPTS)/12-generate-project.sh
             displayName: 'GENERATION: project'
+          - bash: $(JHI_SCRIPTS)/12.1-project-customizations.sh
+            displayName: 'GENERATION: project customizations'
           - bash: $(JHI_SCRIPTS)/13-replace-version-generated-project.sh
             displayName: 'GENERATION: replace version in generated project'
           - bash: $(JHI_SCRIPTS)/14-jhipster-info.sh
