@@ -36,6 +36,10 @@ module.exports = class Patcher {
 
         const abortOnPatchError = generator.options.abortOnPatchError || generator.options['abort-on-patch-error'] || false;
         partialTemplates.forEach(templates => {
+            if (typeof templates.condition === 'function' && templates.condition(generator)) {
+                debug(`Disabled by templates condition ${templates.condition}`);
+                return;
+            }
             const file = typeof templates.file === 'function' ? templates.file(generator) : templates.file;
             templates.tmpls.forEach((item, index) => {
                 debug(`======== Applying template ${templates.origin}[${index}] on ${file}`);
@@ -50,7 +54,7 @@ module.exports = class Patcher {
                 }
                 if (typeof item.condition === 'function') {
                     if (!item.condition(generator)) {
-                        debug(`Template condition ${item.condition}`);
+                        debug(`Disabled by condition ${item.condition}`);
                         return;
                     }
                 }
@@ -75,6 +79,15 @@ module.exports = class Patcher {
                 if (!success) successLog = chalk.red(`${success}`);
                 if (abortOnPatchError && success === false) generator.error(`Error applying template ${templates.origin} on ${file}`);
                 debug(`======== Template finished type: ${item.type}, success: ${successLog}`);
+                if (!success && generator.options['debug-patcher']) {
+                    try {
+                        const body = generator.fs.read(file);
+                        debug(`Target: ${target}`);
+                        generator.log(body);
+                    } catch (e) {
+                        debug(`File ${file} not found`);
+                    }
+                }
             });
         });
     }
