@@ -17,7 +17,7 @@ application {
 }
 entity Company {
   name String required minlength(3)
-  idName String required minlength(3)
+  idName String minlength(3)
 }
 entity BankAccount {
   name String required
@@ -134,10 +134,10 @@ relationship OneToOne {
 }
 
 relationship OneToMany {
-  BankAccount{company(idName)} to Company
   BankAccount{operation} to Operation{bankAccount(name)}
 }
 relationship ManyToOne {
+  BankAccount{company} to Company
   BankAccount{user(login)} to User
 }
 relationship ManyToMany {

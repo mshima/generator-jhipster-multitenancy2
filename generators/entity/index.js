@@ -142,6 +142,16 @@ module.exports = class extends EntityGenerator {
                     // if tenant relationship already exists in the entity then set options
                     if (tenantRelationship) {
                         debug('Found relationship with tenant');
+                        // Force values
+                        tenantRelationship.ownerSide = true;
+                        tenantRelationship.relationshipValidateRules = 'required';
+
+                        if (!tenantRelationship.relationshipType) {
+                            tenantRelationship.relationshipType = 'many-to-one';
+                        }
+                        if (!tenantRelationship.otherEntityField) {
+                            tenantRelationship.otherEntityField = 'name';
+                        }
                         if (!tenantRelationship.clientRootFolder) {
                             tenantRelationship.clientRootFolder = context.tenantClientRootFolder;
                         }
@@ -151,11 +161,11 @@ module.exports = class extends EntityGenerator {
                         if (!tenantRelationship.otherEntityFolderName) {
                             tenantRelationship.otherEntityFolderName = context.tenantFolderName;
                         }
-                        if (!tenantRelationship.otherEntityRelationshipName) {
-                            tenantRelationship.otherEntityRelationshipName = context.tenantInstance;
-                        }
                         if (!tenantRelationship.otherEntityAngularName) {
                             tenantRelationship.otherEntityAngularName = context.tenantAngularName;
+                        }
+                        if (!tenantRelationship.otherEntityRelationshipName) {
+                            tenantRelationship.otherEntityRelationshipName = context.tenantInstance;
                         }
                         return;
                     }
