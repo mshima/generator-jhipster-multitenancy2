@@ -18,7 +18,7 @@ module.exports = class extends EntityServerGenerator {
         // Fix {Tenant}Resource.java setting ENTITY_NAME as 'admin{Tenant}'
         this.skipUiGrouping = true;
 
-        this.patcher = new EntityServerPatcher();
+        this.patcher = new EntityServerPatcher(this);
         debug(`Initializing entity-server ${this.name}`);
     }
 

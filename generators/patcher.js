@@ -1,15 +1,31 @@
 const chalk = require('chalk');
+const path = require('path');
+const glob = require('glob');
 const debug = require('debug')('jhipster:multitenancy2:patcher');
 
 const packagejs = require('generator-jhipster/package.json');
 
 const jhipsterVersion = packagejs.version;
+const defaultOptions = {
+    autoLoadPath: 'partials',
+    defaultLoadPath: 'partials'
+};
 
 module.exports = class Patcher {
-    constructor(module, templates, writeFiles) {
+    constructor(generator, module, templates, writeFiles, options = {}) {
+        this.options = { ...defaultOptions, ...options };
         this.module = module;
-        this.templates = templates;
         this.writeFiles = writeFiles;
+        if (templates !== undefined) {
+            this.templates = templates;
+        } else if (generator) {
+            // _sourceRoot is templates path from yo-generator
+            // Alternative is resolved that point to generator file
+            this.rootPath = path.resolve(generator._sourceRoot, `../${this.options.autoLoadPath}`);
+            this.templates = glob.sync(`${this.rootPath}/**/*.js`);
+            debug('Found patches:');
+            debug(this.templates);
+        }
     }
 
     patch(generator) {
@@ -96,21 +112,29 @@ module.exports = class Patcher {
         const disableTenantFeatures = (generator.options['disable-tenant-features'] || '').split(',');
         const ret = [];
         templates.forEach(file => {
-            const feature = file.split('/', 1);
-            debug(`======== Loading Template ${file}`);
-            if (disableTenantFeatures.includes(feature[0])) {
-                debug(`======== Template ${file} disabled`);
+            let template = file;
+            let relativePath;
+            if (path.isAbsolute(file)) {
+                template = path.format({ ...path.parse(file), ext: undefined, base: undefined });
+                relativePath = path.relative(this.rootPath, template);
+            } else {
+                relativePath = file;
+                template = `./${this.module}/partials/${file}`;
+            }
+            const feature = relativePath.split(path.sep, 1)[0];
+            debug(`======== Loading feature ${feature}, template ${file}`);
+            if (disableTenantFeatures.includes(feature)) {
+                debug(`======== Template with feature ${feature} disabled (${file})`);
                 return;
             }
-            // Look for specific version
-            const template = `./${this.module}/partials/${file}`;
             let version = jhipsterVersion;
             let loadedFile;
             let loadedTemplate;
             while (loadedTemplate === undefined) {
+                // Look for specific version
                 try {
                     loadedFile = `${template}.v${version}.js`;
-                    debug(`======== Trying ${loadedFile}`);
+                    // debug(`Trying ${loadedFile}`);
                     loadedTemplate = require(loadedFile);
                 } catch (e) {
                     const lastIndex = version.lastIndexOf('.');
@@ -123,14 +147,14 @@ module.exports = class Patcher {
                     loadedFile = `${template}.js`;
                     loadedTemplate = require(loadedFile);
                 } catch (e) {
-                    if (generator && generator.log) generator.log(`Error loading ${template}`);
-                    debug(`Error loading ${template}`);
+                    if (generator && generator.log) generator.log(`Error loading ${loadedFile}`);
+                    debug(`Error loading ${loadedFile}`);
                     return;
                 }
             }
             loadedTemplate.origin = loadedFile;
             ret.push(loadedTemplate);
-            debug(`Success loaded ${loadedFile}`);
+            debug(`======== Success loaging template ${loadedFile}`);
         });
         return ret;
     }

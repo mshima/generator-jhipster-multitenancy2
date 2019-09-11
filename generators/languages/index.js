@@ -14,7 +14,7 @@ module.exports = class extends LanguagesGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
-        this.patcher = new LanguagesPatcher();
+        this.patcher = new LanguagesPatcher(this);
         debug('Initializing languages blueprint');
     }
 

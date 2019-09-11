@@ -53,8 +53,8 @@ function writeTenantFiles() {
 }
 
 module.exports = class EntityClientPatcher extends Patcher {
-    constructor() {
-        super('entity-client', angularTemplates);
+    constructor(generator) {
+        super(generator, 'entity-client', angularTemplates);
     }
 
     tenantAngularTemplates(generator) {

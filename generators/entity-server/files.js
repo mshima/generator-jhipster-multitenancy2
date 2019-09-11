@@ -121,8 +121,8 @@ function writeTenantFiles() {
 }
 
 module.exports = class EntityServerPatcher extends Patcher {
-    constructor() {
-        super('entity-server');
+    constructor(generator) {
+        super(generator, 'entity-server');
     }
 
     entityTenantAwareTemplates(generator) {

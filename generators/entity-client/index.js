@@ -13,7 +13,7 @@ module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {
         super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
 
-        this.patcher = new EntityClientPatcher();
+        this.patcher = new EntityClientPatcher(this);
         debug(`Initializing entity-client ${this.name}`);
     }
 

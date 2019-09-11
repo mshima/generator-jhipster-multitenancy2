@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 const ClientGenerator = require('generator-jhipster/generators/client');
+const debug = require('debug')('jhipster:multitenancy2:entity');
 
 const ClientPatcher = require('./files');
 const mtUtils = require('../multitenancy-utils');
@@ -18,7 +19,8 @@ module.exports = class extends ClientGenerator {
             default: '../admin'
         });
 
-        this.patcher = new ClientPatcher();
+        debug('Initializing client');
+        this.patcher = new ClientPatcher(this);
     }
 
     get initializing() {

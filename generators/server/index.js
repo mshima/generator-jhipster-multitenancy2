@@ -12,7 +12,7 @@ module.exports = class extends ServerGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
-        this.patcher = new ServerPatcher();
+        this.patcher = new ServerPatcher(this);
     }
 
     get initializing() {

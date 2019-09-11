@@ -34,7 +34,7 @@ function writeFiles() {
 }
 
 module.exports = class ServerPatcher extends Patcher {
-    constructor() {
-        super('server', serverTemplates, writeFiles);
+    constructor(generator) {
+        super(generator, 'server', serverTemplates, writeFiles);
     }
 };
