@@ -1,7 +1,7 @@
 const EntityClientGenerator = require('generator-jhipster/generators/entity-client');
 const debug = require('debug')('jhipster:multitenancy2:entity:client');
 
-const EntityClientPatcher = require('./files');
+const Patcher = require('../patcher');
 const workarounds = require('../workarounds');
 
 workarounds.fixGetAllJhipsterConfig(EntityClientGenerator);
@@ -13,7 +13,7 @@ module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {
         super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
 
-        this.patcher = new EntityClientPatcher(this);
+        this.patcher = new Patcher(this);
         debug(`Initializing entity-client ${this.name}`);
     }
 
@@ -36,23 +36,7 @@ module.exports = class extends EntityClientGenerator {
     get writing() {
         const postWritingSteps = {
             generateClientCode() {
-                this.patcher.patch(this);
-
-                if (this.isTenant) {
-                    // this.addEntityToMenu(this.entityStateName, this.enableTranslation, this.clientFramework, this.entityTranslationKeyMenu);
-                    if (!this.configOptions.tenantMenu) {
-                        // Removes this condition when creating moves to entity-tenant, this is to ensure this is executed only once.
-                        this.configOptions.tenantMenu = true;
-                    }
-
-                    // tenant
-                    this.patcher.tenantAngularTemplates(this);
-
-                    return;
-                }
-                if (this.tenantAware) {
-                    this.patcher.tenantAwareAngularTemplates(this);
-                }
+                this.patcher.patch();
             }
         };
         return { ...super._writing(), ...postWritingSteps };
