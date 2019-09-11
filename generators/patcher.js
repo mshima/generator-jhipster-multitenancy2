@@ -27,6 +27,7 @@ module.exports = class Patcher {
             debug('Found patches:');
             debug(this.templates);
         }
+        this.disableFeatures = (generator.options['disable-tenant-features'] || '').split(',');
     }
 
     patch(generator = this.generator) {
@@ -48,17 +49,23 @@ module.exports = class Patcher {
     }
 
     writeFiles(requiredTemplates, generator = this.generator) {
-        requiredTemplates.forEach(templates => {
+        requiredTemplates.forEach(fileTemplate => {
             // not ejs files, treated by processPartialTemplates
-            if (templates.filename !== 'files.js') return;
+            if (fileTemplate.filename !== 'files.js') return;
 
             // const templatesJson = JSON.stringify(templates);
             // debug(`${templatesJson}`);
             // parse the templates and write files to the appropriate locations
-            if (templates.files === undefined) {
-                this.generator.error(`Template file should have format: { file: { feature: [ ...patches ] } } (${templates.origin})`);
+            if (fileTemplate.files === undefined) {
+                this.generator.error(`Template file should have format: { file: { feature: [ ...patches ] } } (${fileTemplate.origin})`);
             }
-            generator.writeFilesToDisk(templates.files, generator, false);
+            this.disableFeatures.forEach(disabledFeature => {
+                if (fileTemplate.files[disabledFeature] !== undefined) {
+                    debug(`======== Template with feature ${disabledFeature} disabled (${fileTemplate.origin})`);
+                    fileTemplate.files[disabledFeature] = undefined;
+                }
+            });
+            generator.writeFilesToDisk(fileTemplate.files, generator, false);
         });
     }
 
@@ -130,7 +137,6 @@ module.exports = class Patcher {
     }
 
     requireTemplates(templates, generator) {
-        const disableTenantFeatures = (generator.options['disable-tenant-features'] || '').split(',');
         const ret = [];
         templates.forEach(file => {
             let template = file;
@@ -147,7 +153,7 @@ module.exports = class Patcher {
             }
             const feature = relativePath.split(path.sep, 1)[0];
             debug(`======== Loading feature ${feature}, template ${file}`);
-            if (disableTenantFeatures.includes(feature)) {
+            if (this.disableFeatures.includes(feature)) {
                 debug(`======== Template with feature ${feature} disabled (${file})`);
                 return;
             }
@@ -180,7 +186,7 @@ module.exports = class Patcher {
             loadedTemplate.feature = feature;
             loadedTemplate.filename = filename;
             ret.push(loadedTemplate);
-            debug(`======== Success loaging template ${loadedFile}`);
+            debug(`======== Success loading template ${loadedFile}`);
         });
         return ret;
     }
