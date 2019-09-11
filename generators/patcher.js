@@ -7,7 +7,7 @@ const packagejs = require('generator-jhipster/package.json');
 
 const jhipsterVersion = packagejs.version;
 const defaultOptions = {
-    autoLoadPath: 'partials',
+    autoLoadPath: 'patcher',
     defaultLoadPath: 'partials'
 };
 
@@ -119,7 +119,7 @@ module.exports = class Patcher {
                 relativePath = path.relative(this.rootPath, template);
             } else {
                 relativePath = file;
-                template = `./${this.module}/partials/${file}`;
+                template = `./${this.module}/${this.options.defaultLoadPath}/${file}`;
             }
             const feature = relativePath.split(path.sep, 1)[0];
             debug(`======== Loading feature ${feature}, template ${file}`);
