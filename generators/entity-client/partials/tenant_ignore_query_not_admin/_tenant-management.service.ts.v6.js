@@ -2,6 +2,7 @@ const file = context => `${context.CLIENT_MAIN_SRC_DIR}app/admin/${context.entit
 
 const tmpls = [
     {
+        condition: context => context.isTenant,
         disabled: true,
         type: 'rewriteFile',
         target: context => 'type EntityResponseType',
@@ -9,12 +10,14 @@ const tmpls = [
 `
     },
     {
+        condition: context => context.isTenant,
         disabled: true,
         type: 'replaceContent',
         target: context => '(protected http: HttpClient)',
         tmpl: context => '(protected http: HttpClient, protected accountService: AccountService)'
     },
     {
+        condition: context => context.isTenant,
         disabled: true,
         type: 'rewriteFile',
         target: context => 'const options = createRequestOption(req);',

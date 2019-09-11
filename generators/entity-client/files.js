@@ -36,12 +36,12 @@ function writeTenantFiles() {
     const files = {
         tests: [
             {
-                condition: generator => generator.protractorTests,
+                condition: context => context.isTenant && context.protractorTests,
                 path: jhipsterConstants.CLIENT_TEST_SRC_DIR,
                 templates: [
                     {
                         file: 'e2e/admin/_tenant-management.spec.ts',
-                        renameTo: generator => `e2e/admin/${this.tenantFolderName}/${this.tenantFileName}-tenant.spec.ts`
+                        renameTo: context => `e2e/admin/${context.tenantFolderName}/${context.tenantFileName}-tenant.spec.ts`
                     }
                 ]
             }

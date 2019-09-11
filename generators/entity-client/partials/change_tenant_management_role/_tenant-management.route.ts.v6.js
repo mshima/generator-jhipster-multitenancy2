@@ -3,6 +3,7 @@ const file = context => `${context.CLIENT_MAIN_SRC_DIR}app/admin/${context.entit
 const tmpls = [
     {
         // Add ROLE
+        condition: context => context.isTenant,
         type: 'replaceContent',
         regex: true,
         target: context => "authorities: \\['ROLE_USER'\\]",

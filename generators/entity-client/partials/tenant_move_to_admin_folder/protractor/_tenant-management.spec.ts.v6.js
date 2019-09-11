@@ -4,7 +4,7 @@ const file = context => `${jhipsterConstants.CLIENT_TEST_SRC_DIR}e2e/admin/${con
 
 const tmpls = [
     {
-        condition: context => context.testFrameworks.indexOf('protractor') !== -1,
+        condition: context => context.isTenant && context.testFrameworks.indexOf('protractor') !== -1,
         type: 'replaceContent',
         target: '../../../page-objects/jhi-page-objects',
         tmpl: '../../page-objects/jhi-page-objects'
