@@ -75,7 +75,7 @@ module.exports = class Patcher {
             generator.error('Error');
         }
 
-        const abortOnPatchError = generator.options.abortOnPatchError || generator.options['abort-on-patch-error'] || false;
+        const ignorePatchErrors = generator.options.ignorePatchErrors || generator.options['ignore-patch-errors'] || false;
         partialTemplates.forEach(templates => {
             // ejs files, treated by writeFiles
             if (templates.filename === 'files.js') return;
@@ -121,7 +121,7 @@ module.exports = class Patcher {
                 }
                 let successLog = `${success}`;
                 if (!success) successLog = chalk.red(`${success}`);
-                if (abortOnPatchError && success === false) generator.error(`Error applying template ${templates.origin} on ${file}`);
+                if (!ignorePatchErrors && success === false) generator.error(`Error applying template ${templates.origin} on ${file}`);
                 debug(`======== Template finished type: ${item.type}, success: ${successLog}`);
                 if (!success && generator.options['debug-patcher']) {
                     try {
