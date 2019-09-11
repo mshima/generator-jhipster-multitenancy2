@@ -2,6 +2,7 @@ const file = context => `${context.SERVER_MAIN_SRC_DIR}${context.packageFolder}/
 
 const tmpls = [
     {
+        condition: context => context.isTenant,
         type: 'replaceContent',
         regex: false,
         target: context => `@OneToMany(mappedBy = "${context.tenantNameLowerFirst}")`,

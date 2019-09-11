@@ -3,14 +3,16 @@ const file = context => `${context.SERVER_MAIN_SRC_DIR}${context.packageFolder}/
 
 const tmpls = [
     {
+        condition: context => context.tenantAware,
         type: 'rewriteFile',
         target: 'import javax.persistence.*;',
-        tmpl: context => `import org.hibernate.annotations.Filter;
+        tmpl: generator => `import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
 `
     },
     {
+        condition: context => context.tenantAware,
         type: 'rewriteFile',
         target: context => `public class ${context.entityClass}`,
         tmpl: context => `@FilterDef(name = "TENANT_FILTER", parameters = {@ParamDef(name = "${

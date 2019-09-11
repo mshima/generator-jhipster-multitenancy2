@@ -19,12 +19,12 @@ function writeTenantAwareFiles() {
     const tenantAwarefiles = {
         templates: [
             {
-                condition: generator => generator.tenantAware,
+                condition: context => context.tenantAware,
                 path: this.SERVER_MAIN_SRC_DIR,
                 templates: [
                     {
                         file: 'package/_EntityAspect.java',
-                        renameTo: generator => `${this.packageFolder}/aop/${this.tenantNameLowerFirst}/${this.entityClass}Aspect.java`
+                        renameTo: context => `${context.packageFolder}/aop/${context.tenantNameLowerFirst}/${context.entityClass}Aspect.java`
                     }
                 ]
             }
@@ -39,16 +39,17 @@ function writeTenantFiles() {
         aop: [
             // copy over aspect
             {
+                condition: context => context.isTenant,
                 path: this.SERVER_MAIN_SRC_DIR,
                 templates: [
                     {
                         file: 'package/domain/_TenantParameter.java',
-                        renameTo: generator => `${this.packageFolder}/domain/${this.tenantNameUpperFirst}Parameter.java`
+                        renameTo: context => `${context.packageFolder}/domain/${context.tenantNameUpperFirst}Parameter.java`
                     },
                     {
                         file: 'package/aop/_tenant/_TenantAspect.java',
-                        renameTo: generator =>
-                            `${this.packageFolder}/aop/${this.tenantNameLowerFirst}/${this.tenantNameUpperFirst}Aspect.java`
+                        renameTo: context =>
+                            `${context.packageFolder}/aop/${context.tenantNameLowerFirst}/${context.tenantNameUpperFirst}Aspect.java`
                     }
                 ]
             }
@@ -56,58 +57,64 @@ function writeTenantFiles() {
         liquibase: [
             // User database changes
             {
+                condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,
                 templates: [
                     {
                         file: 'config/liquibase/changelog/_user_tenant_constraints.xml',
-                        renameTo: generator =>
-                            `config/liquibase/changelog/${this.changelogDate}-1__user_${this.tenantNameUpperFirst}_constraints.xml`
+                        renameTo: context =>
+                            `config/liquibase/changelog/${context.changelogDate}-1__user_${context.tenantNameUpperFirst}_constraints.xml`
                     }
                 ]
             },
             {
+                condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,
                 templates: [
                     {
                         file: 'config/liquibase/changelog/_tenant_user_data.xml',
-                        renameTo: generator =>
-                            `config/liquibase/changelog/${this.changelogDate}-2__${this.tenantNameLowerCase}_user_data.xml`
+                        renameTo: context =>
+                            `config/liquibase/changelog/${context.changelogDate}-2__${context.tenantNameLowerCase}_user_data.xml`
                     }
                 ]
             },
             {
+                condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,
                 templates: [
                     {
                         file: 'config/liquibase/data/_tenant.csv',
-                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}.csv`
+                        renameTo: context => `config/liquibase/data/${context.tenantNameLowerCase}.csv`
                     }
                 ]
             },
             {
+                condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,
                 templates: [
                     {
                         file: 'config/liquibase/data/_tenant_user.csv',
-                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_user.csv`
+                        renameTo: context => `config/liquibase/data/${context.tenantNameLowerCase}_user.csv`
                     }
                 ]
             },
             {
+                condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,
                 templates: [
                     {
                         file: 'config/liquibase/data/_tenant_authority.csv',
-                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_authority.csv`
+                        renameTo: context => `config/liquibase/data/${context.tenantNameLowerCase}_authority.csv`
                     }
                 ]
             },
             {
+                condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,
                 templates: [
                     {
                         file: 'config/liquibase/data/_tenant_user_authority.csv',
-                        renameTo: generator => `config/liquibase/data/${this.tenantNameLowerCase}_user_authority.csv`
+                        renameTo: context => `config/liquibase/data/${context.tenantNameLowerCase}_user_authority.csv`
                     }
                 ]
             }
@@ -115,9 +122,6 @@ function writeTenantFiles() {
     };
 
     this.writeFilesToDisk(tenantFiles, this, false);
-
-    this.addConstraintsChangelogToLiquibase(`${this.changelogDate}-1__user_${this.tenantNameUpperFirst}_constraints`);
-    this.addConstraintsChangelogToLiquibase(`${this.changelogDate}-2__${this.tenantNameLowerCase}_user_data`);
 }
 
 module.exports = class EntityServerPatcher extends Patcher {

@@ -47,6 +47,7 @@ module.exports = class extends EntityServerGenerator {
             // make the necessary server code changes
             customServerCode() {
                 mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this, this);
+                this.patcher.patch();
 
                 const tenantisedNeedle = new TenantisedNeedle(this);
                 if (this.tenantAware) {
@@ -54,6 +55,10 @@ module.exports = class extends EntityServerGenerator {
 
                     tenantisedNeedle.addEntityToTenantAspect(this, this.name);
                 } else if (this.isTenant) {
+
+                    this.addConstraintsChangelogToLiquibase(`${this.changelogDate}-1__user_${this.tenantNameUpperFirst}_constraints`);
+                    this.addConstraintsChangelogToLiquibase(`${this.changelogDate}-2__${this.tenantNameLowerCase}_user_data`);
+
                     this.patcher.tenantTemplates(this);
 
                     debug('Adding already tenantised entities');

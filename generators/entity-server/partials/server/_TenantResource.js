@@ -2,6 +2,7 @@ const file = context => `${context.SERVER_MAIN_SRC_DIR}${context.packageFolder}/
 
 const tmpls = [
     {
+        condition: context => context.isTenant,
         type: 'rewriteFile',
         target: context => `${context.tenantNameLowerFirst}Service.delete(id);`,
         tmpl: context => `${context.tenantNameUpperFirst} ${context.tenantNameLowerFirst} = ${

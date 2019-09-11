@@ -2,11 +2,13 @@ const file = context => `${context.SERVER_MAIN_SRC_DIR}${context.packageFolder}/
 
 const tmpls = [
     {
+        condition: context => context.isTenant,
         type: 'rewriteFile',
         target: context => `public class ${context.tenantNameUpperFirst}Resource {`,
         tmpl: context => '@PreAuthorize("hasRole(\\"" + AuthoritiesConstants.ADMIN + "\\")")'
     },
     {
+        condition: context => context.isTenant,
         type: 'rewriteFile',
         target: context => 'import io.github.jhipster.web.util.HeaderUtil;',
         tmpl: context => `import ${context.packageName}.security.AuthoritiesConstants;
