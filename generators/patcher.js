@@ -80,7 +80,7 @@ module.exports = class Patcher {
             // ejs files, treated by writeFiles
             if (templates.filename === 'files.js') return;
 
-            if (typeof templates.condition === 'function' && templates.condition(generator)) {
+            if (typeof templates.condition === 'function' && !templates.condition(generator)) {
                 debug(`Disabled by templates condition ${templates.condition}`);
                 return;
             }
