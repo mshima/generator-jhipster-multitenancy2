@@ -12,10 +12,11 @@ const defaultOptions = {
 };
 
 module.exports = class Patcher {
-    constructor(generator, module, templates, writeFiles, options = {}) {
+    constructor(generator, module, templates, writeFilesCallback, options = {}) {
+        this.generator = generator;
         this.options = { ...defaultOptions, ...options };
         this.module = module;
-        this.writeFiles = writeFiles;
+        this.writeFilesCallback = writeFilesCallback;
         if (templates !== undefined) {
             this.templates = templates;
         } else if (generator) {
@@ -28,20 +29,37 @@ module.exports = class Patcher {
         }
     }
 
-    patch(generator) {
-        this._patch(generator, this.templates, this.writeFiles);
+    patch(generator = this.generator) {
+        this._patch(generator, this.templates, this.writeFilesCallback);
     }
 
-    _patch(generator, templates, writeFiles) {
+    _patch(generator = this.generator, templates = this.templates, writeFilesCallback = this.writeFilesCallback) {
         if (generator.ignorePatcher) return;
         if (templates) {
-            const fileTemplates = this.requireTemplates(templates, generator);
-            this.processPartialTemplates(generator, fileTemplates);
+            const requiredTemplates = this.requireTemplates(templates, generator);
+            this.processPartialTemplates(generator, requiredTemplates);
+
+            this.writeFiles(requiredTemplates, generator);
         }
 
-        if (writeFiles) {
-            writeFiles.call(generator);
+        if (writeFilesCallback) {
+            writeFilesCallback.call(generator);
         }
+    }
+
+    writeFiles(requiredTemplates, generator = this.generator) {
+        requiredTemplates.forEach(templates => {
+            // not ejs files, treated by processPartialTemplates
+            if (templates.filename !== 'files.js') return;
+
+            // const templatesJson = JSON.stringify(templates);
+            // debug(`${templatesJson}`);
+            // parse the templates and write files to the appropriate locations
+            if (templates.files === undefined) {
+                this.generator.error(`Template file should have format: { file: { feature: [ ...patches ] } } (${templates.origin})`);
+            }
+            generator.writeFilesToDisk(templates.files, generator, false);
+        });
     }
 
     processPartialTemplates(generator, partialTemplates) {
@@ -52,6 +70,9 @@ module.exports = class Patcher {
 
         const abortOnPatchError = generator.options.abortOnPatchError || generator.options['abort-on-patch-error'] || false;
         partialTemplates.forEach(templates => {
+            // ejs files, treated by writeFiles
+            if (templates.filename === 'files.js') return;
+
             if (typeof templates.condition === 'function' && templates.condition(generator)) {
                 debug(`Disabled by templates condition ${templates.condition}`);
                 return;
@@ -114,8 +135,11 @@ module.exports = class Patcher {
         templates.forEach(file => {
             let template = file;
             let relativePath;
+            let filename;
             if (path.isAbsolute(file)) {
-                template = path.format({ ...path.parse(file), ext: undefined, base: undefined });
+                const parse = path.parse(file);
+                filename = parse.base;
+                template = path.format({ ...parse, ext: undefined, base: undefined });
                 relativePath = path.relative(this.rootPath, template);
             } else {
                 relativePath = file;
@@ -153,6 +177,8 @@ module.exports = class Patcher {
                 }
             }
             loadedTemplate.origin = loadedFile;
+            loadedTemplate.feature = feature;
+            loadedTemplate.filename = filename;
             ret.push(loadedTemplate);
             debug(`======== Success loaging template ${loadedFile}`);
         });

@@ -2,7 +2,7 @@
 const ClientGenerator = require('generator-jhipster/generators/client');
 const debug = require('debug')('jhipster:multitenancy2:entity');
 
-const ClientPatcher = require('./files');
+const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
 
 const workarounds = require('../workarounds');
@@ -20,7 +20,7 @@ module.exports = class extends ClientGenerator {
         });
 
         debug('Initializing client');
-        this.patcher = new ClientPatcher(this);
+        this.patcher = new Patcher(this, 'client', undefined);
     }
 
     get initializing() {
