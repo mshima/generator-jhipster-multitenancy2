@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 const ServerGenerator = require('generator-jhipster/generators/server');
 
-const ServerPatcher = require('./files');
+const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
 
 const workarounds = require('../workarounds');
@@ -12,7 +12,7 @@ module.exports = class extends ServerGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
-        this.patcher = new ServerPatcher(this);
+        this.patcher = new Patcher(this);
     }
 
     get initializing() {
@@ -41,7 +41,7 @@ module.exports = class extends ServerGenerator {
                 mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
                 this.changelogDate = this.options.tenantChangelogDate || this.config.get('tenantChangelogDate');
 
-                this.patcher.patch(this);
+                this.patcher.patch();
             }
         };
 
