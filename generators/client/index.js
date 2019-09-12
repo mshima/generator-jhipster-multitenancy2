@@ -20,7 +20,7 @@ module.exports = class extends ClientGenerator {
         });
 
         debug('Initializing client');
-        this.patcher = new Patcher(this, 'client', undefined);
+        this.patcher = new Patcher(this);
     }
 
     get initializing() {

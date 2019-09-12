@@ -12,40 +12,31 @@ const defaultOptions = {
 };
 
 module.exports = class Patcher {
-    constructor(generator, module, templates, writeFilesCallback, options = {}) {
+    constructor(generator, options = {}) {
         this.generator = generator;
         this.options = { ...defaultOptions, ...options };
-        this.module = module;
-        this.writeFilesCallback = writeFilesCallback;
-        if (templates !== undefined) {
-            this.templates = templates;
-        } else if (generator) {
-            // _sourceRoot is templates path from yo-generator
-            // Alternative is resolved that point to generator file
-            this.rootPath = path.resolve(generator._sourceRoot, `../${this.options.autoLoadPath}`);
-            this.templates = glob.sync(`${this.rootPath}/**/*.js`);
-            debug('Found patches:');
-            debug(this.templates);
-        }
+
+        // _sourceRoot is templates path from yo-generator
+        // Alternative is resolved that point to generator file
+        this.rootPath = path.resolve(generator._sourceRoot, `../${this.options.autoLoadPath}`);
+
+        this.templates = glob.sync(`${this.rootPath}/**/*.js`);
+        debug('Found patches:');
+        debug(this.templates);
+
         this.disableFeatures = (generator.options['disable-tenant-features'] || '').split(',');
+        debug('Disabled features:');
+        debug(this.disableFeatures);
     }
 
-    patch(generator = this.generator) {
-        this._patch(generator, this.templates, this.writeFilesCallback);
-    }
-
-    _patch(generator = this.generator, templates = this.templates, writeFilesCallback = this.writeFilesCallback) {
-        if (generator.ignorePatcher) return;
-        if (templates) {
-            const requiredTemplates = this.requireTemplates(templates, generator);
-            this.processPartialTemplates(generator, requiredTemplates);
-
-            this.writeFiles(requiredTemplates, generator);
+    patch(generator = this.generator, templates = this.templates) {
+        if (!templates) {
+            generator.error('Missing templates');
         }
+        const requiredTemplates = this.requireTemplates(templates, generator);
+        this.processPartialTemplates(generator, requiredTemplates);
 
-        if (writeFilesCallback) {
-            writeFilesCallback.call(generator);
-        }
+        this.writeFiles(requiredTemplates, generator);
     }
 
     writeFiles(requiredTemplates, generator = this.generator) {
@@ -139,18 +130,12 @@ module.exports = class Patcher {
     requireTemplates(templates, generator) {
         const ret = [];
         templates.forEach(file => {
-            let template = file;
-            let relativePath;
-            let filename;
-            if (path.isAbsolute(file)) {
-                const parse = path.parse(file);
-                filename = parse.base;
-                template = path.format({ ...parse, ext: undefined, base: undefined });
-                relativePath = path.relative(this.rootPath, template);
-            } else {
-                relativePath = file;
-                template = `./${this.module}/${this.options.defaultLoadPath}/${file}`;
-            }
+            const parse = path.parse(file);
+            const filename = parse.base;
+            // Rebuild file name without extension
+            const template = path.format({ ...parse, ext: undefined, base: undefined });
+            const relativePath = path.relative(this.rootPath, template);
+
             const feature = relativePath.split(path.sep, 1)[0];
             debug(`======== Loading feature ${feature}, template ${file}`);
             if (this.disableFeatures.includes(feature)) {
