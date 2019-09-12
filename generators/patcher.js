@@ -16,6 +16,9 @@ module.exports = class Patcher {
         this.generator = generator;
         this.options = { ...defaultOptions, ...options };
 
+        const ignorePatchErrors = generator.options.ignorePatchErrors || generator.options['ignore-patch-errors'];
+        if (ignorePatchErrors !== undefined) this.options.ignorePatchErrors = ignorePatchErrors;
+
         // _sourceRoot is templates path from yo-generator
         // Alternative is resolved that point to generator file
         this.rootPath = path.resolve(generator._sourceRoot, `../${this.options.autoLoadPath}`);
@@ -66,7 +69,6 @@ module.exports = class Patcher {
             generator.error('Error');
         }
 
-        const ignorePatchErrors = generator.options.ignorePatchErrors || generator.options['ignore-patch-errors'] || false;
         partialTemplates.forEach(templates => {
             // ejs files, treated by writeFiles
             if (templates.filename === 'files.js') return;
@@ -112,7 +114,9 @@ module.exports = class Patcher {
                 }
                 let successLog = `${success}`;
                 if (!success) successLog = chalk.red(`${success}`);
-                if (!ignorePatchErrors && success === false) generator.error(`Error applying template ${templates.origin} on ${file}`);
+                if (!this.options.ignorePatchErrors && success === false)
+                    generator.error(`Error applying template ${templates.origin} on ${file}`);
+
                 debug(`======== Template finished type: ${item.type}, success: ${successLog}`);
                 if (!success && generator.options['debug-patcher']) {
                     try {
