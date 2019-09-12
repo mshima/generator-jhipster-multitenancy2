@@ -3,11 +3,9 @@ const EntityGenerator = require('generator-jhipster/generators/entity');
 const debug = require('debug')('jhipster:multitenancy2:entity-tenant');
 
 const mtUtils = require('../multitenancy-utils');
-const workarounds = require('../workarounds');
+const GeneratorOverrides = require('../generator-overrides');
 
-workarounds.fixGetAllJhipsterConfig(EntityGenerator);
-
-module.exports = class extends EntityGenerator {
+module.exports = class extends GeneratorOverrides(EntityGenerator) {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 

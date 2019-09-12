@@ -2,11 +2,9 @@
 const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
 const debug = require('debug')('jhipster:multitenancy:entity:i18n');
 
-const workarounds = require('../workarounds');
+const GeneratorOverrides = require('../generator-overrides');
 
-workarounds.fixAddEntityTranslationKey(EntityI18nGenerator);
-
-module.exports = class extends EntityI18nGenerator {
+module.exports = class extends GeneratorOverrides(EntityI18nGenerator) {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 

@@ -2,12 +2,7 @@ const EntityClientGenerator = require('generator-jhipster/generators/entity-clie
 const debug = require('debug')('jhipster:multitenancy2:entity:client');
 
 const Patcher = require('../patcher');
-const workarounds = require('../workarounds');
 const GeneratorOverrides = require('../generator-overrides');
-
-workarounds.fixGetAllJhipsterConfig(EntityClientGenerator);
-workarounds.fixAddEntityToMenu(EntityClientGenerator);
-workarounds.fixAddEntityToModule(EntityClientGenerator);
 
 module.exports = class extends GeneratorOverrides(EntityClientGenerator) {
     constructor(args, opts) {
