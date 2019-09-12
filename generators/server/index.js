@@ -3,12 +3,9 @@ const ServerGenerator = require('generator-jhipster/generators/server');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
+const GeneratorOverrides = require('../generator-overrides');
 
-const workarounds = require('../workarounds');
-
-workarounds.addReturnRewriteReplace(ServerGenerator);
-
-module.exports = class extends ServerGenerator {
+module.exports = class extends GeneratorOverrides(ServerGenerator) {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 

@@ -4,12 +4,9 @@ const debug = require('debug')('jhipster:multitenancy2:entity');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
+const GeneratorOverrides = require('../generator-overrides');
 
-const workarounds = require('../workarounds');
-
-workarounds.addReturnRewriteReplace(ClientGenerator);
-
-module.exports = class extends ClientGenerator {
+module.exports = class extends GeneratorOverrides(ClientGenerator) {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 

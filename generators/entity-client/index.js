@@ -3,13 +3,13 @@ const debug = require('debug')('jhipster:multitenancy2:entity:client');
 
 const Patcher = require('../patcher');
 const workarounds = require('../workarounds');
+const GeneratorOverrides = require('../generator-overrides');
 
 workarounds.fixGetAllJhipsterConfig(EntityClientGenerator);
 workarounds.fixAddEntityToMenu(EntityClientGenerator);
 workarounds.fixAddEntityToModule(EntityClientGenerator);
-workarounds.addReturnRewriteReplace(EntityClientGenerator);
 
-module.exports = class extends EntityClientGenerator {
+module.exports = class extends GeneratorOverrides(EntityClientGenerator) {
     constructor(args, opts) {
         super(args, { fromBlueprint: true, ...opts }); // fromBlueprint variable is important
 

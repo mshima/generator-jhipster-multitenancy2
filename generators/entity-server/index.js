@@ -7,12 +7,9 @@ const TenantisedNeedle = require('./needle-api/needle-server-tenantised-entities
 
 const mtUtils = require('../multitenancy-utils');
 const Patcher = require('../patcher');
+const GeneratorOverrides = require('../generator-overrides');
 
-const workarounds = require('../workarounds');
-
-workarounds.addReturnRewriteReplace(EntityServerGenerator);
-
-module.exports = class extends EntityServerGenerator {
+module.exports = class extends GeneratorOverrides(EntityServerGenerator) {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
         // Fix {Tenant}Resource.java setting ENTITY_NAME as 'admin{Tenant}'
