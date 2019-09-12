@@ -37,6 +37,7 @@
     "pluralize": "7.0.0",
     "prettier": "1.16.4",
     "randexp": "^0.5.3",
+    "require-dir-all": "^0.4.15",
     "semver": "^5.6.0",
     "shelljs": "0.8.2",
     "through2": "^3.0.1",

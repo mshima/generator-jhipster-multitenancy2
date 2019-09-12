@@ -4,17 +4,14 @@ const debug = require('debug')('jhipster:multitenancy2:generator-overrides');
 
 const jhipsterVersion = packagejs.version;
 
-const jhipsterUtils = require('./utils-overrides');
-
-const overrides = [];
-
-overrides.push(require('./generator-overrides/add_return_rewrite_replace'));
-
 module.exports = function(Superclass) {
-    overrides.forEach(override => {
+    const modules = require('require-dir-all')('generator-overrides');
+    Object.keys(modules).forEach(key => {
+        const override = modules[key];
+        debug(`Adding ${key} override`);
         const ignoreGreaterThan = override.ignoreGreaterThan;
         if (ignoreGreaterThan && semver.gt(jhipsterVersion, ignoreGreaterThan)) {
-            debug(`GeneratorOverride ignored ${ignoreGreaterThan}`);
+            debug(`GeneratorOverride ${key} ignored ${ignoreGreaterThan}`);
             return;
         }
         Superclass = override(Superclass);
