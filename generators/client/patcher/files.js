@@ -31,7 +31,6 @@ module.exports = {
         ],
         tenant_base: [
             {
-                condition: generator => false, // Disable template for now
                 path: jhipsterConstants.ANGULAR_DIR,
                 templates: [
                     {
