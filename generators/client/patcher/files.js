@@ -2,13 +2,19 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 
 module.exports = {
     files: {
-        userManagement: [
+        user_add_tenant: [
             {
                 path: jhipsterConstants.ANGULAR_DIR,
-                templates: ['admin/user-management/user-management-update.component.ts', 'admin/user-management/user-management.module.ts']
+                templates: ['admin/user-management/user-management-update.component.ts']
             }
         ],
-        tenantAdmin: [
+        user_management_module: [
+            {
+                path: jhipsterConstants.ANGULAR_DIR,
+                templates: ['admin/user-management/user-management.module.ts']
+            }
+        ],
+        tenant_admin_menu: [
             {
                 path: jhipsterConstants.ANGULAR_DIR,
                 templates: [
@@ -23,8 +29,9 @@ module.exports = {
                 ]
             }
         ],
-        shared: [
+        tenant_base: [
             {
+                condition: generator => false, // Disable template for now
                 path: jhipsterConstants.ANGULAR_DIR,
                 templates: [
                     {

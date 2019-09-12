@@ -2,12 +2,13 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 
 module.exports = {
     files: {
-        tests: [
+        tenant_base: [
             {
                 condition: context => context.isTenant && context.protractorTests,
                 path: jhipsterConstants.CLIENT_TEST_SRC_DIR,
                 templates: [
                     {
+                        // File for custom tests, use this instead of changing upstream
                         file: 'e2e/admin/_tenant-management.spec.ts',
                         renameTo: context => `e2e/admin/${context.tenantFolderName}/${context.tenantFileName}-tenant.spec.ts`
                     }

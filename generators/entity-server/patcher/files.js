@@ -2,7 +2,7 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 
 module.exports = {
     files: {
-        templates: [
+        tenant_base: [
             {
                 condition: context => context.tenantAware,
                 path: jhipsterConstants.SERVER_MAIN_SRC_DIR,
@@ -13,10 +13,7 @@ module.exports = {
                             `${context.packageFolder}/aop/${context.tenantNameLowerFirst}/${context.entityClass}Aspect.java`
                     }
                 ]
-            }
-        ],
-        aop: [
-            // copy over aspect
+            },
             {
                 condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_SRC_DIR,
@@ -31,10 +28,7 @@ module.exports = {
                             `${context.packageFolder}/aop/${context.tenantNameLowerFirst}/${context.tenantNameUpperFirst}Aspect.java`
                     }
                 ]
-            }
-        ],
-        liquibase: [
-            // User database changes
+            },
             {
                 condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,
@@ -45,7 +39,9 @@ module.exports = {
                             `config/liquibase/changelog/${context.changelogDate}-1__user_${context.tenantNameUpperFirst}_constraints.xml`
                     }
                 ]
-            },
+            }
+        ],
+        liquibase_data: [
             {
                 condition: context => context.isTenant,
                 path: jhipsterConstants.SERVER_MAIN_RES_DIR,

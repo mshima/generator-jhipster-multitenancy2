@@ -2,7 +2,7 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 
 module.exports = {
     files: {
-        aop: [
+        tenant_base: [
             // copy over aspect
             {
                 path: jhipsterConstants.SERVER_MAIN_SRC_DIR,
