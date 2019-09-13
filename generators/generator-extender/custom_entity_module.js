@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-const debug = require('debug')('jhipster:multitenancy2:generator-overrides:custom-entity-module');
+const debug = require('debug')('jhipster:multitenancy2:generator-extender:custom-entity-module');
 
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 

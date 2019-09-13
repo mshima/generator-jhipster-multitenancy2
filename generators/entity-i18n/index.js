@@ -2,7 +2,7 @@
 const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
 const debug = require('debug')('jhipster:multitenancy:entity:i18n');
 
-const GeneratorOverrides = require('../generator-overrides');
+const GeneratorOverrides = require('../generator-extender');
 
 module.exports = class extends GeneratorOverrides(EntityI18nGenerator) {
     constructor(args, opts) {

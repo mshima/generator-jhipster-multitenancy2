@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-const debug = require('debug')('jhipster:multitenancy2:generator-overrides:add-return-rewrite-replace');
+const debug = require('debug')('jhipster:multitenancy2:generator-extender:add-return-rewrite-replace');
 
 const jhipsterUtils = require('../utils-overrides');
 

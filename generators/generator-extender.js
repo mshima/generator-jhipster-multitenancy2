@@ -1,11 +1,11 @@
 const semver = require('semver');
 const packagejs = require('generator-jhipster/package.json');
-const debug = require('debug')('jhipster:multitenancy2:generator-overrides');
+const debug = require('debug')('jhipster:multitenancy2:generator-extender');
 
 const jhipsterVersion = packagejs.version;
 
 module.exports = function(Superclass) {
-    const modules = require('require-dir-all')('generator-overrides');
+    const modules = require('require-dir-all')('generator-extender');
     Object.keys(modules).forEach(key => {
         const module = modules[key];
         debug(`Adding ${key} override`);

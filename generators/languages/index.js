@@ -5,7 +5,7 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
-const GeneratorOverrides = require('../generator-overrides');
+const GeneratorOverrides = require('../generator-extender');
 
 module.exports = class extends GeneratorOverrides(LanguagesGenerator) {
     constructor(args, opts) {

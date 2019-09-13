@@ -7,7 +7,7 @@ const TenantisedNeedle = require('./needle-api/needle-server-tenantised-entities
 
 const mtUtils = require('../multitenancy-utils');
 const Patcher = require('../patcher');
-const GeneratorOverrides = require('../generator-overrides');
+const GeneratorOverrides = require('../generator-extender');
 
 module.exports = class extends GeneratorOverrides(EntityServerGenerator) {
     constructor(args, opts) {

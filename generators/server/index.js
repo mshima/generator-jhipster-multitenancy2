@@ -3,7 +3,7 @@ const ServerGenerator = require('generator-jhipster/generators/server');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
-const GeneratorOverrides = require('../generator-overrides');
+const GeneratorOverrides = require('../generator-extender');
 
 module.exports = class extends GeneratorOverrides(ServerGenerator) {
     constructor(args, opts) {
