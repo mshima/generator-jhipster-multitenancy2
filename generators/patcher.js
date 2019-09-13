@@ -27,7 +27,10 @@ module.exports = class Patcher {
         debug('Found patches:');
         debug(this.templates);
 
-        this.disableFeatures = (generator.options['disable-tenant-features'] || '').split(',');
+        this.disableFeatures = [];
+        if (generator.options['disable-tenant-features']) {
+            this.disableFeatures = generator.options['disable-tenant-features'].split(',');
+        }
         debug('Disabled features:');
         debug(this.disableFeatures);
     }
@@ -56,7 +59,7 @@ module.exports = class Patcher {
             this.disableFeatures.forEach(disabledFeature => {
                 if (fileTemplate.files[disabledFeature] !== undefined) {
                     debug(`======== Template with feature ${disabledFeature} disabled (${fileTemplate.origin})`);
-                    fileTemplate.files[disabledFeature] = undefined;
+                    delete fileTemplate.files[disabledFeature];
                 }
             });
             generator.writeFilesToDisk(fileTemplate.files, generator, false);
