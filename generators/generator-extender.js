@@ -4,8 +4,8 @@ const debug = require('debug')('jhipster:multitenancy2:generator-extender');
 
 const jhipsterVersion = packagejs.version;
 
-module.exports = function(Superclass) {
-    const modules = require('require-dir-all')('generator-extender');
+module.exports = function(Superclass, requiredPath = 'generator-extender') {
+    const modules = require('require-dir-all')(requiredPath);
     Object.keys(modules).forEach(key => {
         const module = modules[key];
         debug(`Adding ${key} override`);
