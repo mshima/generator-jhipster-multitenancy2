@@ -41,8 +41,8 @@ module.exports = class Patcher {
         }
         const requiredTemplates = this.requireTemplates(templates, generator);
 
-        this.processPartialTemplates(generator, requiredTemplates.partialTemplates);
         this.writeFiles(requiredTemplates.fileTemplates, generator);
+        this.processPartialTemplates(generator, requiredTemplates.partialTemplates);
     }
 
     writeFiles(requiredTemplates, generator = this.generator) {
