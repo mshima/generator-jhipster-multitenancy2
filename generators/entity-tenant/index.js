@@ -29,8 +29,9 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
             setUpVariables() {
                 const context = this.context;
 
+                const configuration = this.getAllJhipsterConfig(this, true);
                 if (context.enableTranslation === undefined) {
-                    context.enableTranslation = this.configOptions.enableTranslation;
+                    context.enableTranslation = configuration.enableTranslation;
                 }
 
                 // Ignore some questions and validations
@@ -40,7 +41,6 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                 }
 
                 /* tenant variables */
-                const configuration = this.getAllJhipsterConfig(this, true);
                 mtUtils.tenantVariables(configuration.get('tenantName'), context, this);
                 context.clientRootFolder = context.tenantClientRootFolder;
             }
