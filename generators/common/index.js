@@ -1,11 +1,15 @@
 /* eslint-disable consistent-return */
 const _ = require('lodash');
+const fs = require('fs');
 const CommonGenerator = require('generator-jhipster/generators/common');
 const debug = require('debug')('jhipster:multitenancy2:common');
 
 const mtUtils = require('../multitenancy-utils');
+const GeneratorExtender = require('../generator-extender');
+const Patcher = require('../patcher');
+const jhipsterUtils = require('../utils-overrides');
 
-module.exports = class extends CommonGenerator {
+module.exports = class extends GeneratorExtender(CommonGenerator) {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
@@ -28,6 +32,7 @@ module.exports = class extends CommonGenerator {
         });
 
         this.tenantName = this.options.tenantName || this.config.get('tenantName');
+        this.patcher = new Patcher(this, { auto: true });
     }
 
     get initializing() {
@@ -121,7 +126,19 @@ module.exports = class extends CommonGenerator {
                 });
             }
         };
-        return { ...preWritingSteps, ...super._writing() };
+
+        const postWritingSteps = {
+            autoPatcher() {
+                // npm-shrinkwrap.json vars
+                this.dasherizedBaseName = _.kebabCase(this.baseName);
+                this.blueprints = jhipsterUtils.loadBlueprintsFromConfiguration(this);
+                this.shrinkwrapExists = fs.existsSync('npm-shrinkwrap.json');
+
+                this.patcher.patch();
+            }
+        };
+
+        return { ...preWritingSteps, ...super._writing(), ...postWritingSteps };
     }
 
     get install() {
