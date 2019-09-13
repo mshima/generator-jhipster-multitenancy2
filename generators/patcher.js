@@ -40,16 +40,13 @@ module.exports = class Patcher {
             generator.error('Missing templates');
         }
         const requiredTemplates = this.requireTemplates(templates, generator);
-        this.processPartialTemplates(generator, requiredTemplates);
 
-        this.writeFiles(requiredTemplates, generator);
+        this.processPartialTemplates(generator, requiredTemplates.partialTemplates);
+        this.writeFiles(requiredTemplates.fileTemplates, generator);
     }
 
     writeFiles(requiredTemplates, generator = this.generator) {
         requiredTemplates.forEach(fileTemplate => {
-            // not ejs files, treated by processPartialTemplates
-            if (fileTemplate.filename !== 'files.js') return;
-
             // const templatesJson = JSON.stringify(templates);
             // debug(`${templatesJson}`);
             // parse the templates and write files to the appropriate locations
@@ -73,9 +70,6 @@ module.exports = class Patcher {
         }
 
         partialTemplates.forEach(templates => {
-            // ejs files, treated by writeFiles
-            if (templates.filename === 'files.js') return;
-
             if (typeof templates.condition === 'function' && !templates.condition(generator)) {
                 debug(`Disabled by templates condition ${templates.condition}`);
                 return;
@@ -135,51 +129,56 @@ module.exports = class Patcher {
     }
 
     requireTemplates(templates, generator) {
-        const ret = [];
+        const partialTemplates = [];
+        const fileTemplates = [];
+
         templates.forEach(file => {
             const parse = path.parse(file);
             const filename = parse.base;
             // Rebuild file name without extension
             const template = path.format({ ...parse, ext: undefined, base: undefined });
+
             const relativePath = path.relative(this.rootPath, template);
 
-            const feature = relativePath.split(path.sep, 1)[0];
-            debug(`======== Loading feature ${feature}, template ${file}`);
+            const parseRelative = path.parse(relativePath);
+            let feature;
+            if (parseRelative.dir) {
+                feature = parseRelative.dir.split(path.sep, 1)[0];
+                debug(`======== Loading feature ${feature}, template ${file}`);
+            } else {
+                debug(`======== Loading template ${file}`);
+            }
             if (this.disableFeatures.includes(feature)) {
                 debug(`======== Template with feature ${feature} disabled (${file})`);
                 return;
             }
-            let version = jhipsterVersion;
-            let loadedFile;
-            let loadedTemplate;
-            while (loadedTemplate === undefined) {
-                // Look for specific version
-                try {
-                    loadedFile = `${template}.v${version}.js`;
-                    // debug(`Trying ${loadedFile}`);
-                    loadedTemplate = require(loadedFile);
-                } catch (e) {
-                    const lastIndex = version.lastIndexOf('.');
-                    if (lastIndex === -1) break;
-                    version = version.substring(0, lastIndex);
+
+            let dest = partialTemplates;
+            if (parse.name === 'files') {
+                dest = fileTemplates;
+            } else {
+                const splitFileName = parse.name.split('.v', 2);
+                if (splitFileName.length > 1) {
+                    if (!jhipsterVersion.startsWith(splitFileName[1])) {
+                        debug(`Template ${parse.name} not compatible with jhipster ${jhipsterVersion}`);
+                        return;
+                    }
+                    if (splitFileName[0] === 'files') {
+                        dest = fileTemplates;
+                    }
                 }
             }
-            if (loadedTemplate === undefined) {
-                try {
-                    loadedFile = `${template}.js`;
-                    loadedTemplate = require(loadedFile);
-                } catch (e) {
-                    if (generator && generator.log) generator.log(`Error loading ${loadedFile}`);
-                    debug(`Error loading ${loadedFile}`);
-                    return;
-                }
-            }
-            loadedTemplate.origin = loadedFile;
+
+            const loadedTemplate = require(template);
+            loadedTemplate.origin = template;
             loadedTemplate.feature = feature;
             loadedTemplate.filename = filename;
-            ret.push(loadedTemplate);
-            debug(`======== Success loading template ${loadedFile}`);
+            dest.push(loadedTemplate);
+            debug(`======== Success loading template ${template}`);
         });
-        return ret;
+        return {
+            partialTemplates,
+            fileTemplates
+        };
     }
 };

@@ -8,13 +8,6 @@ module.exports = {
                 templates: ['admin/user-management/user-management-update.component.ts']
             }
         ],
-        user_management_module: [
-            {
-                version: '6.2.0',
-                path: jhipsterConstants.ANGULAR_DIR,
-                templates: ['admin/user-management/user-management.module.ts']
-            }
-        ],
         tenant_admin_menu: [
             {
                 path: jhipsterConstants.ANGULAR_DIR,
