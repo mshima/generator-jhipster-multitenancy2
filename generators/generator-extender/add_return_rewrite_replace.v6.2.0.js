@@ -56,5 +56,5 @@ module.exports = {
     extendVersion: {
         notGreaterThan: '6.2.0'
     },
-    extend: extend,
-}
+    extend
+};

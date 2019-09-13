@@ -21,8 +21,8 @@ function extend(Superclass) {
             return configuration;
         }
     };
-};
+}
 
 module.exports = {
-    extend: extend
-}
+    extend
+};

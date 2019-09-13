@@ -11,11 +11,6 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
  */
 function extend(Superclass) {
     return class GeneratorExtender extends Superclass {
-        // Ignore version > 6.2.0, not yet released
-        static get ignoreGreaterThan() {
-            return '6.2.0';
-        }
-
         /*
          * Override addEntityToMenu changing the menu tenant is added to.
          */
@@ -116,8 +111,11 @@ function extend(Superclass) {
             this.needleApi.clientAngular.addBlockContentToFile(moduleRewriteFileModel, errorMessage);
         }
     };
-};
+}
 
 module.exports = {
-    extend: extend
-}
+    extendVersion: {
+        notGreaterThan: '6.2.0'
+    },
+    extend
+};
