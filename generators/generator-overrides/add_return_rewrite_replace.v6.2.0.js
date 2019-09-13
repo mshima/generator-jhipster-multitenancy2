@@ -23,13 +23,8 @@ function addBlockContentToFile(rewriteFileModel, errorMessage) {
  * Implement return for patches verification
  * https://github.com/jhipster/generator-jhipster/pull/10366
  */
-module.exports = function(Superclass, jhipsterVersion) {
-    return class GeneratorOverrides extends Superclass {
-        // Ignore version > 6.2.0, merged upstream
-        static get ignoreGreaterThan() {
-            return '6.2.0';
-        }
-
+function extend(Superclass, jhipsterVersion) {
+    return class GeneratorExtender extends Superclass {
         replaceContent(filePath, pattern, content, regex) {
             try {
                 return jhipsterUtils.replaceContent(
@@ -55,4 +50,11 @@ module.exports = function(Superclass, jhipsterVersion) {
             return addBlockContentToFile.call(this.needleApi.base, rewriteFileModel);
         }
     };
-};
+}
+
+module.exports = {
+    extendVersion: {
+        notGreaterThan: '6.2.0'
+    },
+    extend: extend,
+}

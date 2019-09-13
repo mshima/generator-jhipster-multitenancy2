@@ -9,8 +9,8 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
  * getAllJhipsterConfig isn't getting all jhipster config
  * Workaround https://github.com/jhipster/generator-jhipster/issues/10205
  */
-module.exports = function(Superclass, jhipsterVersion) {
-    return class GeneratorOverrides extends Superclass {
+function extend(Superclass) {
+    return class GeneratorExtender extends Superclass {
         // Ignore version > 6.2.0, not yet released
         static get ignoreGreaterThan() {
             return '6.2.0';
@@ -117,3 +117,7 @@ module.exports = function(Superclass, jhipsterVersion) {
         }
     };
 };
+
+module.exports = {
+    extend: extend
+}

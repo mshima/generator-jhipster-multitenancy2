@@ -6,13 +6,8 @@
  * getAllJhipsterConfig isn't getting all jhipster config
  * Workaround https://github.com/jhipster/generator-jhipster/issues/10205
  */
-module.exports = function(Superclass, jhipsterVersion) {
-    return class GeneratorOverrides extends Superclass {
-        // Ignore version > 6.2.0, not yet released
-        static get ignoreGreaterThan() {
-            return '6.2.0';
-        }
-
+function extend(Superclass) {
+    return class GeneratorExtender extends Superclass {
         getAllJhipsterConfig(generator = this, force) {
             const configuration = Superclass.prototype.getAllJhipsterConfig.call(this, generator, force);
             const options = generator.options || {};
@@ -27,3 +22,7 @@ module.exports = function(Superclass, jhipsterVersion) {
         }
     };
 };
+
+module.exports = {
+    extend: extend
+}
