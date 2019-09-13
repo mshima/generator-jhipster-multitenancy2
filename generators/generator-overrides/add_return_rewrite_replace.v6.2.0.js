@@ -25,7 +25,7 @@ function addBlockContentToFile(rewriteFileModel, errorMessage) {
  */
 module.exports = function(Superclass, jhipsterVersion) {
     return class GeneratorOverrides extends Superclass {
-        // Ignore version > 6.2.0, not yet released
+        // Ignore version > 6.2.0, merged upstream
         static get ignoreGreaterThan() {
             return '6.2.0';
         }
