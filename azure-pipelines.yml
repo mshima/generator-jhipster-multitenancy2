@@ -47,24 +47,28 @@ jobs:
                   JHI_ENTITY: jdl
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
+                  JHI_GEN_VERSION: 6.2.0
               jdl-default-jdk8:
                   JHI_APP: jdl-default
                   JHI_ENTITY: jdl
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
+                  JHI_GEN_VERSION: 6.2.0
               jdl-multitenancy2-postgres:
                   JHI_APP: jdl-multitenancy2-postgres
                   JHI_ENTITY: jdl-multitenancy2-company
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
+                  JHI_GEN_VERSION: 6.2.0
               jdl-relation:
                   JHI_APP: jdl-relation
                   JHI_ENTITY: jdl-multitenancy2-company
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
+                  JHI_GEN_VERSION: 6.2.0
 
       steps:
           #----------------------------------------------------------------------

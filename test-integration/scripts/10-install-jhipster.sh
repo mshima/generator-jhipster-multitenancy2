@@ -54,9 +54,13 @@ if [[ "$JHI_REPO" == *"/generator-jhipster" ]]; then
         npm test
     fi
 
+elif [[ "$JHI_GEN_BRANCH" == "release" && "$JHI_GEN_VERSION" == "" ]]; then
+    echo "*** generator-jhipster: use last release version"
+    npm install -g generator-jhipster
+
 elif [[ "$JHI_GEN_BRANCH" == "release" ]]; then
     echo "*** generator-jhipster: use release version"
-    npm install -g generator-jhipster
+    npm install -g "generator-jhipster@$JHI_GEN_VERSION"
 
 else
     echo "*** generator-jhipster: JHI_GEN_REPO=$JHI_GEN_REPO with JHI_GEN_BRANCH=$JHI_GEN_BRANCH"
