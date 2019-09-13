@@ -15,12 +15,6 @@ module.exports = class extends CommonGenerator {
             required: false
         });
 
-        this.option('tenant-changelog-date', {
-            desc: 'Use liquibase changelog date to reproducible builds',
-            type: String,
-            required: false
-        });
-
         this.option('default-tenant-aware', {
             desc: 'Default for whether you make an entity tenant aware or not',
             type: Boolean,
@@ -34,8 +28,6 @@ module.exports = class extends CommonGenerator {
         });
 
         this.tenantName = this.options.tenantName || this.config.get('tenantName');
-        this.tenantChangelogDate =
-            this.options.tenantChangelogDate || this.options['tenant-changelog-date'] || this.config.get('tenantChangelogDate');
     }
 
     get initializing() {
@@ -43,14 +35,11 @@ module.exports = class extends CommonGenerator {
             loadConf() {
                 this.configOptions.baseName = this.baseName;
 
-                // If tenantChangelogDate is set, use reproducible build
-                if (this.options.tenantChangelogDate !== undefined || this.options['tenant-changelog-date'] !== undefined) {
-                    this.config.set('nextChangelogDate', this.tenantChangelogDate);
-                } else if (this.tenantChangelogDate === undefined) {
+                if (this.config.get('tenantChangelogDate') === undefined) {
                     this.tenantChangelogDate = this.dateFormatForLiquibase();
+                    debug(`Using tenantChangelogDate ${this.tenantChangelogDate}`);
+                    this.config.set('tenantChangelogDate', this.tenantChangelogDate);
                 }
-                debug(`Using tenantChangelogDate ${this.tenantChangelogDate}`);
-                this.config.set('tenantChangelogDate', this.tenantChangelogDate);
 
                 // This will be used by entity-server to crate "@Before" annotation in TenantAspect
                 this.configOptions.tenantAwareEntities = [];
@@ -92,19 +81,18 @@ module.exports = class extends CommonGenerator {
     }
 
     get configuring() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        const configuringCustomPhaseSteps = {
+        const postConfiguringSteps = {
             saveConf() {
                 this.tenantNameExists = this.config.get('tenantName') !== undefined;
 
                 this.configOptions.tenantName = this.tenantName;
 
                 this.config.set('tenantName', this.tenantName);
-                this.config.set('tenantChangelogDate', this.tenantChangelogDate);
+                // this.config.set('tenantChangelogDate', this.tenantChangelogDate);
             }
         };
         // configuringCustomPhaseSteps should be run after configuring, otherwise tenantName will be overridden
-        return { ...super._configuring(), ...configuringCustomPhaseSteps };
+        return { ...super._configuring(), ...postConfiguringSteps };
     }
 
     get default() {
@@ -113,7 +101,7 @@ module.exports = class extends CommonGenerator {
     }
 
     get writing() {
-        const writingPreCustomPhaseSteps = {
+        const preWritingSteps = {
             generateTenant() {
                 if (this.tenantNameExists) {
                     debug('Ignoring entity-tenant since tenantName already is saved to .yo-rc.json');
@@ -133,7 +121,7 @@ module.exports = class extends CommonGenerator {
                 });
             }
         };
-        return { ...writingPreCustomPhaseSteps, ...super._writing() };
+        return { ...preWritingSteps, ...super._writing() };
     }
 
     get install() {

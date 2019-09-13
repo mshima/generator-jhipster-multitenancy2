@@ -34,24 +34,15 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                 }
 
                 // Ignore some questions and validations
-                // Example: changelogDate will alway be overrided
-                context.useConfigurationFile = true;
+                if (this.isJhipsterVersionLessThan('6.3.0')) {
+                    // needed for changelogDate.
+                    context.useConfigurationFile = true;
+                }
 
                 /* tenant variables */
                 mtUtils.tenantVariables.call(this, this.config.get('tenantName'), context, this);
 
                 if (!this.isTenant) {
-                    // if tenantAware is undefined (first pass), then override changelogDate
-                    if (context.fileData && context.fileData.tenantAware === undefined) {
-                        const nextChangelogDate = this.config.get('nextChangelogDate');
-                        if (nextChangelogDate !== undefined) {
-                            context.changelogDate = `${Number(nextChangelogDate) + 1}`;
-                            this.config.set('nextChangelogDate', context.changelogDate);
-
-                            // When using jdl, it already has a .json file with changelogDate, override it:
-                            this.updateEntityConfig(context.filename, 'changelogDate', context.changelogDate);
-                        }
-                    }
                     return;
                 }
 

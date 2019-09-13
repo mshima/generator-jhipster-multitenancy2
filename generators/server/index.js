@@ -36,7 +36,6 @@ module.exports = class extends GeneratorOverrides(ServerGenerator) {
 
                 // template variables
                 mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
-                this.changelogDate = this.options.tenantChangelogDate || this.config.get('tenantChangelogDate');
 
                 this.patcher.patch();
             }

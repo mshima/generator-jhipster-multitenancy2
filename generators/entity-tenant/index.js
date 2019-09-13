@@ -33,6 +33,12 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                     context.enableTranslation = this.configOptions.enableTranslation;
                 }
 
+                // Ignore some questions and validations
+                if (this.isJhipsterVersionLessThan('6.3.0')) {
+                    // needed for changelogDate.
+                    context.useConfigurationFile = true;
+                }
+
                 /* tenant variables */
                 const configuration = this.getAllJhipsterConfig(this, true);
                 mtUtils.tenantVariables(configuration.get('tenantName'), context, this);
@@ -51,6 +57,8 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
         const preConfiguringSteps = {
             preJson() {
                 mtUtils.validateTenant(this);
+
+                this.context.changelogDate = this.options.tenantChangelogDate || this.config.get('tenantChangelogDate');
             }
         };
 
@@ -70,11 +78,6 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                 context.entityTranslationKeyMenu = context.tenantMenuTranslationKey;
                 context.i18nKeyPrefix = `${context.angularAppName}.${context.entityTranslationKey}`;
                 context.entityModelFileName = context.tenantFolderName;
-            },
-            postJson() {
-                // jhipster will override tenant's changelogDate
-                this.context.changelogDate = this.options.tenantChangelogDate || this.config.get('tenantChangelogDate');
-                this.updateEntityConfig(this.context.filename, 'changelogDate', this.context.changelogDate);
             }
         };
         return { ...preConfiguringSteps, ...super._configuring(), ...postConfiguringSteps };
