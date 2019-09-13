@@ -1,8 +1,33 @@
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const randexp = require('randexp');
+const debug = require('debug')('jhipster:multitenancy2:entity:server:files');
+
+const faker = require('../../faker');
+
+// In order to have consistent results with Faker, the seed is fixed.
+faker.seed(42);
 
 module.exports = {
     files: {
         tenant_base: [
+            {
+                condition: generator => generator.databaseType === 'sql',
+                path: jhipsterConstants.SERVER_MAIN_RES_DIR,
+                templates: [
+                    {
+                        file: 'config/liquibase/fake-data/table.csv',
+                        options: {
+                            interpolate: jhipsterConstants.INTERPOLATE_REGEX,
+                            context: {
+                                faker,
+                                debug,
+                                randexp
+                            }
+                        },
+                        renameTo: generator => `config/liquibase/fake-data/${generator.entityTableName}.csv`
+                    }
+                ]
+            },
             {
                 condition: context => context.tenantAware,
                 path: jhipsterConstants.SERVER_MAIN_SRC_DIR,
