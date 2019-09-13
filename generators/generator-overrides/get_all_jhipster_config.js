@@ -1,5 +1,4 @@
 // const debug = require('debug')('jhipster:multitenancy2:generator-overrides:add-return-rewrite-replace');
-const jhipsterUtils = require('../utils-overrides');
 
 /*
  * =======================
