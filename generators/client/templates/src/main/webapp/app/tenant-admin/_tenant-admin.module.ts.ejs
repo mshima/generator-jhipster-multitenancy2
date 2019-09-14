@@ -1,11 +1,11 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core';
-import { <%=angularXAppName%>SharedModule } from 'app/shared';
+import { JhiLanguageHelper } from 'app/core/language/language.helper';
+import { <%=angularXAppName%>SharedModule } from 'app/shared/shared.module';
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
-import { UserMgmtSharedModule } from '<%= tenantClientRootFolder %>';
+import { UserMgmtSharedModule } from '../admin/user-management/user-management.module';
 import { <%= tenantNameLowerFirst %>AdminState } from './<%= tenantNameLowerFirst %>-admin.route';
 
 @NgModule({
@@ -14,8 +14,7 @@ import { <%= tenantNameLowerFirst %>AdminState } from './<%= tenantNameLowerFirs
     <%=angularXAppName%>SharedModule,
     RouterModule.forChild(<%= tenantNameLowerFirst %>AdminState)
   ],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }]
 })
 export class <%=angularXAppName%><%= tenantNameUpperFirst %>AdminModule {
   constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {

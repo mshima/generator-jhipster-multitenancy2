@@ -122,5 +122,4 @@ function tenantVariables(tenantName, context, generator = this) {
 
     // relative to app root
     context.tenantModelPath = 'shared/admin';
-    context.tenantServicePath = `admin/${context.tenantFileName}`;
 }

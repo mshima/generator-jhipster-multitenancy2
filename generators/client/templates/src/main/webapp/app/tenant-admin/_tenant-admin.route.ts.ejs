@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { userMgmtRoute } from '<%= tenantClientRootFolder %>';
+import { userMgmtRoute } from '../admin/user-management/user-management.route';
 
-import { UserRouteAccessService } from 'app/core';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 const <%= tenantNameUpperCase %>_ADMIN_ROUTES = [...userMgmtRoute];
 

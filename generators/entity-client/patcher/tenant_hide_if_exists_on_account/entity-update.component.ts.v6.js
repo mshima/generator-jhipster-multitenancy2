@@ -8,7 +8,7 @@ const tmpls = [
         // Add imports account
         type: 'rewriteFile',
         target: "import { Observable } from 'rxjs';",
-        tmpl: context => "import { AccountService } from 'app/core';"
+        tmpl: context => "import { AccountService } from 'app/core/auth/account.service';"
     },
     {
         // Add currentAccount field

@@ -32,7 +32,7 @@ module.exports = class extends GeneratorExtender(CommonGenerator) {
         });
 
         this.tenantName = this.options.tenantName || this.config.get('tenantName');
-        this.patcher = new Patcher(this, { auto: true });
+        this.patcher = new Patcher(this);
     }
 
     get initializing() {

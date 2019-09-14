@@ -19,8 +19,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 
-import { AccountService } from '../';
-import { StateStorageService } from './state-storage.service';
+import { AccountService } from 'app/core/auth/account.service';
+import { StateStorageService } from 'app/core/auth/state-storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class <%= tenantNameUpperFirst %>RouteAccessService implements CanActivate {
