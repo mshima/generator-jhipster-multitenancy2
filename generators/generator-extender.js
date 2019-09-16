@@ -4,7 +4,7 @@ const debug = require('debug')('jhipster:multitenancy2:generator-extender');
 
 const jhipsterVersion = packagejs.version;
 
-module.exports = function(Superclass, requiredPath = 'generator-extender') {
+module.exports = function(Superclass, moduleName, requiredPath = 'generator-extender') {
     const modules = require('require-dir-all')(requiredPath);
     Object.keys(modules).forEach(key => {
         const module = modules[key];
@@ -20,6 +20,15 @@ module.exports = function(Superclass, requiredPath = 'generator-extender') {
             }
         }
         Superclass = module.extend(Superclass);
+
+        if (module) {
+            const extendModule = `extend${moduleName}`;
+            debug(`Looking for extender ${extendModule} (${key})`);
+            if (module[extendModule]) {
+                debug(`Adding ${extendModule} override (${key})`);
+                module[extendModule](Superclass);
+            }
+        }
     });
     return class GeneratorExtender extends Superclass {
         /*
