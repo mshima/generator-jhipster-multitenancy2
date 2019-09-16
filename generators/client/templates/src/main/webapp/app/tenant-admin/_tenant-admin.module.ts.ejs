@@ -1,27 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
-import { JhiLanguageHelper } from 'app/core/language/language.helper';
-import { <%=angularXAppName%>SharedModule } from 'app/shared/shared.module';
-/* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
-import { UserMgmtSharedModule } from '../admin/user-management/user-management.module';
-import { <%= tenantNameLowerFirst %>AdminState } from './<%= tenantNameLowerFirst %>-admin.route';
+import { <%=angularXAppName%>SharedModule } from 'app/shared/shared.module';
+import { <%= tenantNameUpperFirst %>AdminRouting } from './<%= tenantNameLowerFirst %>-admin.route';
 
 @NgModule({
   imports: [
-    UserMgmtSharedModule,
     <%=angularXAppName%>SharedModule,
-    RouterModule.forChild(<%= tenantNameLowerFirst %>AdminState)
-  ],
-  providers: [{ provide: JhiLanguageService, useClass: JhiLanguageService }]
+    <%= tenantNameUpperFirst %>AdminRouting
+  ]
 })
 export class <%=angularXAppName%><%= tenantNameUpperFirst %>AdminModule {
-  constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-    this.languageHelper.language.subscribe((languageKey: string) => {
-      if (languageKey) {
-        this.languageService.changeLanguage(languageKey);
-      }
-    });
-  }
+  constructor() {}
 }

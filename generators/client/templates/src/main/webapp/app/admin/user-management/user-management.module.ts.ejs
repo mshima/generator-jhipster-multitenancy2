@@ -24,11 +24,12 @@ import { UserMgmtComponent } from './user-management.component';
 import { UserMgmtDetailComponent } from './user-management-detail.component';
 import { UserMgmtUpdateComponent } from './user-management-update.component';
 import { UserMgmtDeleteDialogComponent } from './user-management-delete-dialog.component';
+import { userManagementRoute } from './user-management.route';
 
 @NgModule({
     imports: [
         <%= angularXAppName %>SharedModule,
-        RouterModule
+        RouterModule.forChild(userManagementRoute)
     ],
     declarations: [
         UserMgmtComponent,
@@ -37,9 +38,7 @@ import { UserMgmtDeleteDialogComponent } from './user-management-delete-dialog.c
         UserMgmtDeleteDialogComponent
     ],
     entryComponents: [
-        UserMgmtComponent,
-        UserMgmtUpdateComponent,
         UserMgmtDeleteDialogComponent
     ]
 })
-export class UserMgmtSharedModule {}
+export class UserManagementModule {}

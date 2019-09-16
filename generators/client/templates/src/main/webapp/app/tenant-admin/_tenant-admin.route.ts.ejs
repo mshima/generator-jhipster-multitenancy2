@@ -1,18 +1,17 @@
-import { Routes } from '@angular/router';
-
-import { userMgmtRoute } from '../admin/user-management/user-management.route';
+import { RouterModule, Routes } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
-const <%= tenantNameUpperCase %>_ADMIN_ROUTES = [...userMgmtRoute];
-
 export const <%= tenantNameLowerFirst %>AdminState: Routes = [
   {
-    path: '',
+    path: 'user-management',
     data: {
       authorities: ['ROLE_<%= tenantNameUpperCase %>_ADMIN']
     },
     canActivate: [UserRouteAccessService],
-    children: <%= tenantNameUpperCase %>_ADMIN_ROUTES
+    loadChildren: () => import('../admin/user-management/user-management.module').then(m => m.UserManagementModule)
   }
 ];
+
+export const <%= tenantNameUpperFirst %>AdminRouting: ModuleWithProviders = RouterModule.forChild(<%= tenantNameLowerFirst %>AdminState);

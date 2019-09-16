@@ -6,6 +6,18 @@ module.exports = {
             {
                 path: jhipsterConstants.ANGULAR_DIR,
                 templates: ['admin/user-management/user-management.module.ts']
+            },
+            {
+                path: jhipsterConstants.ANGULAR_DIR,
+                templates: ['admin/user-management/user-management.route.ts']
+            },
+            {
+                path: jhipsterConstants.ANGULAR_DIR,
+                templates: ['admin/admin.module.ts']
+            },
+            {
+                path: jhipsterConstants.ANGULAR_DIR,
+                templates: ['admin/admin.route.ts']
             }
         ],
         user_add_tenant: [
