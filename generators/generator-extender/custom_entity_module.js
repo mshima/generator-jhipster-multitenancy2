@@ -1,7 +1,104 @@
 const chalk = require('chalk');
-const debug = require('debug')('jhipster:multitenancy2:generator-extender:custom-entity-module');
+const _ = require('lodash');
+// const debug = require('debug')('jhipster:multitenancy2:generator-extender:custom-entity-module');
 
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const NeedleClientAngular = require('generator-jhipster/generators/client/needle-api/needle-client-angular');
+const jhipsterUtils = require('../utils-overrides');
+
+class NeedleClientAngularExtend extends NeedleClientAngular {
+    addEntityToModule(entityInstance, entityClass, entityAngularName, entityFolderName, entityFileName, entityUrl, microServiceName) {
+        this.addEntityToAnyModule(
+            entityInstance,
+            entityClass,
+            entityAngularName,
+            entityFolderName,
+            entityFileName,
+            entityUrl,
+            microServiceName,
+            {
+                entityModulePath: `${jhipsterConstants.CLIENT_MAIN_SRC_DIR}app/entities/entity.module.ts`,
+                needleName: 'jhipster-needle-add-entity-route'
+            }
+        );
+    }
+
+    addEntityToAdminModule(entityInstance, entityClass, entityAngularName, entityFolderName, entityFileName, entityUrl, microServiceName) {
+        this.addEntityToAnyModule(
+            entityInstance,
+            entityClass,
+            entityAngularName,
+            entityFolderName,
+            entityFileName,
+            entityUrl,
+            microServiceName,
+            {
+                entityModulePath: `${jhipsterConstants.CLIENT_MAIN_SRC_DIR}app/admin/admin.route.ts`,
+                needleName: 'jhipster-needle-add-admin-route',
+                aditionalRouteOptions: `data: {
+                    |            authorities: ['ROLE_ADMIN']
+                    |        },
+                    |        canActivate: [UserRouteAccessService],
+                    |        `,
+                addComma: true
+            }
+        );
+    }
+
+    /* eslint-disable */
+    addEntityToAnyModule(
+        entityInstance,
+        entityClass,
+        entityAngularName,
+        entityFolderName,
+        entityFileName,
+        entityUrl,
+        microServiceName,
+        options
+    ) {
+        const entityModulePath = options.entityModulePath;
+        const needleName = options.needleName;
+        const errorMessage = `${chalk.yellow('Reference to ') +
+            entityInstance +
+            entityClass +
+            entityFolderName +
+            entityFileName} ${chalk.yellow(`not added to ${entityModulePath}.\n`)}`;
+
+        try {
+            const isSpecificEntityAlreadyGenerated = jhipsterUtils.checkStringInFile(
+                entityModulePath,
+                `path: '${entityUrl}'`,
+                this.generator
+            );
+
+            if (!isSpecificEntityAlreadyGenerated) {
+                const appName = this.generator.getAngularXAppName();
+                const addComma = options.addComma || jhipsterUtils.checkStringInFile(entityModulePath, 'loadChildren', this.generator);
+
+                const modulePath = `./${entityFolderName}/${entityFileName}.module`;
+                const moduleName = microServiceName
+                    ? `${this.generator.upperFirstCamelCase(microServiceName)}${entityAngularName}Module`
+                    : `${appName}${entityAngularName}Module`;
+
+                let splicable = addComma ? ',' : '';
+                const aditionalRouteOptions = options.aditionalRouteOptions || '';
+                splicable = `|    ${splicable}{
+                       |        path: '${entityUrl}',
+                       |        ${aditionalRouteOptions}loadChildren: () => import('${modulePath}').then(m => m.${moduleName})
+                       |    }`;
+                const rewriteFileModel = this.generateFileModel(
+                    entityModulePath,
+                    needleName,
+                    this.generator.stripMargin(splicable)
+                );
+
+                this.addBlockContentToFile(rewriteFileModel, errorMessage);
+            }
+        } catch (e) {
+            this.generator.debug('Error:', e);
+        }
+    }
+}
 
 /*
  * =======================
@@ -11,38 +108,49 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
  */
 function extend(Superclass) {
     return class GeneratorExtender extends Superclass {
+        constructor(args, opts) {
+            super(args, opts);
+            this.needleApi.clientAngular = new NeedleClientAngularExtend(this);
+        }
+
         /*
          * Override addEntityToMenu changing the menu tenant is added to.
          */
-        addEntityToMenu(...args) {
-            debug(`Executing addEntityToMenu ${args}`);
-            if (args.length === 0) return;
-            if (this.isTenant) {
+        addEntityToMenu(routerName, enableTranslation, clientFramework, entityTranslationKeyMenu = _.camelCase(routerName)) {
+            /*
+             * entity-client files.js
+             * this.entityUrl instead of this.entityStateName
+             */
+            routerName = this.entityUrl;
+
+            if (clientFramework === 'react' || this.entityModule === undefined || this.entityModule === 'entities') {
+                if (clientFramework === 'angularX') {
+                    this.needleApi.clientAngular.addEntityToMenu(routerName, enableTranslation, entityTranslationKeyMenu);
+                } else if (clientFramework === 'react') {
+                    this.needleApi.clientReact.addEntityToMenu(routerName, enableTranslation, entityTranslationKeyMenu);
+                }
+            } else if (this.entityModule === 'admin') {
                 this.addElementToAdminMenu(
-                    `admin/${this.tenantFileName}`,
+                    routerName,
                     'asterisk',
                     this.enableTranslation,
-                    this.clientFramework,
-                    `global.menu.admin.${this.tenantMenuTranslationKey}`
+                    clientFramework,
+                    entityTranslationKeyMenu
                 );
-                debug('Ignoring addEntityToMenu');
-                return;
             }
-            Superclass.prototype.addEntityToMenu.apply(this, args);
         }
 
         /*
          * Override addEntityTranslationKey changing the menu tenant is added to.
          */
-        addEntityTranslationKey(...args) {
-            debug(`Executing addEntityTranslationKey ${args}`);
-            if (args.length === 0) return;
-            if (this.isTenant) {
-                debug('Using addAdminElementTranslationKey');
-                this.addAdminElementTranslationKey(...args);
-                return;
+        addEntityTranslationKey(key, value, language) {
+            if (this.clientFramework === 'react' || this.entityModule === undefined || this.entityModule === 'entities') {
+                this.needleApi.clientI18n.addEntityTranslationKey(key, value, language);
+            } else if (this.entityModule === 'admin') {
+                this.addAdminElementTranslationKey(key, value, language);
+            } else {
+                
             }
-            Superclass.prototype.addEntityTranslationKey.apply(this, args);
         }
 
         /*
@@ -54,68 +162,42 @@ function extend(Superclass) {
             entityName,
             entityFolderName,
             entityFileName,
-            entityUrl,
+            entityState,
             clientFramework,
             microServiceName
         ) {
-            debug(`fixAddEntityToModule ${entityInstance}`);
-            if (entityInstance === undefined) return;
-            if (!this.isTenant) {
-                Superclass.prototype.addEntityToModule.apply(this, [
-                    entityInstance,
-                    entityClass,
-                    entityName,
-                    entityFolderName,
-                    entityFileName,
-                    entityUrl,
-                    clientFramework,
-                    microServiceName
-                ]);
-                return;
+            entityState = this.entityStateName;
+            if (clientFramework === 'react' || this.entityModule === undefined || this.entityModule === 'entities') {
+                if (clientFramework === 'angularX') {
+                    this.needleApi.clientAngular.addEntityToModule(
+                        entityInstance,
+                        entityClass,
+                        entityName,
+                        entityFolderName,
+                        entityFileName,
+                        entityState,
+                        microServiceName
+                    );
+                } else if (clientFramework === 'react') {
+                    this.needleApi.clientReact.addEntityToModule(entityInstance, entityClass, entityName, entityFolderName, entityFileName);
+                }
+            } else if (this.entityModule === 'admin') {
+                if (clientFramework === 'angularX') {
+                    this.needleApi.clientAngular.addEntityToAdminModule(
+                        entityInstance,
+                        entityClass,
+                        entityName,
+                        entityFolderName,
+                        entityFileName,
+                        entityState,
+                        microServiceName
+                    );
+                }
             }
-            /**
-             * Add a new admin in the TS modules file.
-             *
-             * @param {string} appName - Angular2 application name.
-             * @param {string} adminAngularName - The name of the new admin item.
-             * @param {string} adminFolderName - The name of the folder.
-             * @param {string} adminFileName - The name of the file.
-             * @param {boolean} enableTranslation - If translations are enabled or not.
-             * @param {string} clientFramework - The name of the client framework.
-             */
-            const moduleNeedle = 'jhipster-needle-add-admin-module';
-            const appName = this.getAngularXAppName();
-            const entityAngularName = entityName;
-
-            const adminModulePath = `${jhipsterConstants.CLIENT_MAIN_SRC_DIR}app/admin/admin.module.ts`;
-            const modulePath = `./${entityFolderName}/${entityFileName}.module`;
-
-            const moduleName = microServiceName
-                ? `${this.upperFirstCamelCase(microServiceName)}${entityAngularName}Module`
-                : `${appName}${entityAngularName}Module`;
-            const splicable = `|RouterModule.forChild([
-                |            {
-                |                path: '${entityFileName}',
-                |                loadChildren: '${modulePath}#${moduleName}'
-                |            }]),`;
-
-            const errorMessage = `${chalk.yellow('Reference to ') + entityFileName + clientFramework} ${chalk.yellow(
-                `not added to ${modulePath}.\n`
-            )}`;
-
-            const moduleRewriteFileModel = this.needleApi.clientAngular.generateFileModel(
-                adminModulePath,
-                moduleNeedle,
-                this.stripMargin(splicable)
-            );
-            this.needleApi.clientAngular.addBlockContentToFile(moduleRewriteFileModel, errorMessage);
         }
     };
 }
 
 module.exports = {
-    extendVersion: {
-        notGreaterThan: '6.2.0'
-    },
     extend
 };
