@@ -101,7 +101,9 @@ function tenantVariables(tenantName, context, generator = this) {
     context.tenantAngularName = context.tenantClass + generator.upperFirstCamelCase(context.entityAngularJSSuffix);
     context.tenantReactName = context.tenantClass + generator.upperFirstCamelCase(context.entityAngularJSSuffix);
 
-    context.tenantStateName = `admin/${context.tenantFileName}`;
+    context.tenantStateName = `${context.tenantFileName}`;
+    context.tenantModule = 'admin';
+    context.tenantUrl = `${context.tenantModule}/${context.tenantStateName}`;
 
     context.tenantTranslationKey = context.tenantInstance;
 

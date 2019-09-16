@@ -6,7 +6,7 @@ const debug = require('debug')('jhipster:multitenancy2:entity');
 const mtUtils = require('../multitenancy-utils');
 const GeneratorOverrides = require('../generator-extender');
 
-module.exports = class extends GeneratorOverrides(EntityGenerator) {
+module.exports = class extends GeneratorOverrides(EntityGenerator, 'Entity') {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
@@ -34,12 +34,6 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                     context.enableTranslation = configuration.enableTranslation;
                 }
 
-                // Ignore some questions and validations
-                if (this.isJhipsterVersionLessThan('6.3.0')) {
-                    // needed for changelogDate.
-                    context.useConfigurationFile = true;
-                }
-
                 /* tenant variables */
                 mtUtils.tenantVariables.call(this, configuration.get('tenantName'), context, this);
 
@@ -48,6 +42,9 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                 }
 
                 mtUtils.validateTenant(this);
+
+                this.entityModule = context.tenantModule;
+                context.entityModule = context.tenantModule;
             }
         };
 
@@ -135,6 +132,10 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                         context.tenantName
                     );
 
+                    let otherEntityStateName = context.tenantStateName;
+                    if (context.tenantModule) {
+                        otherEntityStateName = `${context.tenantModule}/${context.tenantStateName}`;
+                    }
                     // if tenant relationship already exists in the entity then set options
                     if (tenantRelationship) {
                         debug('Found relationship with tenant');
@@ -152,7 +153,7 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                             tenantRelationship.clientRootFolder = context.tenantClientRootFolder;
                         }
                         if (!tenantRelationship.otherEntityStateName) {
-                            tenantRelationship.otherEntityStateName = context.tenantStateName;
+                            tenantRelationship.otherEntityStateName = otherEntityStateName;
                         }
                         if (!tenantRelationship.otherEntityFolderName) {
                             tenantRelationship.otherEntityFolderName = context.tenantFolderName;
@@ -175,7 +176,7 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                         relationshipValidateRules: 'required',
                         ownerSide: true,
                         clientRootFolder: context.tenantClientRootFolder,
-                        otherEntityStateName: context.tenantStateName,
+                        otherEntityStateName,
                         otherEntityFolderName: context.tenantFolderName,
                         otherEntityAngularName: context.tenantAngularName,
                         otherEntityRelationshipName: context.tenantInstance
@@ -197,9 +198,7 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                 context.entityServiceFileName = context.tenantFileName;
 
                 context.entityStateName = context.tenantStateName;
-                context.entityUrl = context.entityStateName;
-                // context.entityStateName = context.tenantStateName;
-                // context.entityUrl = context.tenantStateName;
+                context.entityUrl = context.tenantUrl;
 
                 context.entityTranslationKey = context.tenantTranslationKey;
                 context.entityTranslationKeyMenu = context.tenantMenuTranslationKey;

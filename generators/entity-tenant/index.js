@@ -5,7 +5,7 @@ const debug = require('debug')('jhipster:multitenancy2:entity-tenant');
 const mtUtils = require('../multitenancy-utils');
 const GeneratorOverrides = require('../generator-extender');
 
-module.exports = class extends GeneratorOverrides(EntityGenerator) {
+module.exports = class extends GeneratorOverrides(EntityGenerator, 'Entity') {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
@@ -34,15 +34,12 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                     context.enableTranslation = configuration.enableTranslation;
                 }
 
-                // Ignore some questions and validations
-                if (this.isJhipsterVersionLessThan('6.3.0')) {
-                    // needed for changelogDate.
-                    context.useConfigurationFile = true;
-                }
-
                 /* tenant variables */
                 mtUtils.tenantVariables(configuration.get('tenantName'), context, this);
                 context.clientRootFolder = context.tenantClientRootFolder;
+
+                this.entityModule = context.tenantModule;
+                context.entityModule = context.tenantModule;
             }
         };
 
@@ -72,7 +69,7 @@ module.exports = class extends GeneratorOverrides(EntityGenerator) {
                 context.entityServiceFileName = context.tenantFileName;
 
                 context.entityStateName = context.tenantStateName;
-                context.entityUrl = context.entityStateName;
+                context.entityUrl = context.tenantUrl;
 
                 context.entityTranslationKey = context.tenantTranslationKey;
                 context.entityTranslationKeyMenu = context.tenantMenuTranslationKey;
