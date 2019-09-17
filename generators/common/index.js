@@ -44,6 +44,7 @@ module.exports = class extends GeneratorExtender(CommonGenerator) {
                     this.tenantChangelogDate = this.dateFormatForLiquibase();
                     debug(`Using tenantChangelogDate ${this.tenantChangelogDate}`);
                     this.config.set('tenantChangelogDate', this.tenantChangelogDate);
+                    this.configOptions.tenantChangelogDate = this.tenantChangelogDate;
                 }
 
                 // This will be used by entity-server to crate "@Before" annotation in TenantAspect

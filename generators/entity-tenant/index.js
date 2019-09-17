@@ -55,7 +55,7 @@ module.exports = class extends GeneratorOverrides(EntityGenerator, 'Entity') {
             preJson() {
                 mtUtils.validateTenant(this);
 
-                this.context.changelogDate = this.options.tenantChangelogDate || this.config.get('tenantChangelogDate');
+                this.context.changelogDate = this.configOptions.tenantChangelogDate || this.config.get('tenantChangelogDate');
             }
         };
 
