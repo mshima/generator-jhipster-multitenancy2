@@ -10,7 +10,7 @@ module.exports = class extends GeneratorOverrides(EntityClientGenerator) {
 
         // npm test fails probably because of errors of first run.
         // Add ignorePatchErrors until jhipster errors as fixed.
-        this.patcher = new Patcher(this, { ignorePatchErrors: true });
+        this.patcher = new Patcher(this);
         debug(`Initializing entity-client ${this.name}`);
     }
 

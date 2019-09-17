@@ -27,6 +27,11 @@ module.exports = class Patcher {
         debug('Found patches:');
         debug(this.templates);
 
+        this.ignorePatchErrors = [];
+        if (generator.options['ignore-patch-errors']) {
+            this.ignorePatchErrors = generator.options['ignore-patch-errors'].split(',');
+        }
+
         this.disableFeatures = [];
         if (generator.options['disable-tenant-features']) {
             this.disableFeatures = generator.options['disable-tenant-features'].split(',');
@@ -111,19 +116,20 @@ module.exports = class Patcher {
                 }
                 let successLog = `${success}`;
                 if (!success) successLog = chalk.red(`${success}`);
-                if (!this.options.ignorePatchErrors && success === false)
-                    generator.error(`Error applying template ${templates.origin} on ${file}`);
 
                 debug(`======== Template finished type: ${item.type}, success: ${successLog}`);
-                if (!success && generator.options['debug-patcher']) {
+                if (success === false && generator.options['debug-patcher']) {
                     try {
                         const body = generator.fs.read(file);
                         debug(`Target: ${target}`);
-                        generator.log(body);
+                        debug(body);
                     } catch (e) {
                         debug(`File ${file} not found`);
                     }
                 }
+
+                if (!this.options.ignorePatchErrors && success === false && !this.ignorePatchErrors.includes(templates.filename))
+                    generator.error(`Error applying template ${templates.filename} (${templates.origin}) on ${file}`);
             });
         });
     }

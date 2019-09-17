@@ -35,6 +35,8 @@ describe('Subgenerator entity-tenant of multitenancy2 JHipster blueprint', () =>
                     tenantName: 'Company',
                     tenantFileSuffix: 'management',
                     baseChangelogDate: '2019-09-07',
+                    'debug-patcher': true,
+                    'ignore-patch-errors': 'navbar.component.html.ejs',
                     skipChecks: true
                 })
                 .withGenerators([
