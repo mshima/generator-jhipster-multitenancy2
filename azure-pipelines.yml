@@ -110,13 +110,13 @@ jobs:
           #----------------------------------------------------------------------
           # Install JHipster and generate project+entities
           #----------------------------------------------------------------------
-          - bash: $(JHI_SCRIPTS)/10-install-jhipster.sh
+          - bash: $(JHI_SCRIPTS)/10-install-jhipster-custom.sh
             displayName: 'GENERATION: install JHipster'
           - bash: $(JHI_SCRIPTS)/10.1-install-jhipster-blueprint.sh
             displayName: 'GENERATION: install Blueprint'
           - bash: $(JHI_SCRIPTS)/11-generate-entities.sh
             displayName: 'GENERATION: entities'
-          - bash: $(JHI_SCRIPTS)/12-generate-project.sh
+          - bash: $(JHI_SCRIPTS)/12-generate-project-custom.sh
             displayName: 'GENERATION: project'
           - bash: $(JHI_SCRIPTS)/12.1-project-customizations.sh
             displayName: 'GENERATION: project customizations'
