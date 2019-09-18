@@ -10,7 +10,7 @@ source $(dirname $0)/00-init-env.sh
 cd "$JHI_FOLDER_APP"
 
 echo "Updation webdriver from chrome"
-npm install webdriver-manager@lastest
+npm install webdriver-manager@12.1.6
 
 if [[ "$INSTALL_BLUEPRINT" != "global" ]]; then
     npm install eslint
