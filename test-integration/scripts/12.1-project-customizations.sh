@@ -12,6 +12,10 @@ cd "$JHI_FOLDER_APP"
 echo "Updation webdriver from chrome"
 npm install webdriver-manager@12.1.6
 
-if [[ "$INSTALL_BLUEPRINT" != "global" ]]; then
+if [[ "$INSTALL_BLUEPRINT" == "global" ]]; then
+    echo "Installing eslint"
+    npm install -g eslint
+else
+    echo "Installing eslint"
     npm install eslint
 fi
