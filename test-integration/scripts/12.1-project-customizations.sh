@@ -20,3 +20,12 @@ npm install -g eslint
 #    npm install eslint
 #    npm install eslint
 #fi
+
+if [[ "$INSTALL_BLUEPRINT" != "global" && "$JHI_GEN_BRANCH" == "release" && "$JHI_GEN_VERSION" == "" ]]; then
+    echo "*** generator-jhipster: use last release version"
+    npm install generator-jhipster
+
+elif [[ "$INSTALL_BLUEPRINT" != "global" && "$JHI_GEN_BRANCH" == "release" ]]; then
+    echo "*** generator-jhipster: use release version"
+    npm install "generator-jhipster@$JHI_GEN_VERSION"
+fi
