@@ -16,6 +16,7 @@ moveEntity() {
 }
 
 prepareFolder() {
+    rm -rf "$JHI_FOLDER_APP"
     mkdir -p "$JHI_FOLDER_APP"/.jhipster/
 }
 #-------------------------------------------------------------------------------
@@ -144,6 +145,9 @@ elif [[ "$JHI_ENTITY" == "sql" ]]; then
     moveEntity EntityWithServiceImplAndDTO
     moveEntity EntityWithServiceImplAndPagination
     moveEntity EntityWithServiceImplPaginationAndDTO
+
+    moveEntity MapsIdUserProfileWithDTO
+
 fi
 
 #-------------------------------------------------------------------------------
