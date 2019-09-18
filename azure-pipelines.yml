@@ -55,21 +55,21 @@ jobs:
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
                   JHI_GEN_VERSION: 6.3.0
-              jdl-multitenancy2-postgres:
+              jdl-multitenancy2:
                   JHI_APP: jdl-multitenancy2-postgres
                   JHI_ENTITY: jdl-multitenancy2-company
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
                   JHI_GEN_VERSION: 6.3.0
-              jdl-multitenancy2-postgres-global:
-                  JHI_APP: jdl-multitenancy2-postgres
-                  JHI_ENTITY: jdl-multitenancy2-company
-                  JHI_PROFILE: prod
-                  JHI_PROTRACTOR: 1
-                  JHI_JDK: 8
-                  JHI_GEN_VERSION: 6.3.0
-                  INSTALL_BLUEPRINT: global
+              #jdl-multitenancy2-postgres-global:
+              #    JHI_APP: jdl-multitenancy2-postgres
+              #    JHI_ENTITY: jdl-multitenancy2-company
+              #    JHI_PROFILE: prod
+              #    JHI_PROTRACTOR: 1
+              #    JHI_JDK: 8
+              #    JHI_GEN_VERSION: 6.3.0
+              #    INSTALL_BLUEPRINT: global
               jdl-relation:
                   JHI_APP: jdl-relation
                   JHI_ENTITY: jdl-multitenancy2-company
@@ -77,6 +77,14 @@ jobs:
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
                   JHI_GEN_VERSION: 6.3.0
+              jdl-relation-master:
+                  JHI_APP: jdl-relation
+                  JHI_ENTITY: jdl-multitenancy2-company
+                  JHI_PROFILE: prod
+                  JHI_PROTRACTOR: 1
+                  JHI_JDK: 8
+                  JHI_REPO: jhipster/generator-jhipster
+                  JHI_GEN_BRANCH: master
 
       steps:
           #----------------------------------------------------------------------
