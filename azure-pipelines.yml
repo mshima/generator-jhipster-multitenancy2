@@ -56,8 +56,9 @@ jobs:
                   JHI_JDK: 8
                   JHI_GEN_VERSION: 6.3.0
               jdl-multitenancy2:
-                  JHI_APP: jdl-multitenancy2-postgres
-                  JHI_ENTITY: jdl-multitenancy2-company
+                  JHI_APP: jdl-company
+                  JHI_ENTITY: other
+                  JHI_BLUEPRINT_ENTITY: jdl
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
@@ -72,14 +73,16 @@ jobs:
               #    INSTALL_BLUEPRINT: global
               jdl-relation:
                   JHI_APP: jdl-relation
-                  JHI_ENTITY: jdl-multitenancy2-company
+                  JHI_ENTITY: other
+                  JHI_BLUEPRINT_ENTITY: jdl
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
                   JHI_GEN_VERSION: 6.3.0
               jdl-relation-master:
                   JHI_APP: jdl-relation
-                  JHI_ENTITY: jdl-multitenancy2-company
+                  JHI_ENTITY: other
+                  JHI_BLUEPRINT_ENTITY: jdl
                   JHI_PROFILE: prod
                   JHI_PROTRACTOR: 1
                   JHI_JDK: 8
@@ -126,16 +129,12 @@ jobs:
           #----------------------------------------------------------------------
           # Install JHipster and generate project+entities
           #----------------------------------------------------------------------
-          - bash: $(JHI_SCRIPTS)/10-install-jhipster-custom.sh
+          - bash: $(JHI_SCRIPTS)/10-install-jhipster.sh
             displayName: 'GENERATION: install JHipster'
-          - bash: $(JHI_SCRIPTS)/10.1-install-jhipster-blueprint.sh
-            displayName: 'GENERATION: install Blueprint'
           - bash: $(JHI_SCRIPTS)/11-generate-entities.sh
             displayName: 'GENERATION: entities'
-          - bash: $(JHI_SCRIPTS)/12-generate-project-custom.sh
+          - bash: $(JHI_SCRIPTS)/12-generate-project.sh
             displayName: 'GENERATION: project'
-          - bash: $(JHI_SCRIPTS)/12.1-project-customizations.sh
-            displayName: 'GENERATION: project customizations'
           - bash: $(JHI_SCRIPTS)/13-replace-version-generated-project.sh
             displayName: 'GENERATION: replace version in generated project'
           - bash: $(JHI_SCRIPTS)/14-jhipster-info.sh

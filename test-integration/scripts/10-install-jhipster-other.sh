@@ -1,8 +1,5 @@
 #!/bin/bash
 
-set -e
-source $(dirname $0)/00-init-env.sh
-
 #-------------------------------------------------------------------------------
 # Install Blueprint
 #-------------------------------------------------------------------------------
@@ -12,8 +9,6 @@ if [[ "$INSTALL_BLUEPRINT" == "global" ]]; then
     npm install -g "$JHI_HOME"
 
 else
-    cd "$HOME"
-
     cd "$JHI_HOME"
     git --no-pager log -n 10 --graph --pretty='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
