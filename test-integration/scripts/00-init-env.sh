@@ -13,6 +13,17 @@ init_var() {
 # uri of repo
 JHI_REPO=$(init_var "$BUILD_REPOSITORY_URI" "$TRAVIS_REPO_SLUG")
 
+# source of the build
+if [[ "$JHI_REPO" == *"/jhipster" ]]; then
+    JHI_BUILD_SOURCE=jhipster
+
+elif [[ "$JHI_REPO" == *"/generator-jhipster" ]]; then
+    JHI_BUILD_SOURCE=jhipster-generator
+
+else
+    JHI_BUILD_SOURCE=other
+fi
+
 # folder where the repo is cloned
 JHI_HOME=$(init_var "$BUILD_REPOSITORY_LOCALPATH" "$TRAVIS_BUILD_DIR")
 
