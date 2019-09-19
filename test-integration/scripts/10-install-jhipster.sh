@@ -7,7 +7,10 @@ source $(dirname $0)/00-init-env.sh
 # Install JHipster Dependencies and Server-side library
 #-------------------------------------------------------------------------------
 cd "$HOME"
-if [[ "$JHI_REPO" == *"/jhipster" ]]; then
+if [[ "$JHI_LIB_REPO" == "none" ]]; then
+    echo "*** jhipster: ignoring installation"
+
+elif [[ "$JHI_BUILD_SOURCE" == "jhipster" ]]; then
     echo "*** jhipster: use local version at JHI_REPO=$JHI_REPO"
 
     cd "$JHI_HOME"
@@ -42,7 +45,10 @@ fi
 # Install JHipster Generator
 #-------------------------------------------------------------------------------
 cd "$HOME"
-if [[ "$JHI_REPO" == *"/generator-jhipster" ]]; then
+if [[ "$JHI_GEN_REPO" == "none" ]]; then
+    echo "*** generator-jhipster: ignoring installation"
+
+elif [[ "$JHI_BUILD_SOURCE" == "generator-jhipster" ]]; then
     echo "*** generator-jhipster: use local version at JHI_REPO=$JHI_REPO"
 
     cd "$JHI_HOME"
@@ -54,8 +60,12 @@ if [[ "$JHI_REPO" == *"/generator-jhipster" ]]; then
         npm test
     fi
 
+elif [[ "$JHI_GEN_BRANCH" == "release" && "$JHI_GEN_VERSION" != "" ]]; then
+    echo "*** generator-jhipster: use release $JHI_GEN_VERSION version"
+    npm install -g "generator-jhipster@$JHI_GEN_VERSION"
+
 elif [[ "$JHI_GEN_BRANCH" == "release" ]]; then
-    echo "*** generator-jhipster: use release version"
+    echo "*** generator-jhipster: use last release version"
     npm install -g generator-jhipster
 
 else
@@ -72,4 +82,9 @@ else
 
     npm ci
     npm install -g "$HOME"/generator-jhipster
+fi
+
+if [[ "$JHI_BUILD_SOURCE" == "other" && -f "$(dirname $0)/10-install-jhipster-other.sh" ]]; then
+    echo "*** executing 10-install-jhipster-other.sh"
+    source $(dirname $0)/10-install-jhipster-other.sh
 fi
