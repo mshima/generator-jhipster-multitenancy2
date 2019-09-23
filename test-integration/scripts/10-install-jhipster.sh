@@ -7,10 +7,7 @@ source $(dirname $0)/00-init-env.sh
 # Install JHipster Dependencies and Server-side library
 #-------------------------------------------------------------------------------
 cd "$HOME"
-if [[ "$JHI_LIB_REPO" == "none" ]]; then
-    echo "*** jhipster: ignoring installation"
-
-elif [[ "$JHI_BUILD_SOURCE" == "jhipster" ]]; then
+if [[ "$JHI_BUILD_SOURCE" == "jhipster" ]]; then
     echo "*** jhipster: use local version at JHI_REPO=$JHI_REPO"
 
     cd "$JHI_HOME"
@@ -45,10 +42,7 @@ fi
 # Install JHipster Generator
 #-------------------------------------------------------------------------------
 cd "$HOME"
-if [[ "$JHI_GEN_REPO" == "none" ]]; then
-    echo "*** generator-jhipster: ignoring installation"
-
-elif [[ "$JHI_BUILD_SOURCE" == "generator-jhipster" ]]; then
+if [[ "$JHI_BUILD_SOURCE" == "generator-jhipster" ]]; then
     echo "*** generator-jhipster: use local version at JHI_REPO=$JHI_REPO"
 
     cd "$JHI_HOME"
@@ -82,9 +76,4 @@ else
 
     npm ci
     npm install -g "$HOME"/generator-jhipster
-fi
-
-if [[ "$JHI_BUILD_SOURCE" == "other" && -f "$(dirname $0)/10-install-jhipster-other.sh" ]]; then
-    echo "*** executing 10-install-jhipster-other.sh"
-    source $(dirname $0)/10-install-jhipster-other.sh
 fi

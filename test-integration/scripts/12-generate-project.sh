@@ -28,16 +28,6 @@ elif [[ "$JHI_ENTITY" == "other" ]]; then
     if [[ -d "$JHI_SAMPLES/$JHI_APP" ]]; then
         cp -f "$JHI_SAMPLES"/"$JHI_APP"/* "$JHI_FOLDER_APP"/
     fi
-    cd "$JHI_FOLDER_APP"
-
-    if [[ -f "$JHI_FOLDER_APP/generate-project.sh" ]]; then
-        echo "*** executing $JHI_FOLDER_APP/generate-project.sh"
-        source $JHI_FOLDER_APP/generate-project.sh
-
-    elif [[ -f "$(dirname $0)/12-generate-project-other.sh" ]]; then
-        echo "*** executing 12-generate-project-other.sh"
-        source $(dirname $0)/12-generate-project-other.sh
-    fi
 
 else
     #-------------------------------------------------------------------------------
