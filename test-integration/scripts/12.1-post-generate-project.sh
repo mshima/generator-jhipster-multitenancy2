@@ -15,19 +15,14 @@ else
     exit 0
 fi
 
-if $BLUEPRINT_INSTALL_ESLINT; then
-    echo "*** Installing eslint"
-    npm install -g eslint
-fi
-
 cd "$JHI_FOLDER_APP"
 if [[ "$BLUEPRINT_ENTITY" == "jdl" ]]; then
     #-------------------------------------------------------------------------------
     # Generate blueprint project with JDL
     #-------------------------------------------------------------------------------
-    jhipster import-jdl *.jdl --no-insight --blueprints test
+    jhipster import-jdl *.jdl --no-insight --blueprints multitenancy2 --tenant-name company --relation-tenant-aware
     # Regenerate to fix errors
-    # jhipster --force --no-insight --skip-checks --with-entities --from-cli --blueprints test
+    # jhipster --force --no-insight --skip-checks --with-entities --from-cli
 fi
 
 if $BLUEPRINT_FIX_VERSION; then
