@@ -30,15 +30,6 @@ if [[ "$BLUEPRINT_ENTITY" == "jdl" ]]; then
     # jhipster --force --no-insight --skip-checks --with-entities --from-cli --blueprints test
 fi
 
-if [[ -f "dummy.txt" ]]; then
-    echo "*** dummy.txt found"
-    echo $(cat dummy.txt)
-
-else
-    echo "*** dummy.txt not found"
-    exit 1
-fi
-
 if $BLUEPRINT_FIX_VERSION; then
     # Replace version (latest) with local path
     echo 'Fixing blueprint version'
