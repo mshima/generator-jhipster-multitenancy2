@@ -2,7 +2,7 @@ module.exports = {
     files: {
         common: [
             {
-                condition: generator => !generator.shrinkwrapExists,
+                condition: generator => false,
                 templates: ['npm-shrinkwrap.json']
             }
         ]

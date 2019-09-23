@@ -2,12 +2,6 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 
 module.exports = {
     files: {
-        user_add_tenant: [
-            {
-                path: jhipsterConstants.ANGULAR_DIR,
-                templates: ['admin/user-management/user-management-update.component.ts']
-            }
-        ],
         tenant_admin_menu: [
             {
                 path: jhipsterConstants.ANGULAR_DIR,
@@ -19,6 +13,10 @@ module.exports = {
                     {
                         file: 'tenant-admin/_tenant-admin.module.ts',
                         renameTo: generator => `${generator.tenantNameLowerFirst}-admin/${generator.tenantNameLowerFirst}-admin.module.ts`
+                    },
+                    {
+                        file: 'layouts/navbar/navbar.component.html',
+                        renameTo: () => 'layouts/navbar/navbar.component.html'
                     }
                 ]
             }
