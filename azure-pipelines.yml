@@ -147,6 +147,8 @@ jobs:
             displayName: 'GENERATION: project'
           - bash: $(JHI_SCRIPTS)/12.1-post-generate-project.sh
             displayName: 'GENERATION: post project'
+          - bash: $(JHI_SCRIPTS)/12.2-verify-generate-project.sh
+            displayName: 'GENERATION: verify project'
           - bash: $(JHI_SCRIPTS)/13-replace-version-generated-project.sh
             displayName: 'GENERATION: replace version in generated project'
           - bash: $(JHI_SCRIPTS)/14-jhipster-info.sh
