@@ -22,7 +22,7 @@ if [[ "$BLUEPRINT_ENTITY" == "jdl" ]]; then
     #-------------------------------------------------------------------------------
     jhipster import-jdl *.jdl --no-insight --blueprints multitenancy2 --tenant-name company --relation-tenant-aware
     # Regenerate to fix errors
-    # jhipster --force --no-insight --skip-checks --with-entities --from-cli
+    jhipster --force --no-insight --skip-checks --with-entities --from-cli
 fi
 
 if $BLUEPRINT_FIX_VERSION; then
