@@ -42,7 +42,7 @@ jobs:
           # Blueprint defaults
           BLUEPRINT_BUILD: true
           BLUEPRINT_NAME: generator-jhipster-multitenancy2
-          BLUEPRINT_GLOBAL: true
+          BLUEPRINT_GLOBAL: false
           BLUEPRINT_FIX_VERSION: true
           BLUEPRINT_RUN_NPM: true
           BLUEPRINT_LINK: false
