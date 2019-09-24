@@ -7,12 +7,9 @@ module.exports = {
                 path: jhipsterConstants.ANGULAR_DIR,
                 templates: [
                     {
-                        file: 'tenant-admin/_tenant-admin.route.ts',
-                        renameTo: generator => `${generator.tenantNameLowerFirst}-admin/${generator.tenantNameLowerFirst}-admin.route.ts`
-                    },
-                    {
-                        file: 'tenant-admin/_tenant-admin.module.ts',
-                        renameTo: generator => `${generator.tenantNameLowerFirst}-admin/${generator.tenantNameLowerFirst}-admin.module.ts`
+                        file: 'tenant-admin/_tenant-admin-routing.module.ts',
+                        renameTo: generator =>
+                            `${generator.tenantNameLowerFirst}-admin/${generator.tenantNameLowerFirst}-admin-routing.module.ts`
                     },
                     {
                         file: 'layouts/navbar/navbar.component.html',
