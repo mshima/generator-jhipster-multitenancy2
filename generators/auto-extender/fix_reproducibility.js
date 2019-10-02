@@ -4,7 +4,7 @@
  * Fix reproducibility
  * https://github.com/jhipster/generator-jhipster/pull/10397
  */
-function extend(Superclass, jhipsterVersion) {
+function extend(Superclass) {
     return class GeneratorExtender extends Superclass {
         dateFormatForLiquibase() {
             let now = new Date();

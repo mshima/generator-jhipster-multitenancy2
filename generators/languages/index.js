@@ -1,13 +1,12 @@
 /* eslint-disable consistent-return */
-const LanguagesGenerator = require('generator-jhipster/generators/languages');
 const debug = require('debug')('jhipster:multitenancy2:languages');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const LanguagesGenerator = require('../auto-extender')('generator-jhipster/generators/languages');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
-const GeneratorOverrides = require('../generator-extender');
 
-module.exports = class extends GeneratorOverrides(LanguagesGenerator) {
+module.exports = class extends LanguagesGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 

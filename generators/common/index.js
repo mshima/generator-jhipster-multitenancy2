@@ -1,15 +1,14 @@
 /* eslint-disable consistent-return */
 const _ = require('lodash');
 const fs = require('fs');
-const CommonGenerator = require('generator-jhipster/generators/common');
 const debug = require('debug')('jhipster:multitenancy2:common');
+const CommonGenerator = require('../auto-extender')('generator-jhipster/generators/common');
 
 const mtUtils = require('../multitenancy-utils');
-const GeneratorExtender = require('../generator-extender');
 const Patcher = require('../patcher');
 const jhipsterUtils = require('../utils-overrides');
 
-module.exports = class extends GeneratorExtender(CommonGenerator) {
+module.exports = class extends CommonGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 

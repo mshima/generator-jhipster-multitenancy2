@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 const chalk = require('chalk');
 const debug = require('debug')('jhipster:multitenancy2:entity');
-const EntityGenerator = require('../auto-extender')('generator-jhipster/generators/entity', 'generator-extender');
+const EntityGenerator = require('../auto-extender')('generator-jhipster/generators/entity');
 
 const mtUtils = require('../multitenancy-utils');
 

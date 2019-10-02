@@ -1,11 +1,10 @@
 /* eslint-disable consistent-return */
-const ServerGenerator = require('generator-jhipster/generators/server');
+const ServerGenerator = require('../auto-extender')('generator-jhipster/generators/server');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
-const GeneratorOverrides = require('../generator-extender');
 
-module.exports = class extends GeneratorOverrides(ServerGenerator) {
+module.exports = class extends ServerGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 

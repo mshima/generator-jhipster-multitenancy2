@@ -1,10 +1,8 @@
 /* eslint-disable consistent-return */
-const EntityI18nGenerator = require('generator-jhipster/generators/entity-i18n');
 const debug = require('debug')('jhipster:multitenancy:entity:i18n');
+const EntityI18nGenerator = require('../auto-extender')('generator-jhipster/generators/entity-i18n');
 
-const GeneratorOverrides = require('../generator-extender');
-
-module.exports = class extends GeneratorOverrides(EntityI18nGenerator) {
+module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
         super(args, { ...opts, fromBlueprint: true }); // fromBlueprint variable is important
 
