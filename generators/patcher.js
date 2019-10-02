@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const path = require('path');
 const glob = require('glob');
+const semver = require('semver');
 const debug = require('debug')('jhipster:multitenancy2:patcher');
 
 const packagejs = require('generator-jhipster/package.json');
@@ -83,8 +84,8 @@ module.exports = class Patcher {
             templates.tmpls.forEach((item, index) => {
                 debug(`======== Applying template ${templates.origin}[${index}] on ${file}`);
                 // ignore if version is not compatible
-                if (item.versions && !item.versions.includes(jhipsterVersion)) {
-                    debug(`Version not compatible ${jhipsterVersion}`);
+                if (item.version && !semver.satisfies(jhipsterVersion, item.version)) {
+                    debug(`Patch not compatible with version ${jhipsterVersion} (${item.version})`);
                     return;
                 }
                 if (item.disabled) {
