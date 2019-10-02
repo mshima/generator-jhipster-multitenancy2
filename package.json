@@ -35,6 +35,7 @@
     "lodash": "^4.17.13",
     "meow": "5.0.0",
     "mkdirp": "0.5.1",
+    "pkginfo": "^0.4.1",
     "pluralize": "7.0.0",
     "prettier": "1.16.4",
     "randexp": "^0.5.3",
