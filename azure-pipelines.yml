@@ -149,12 +149,12 @@ jobs:
             displayName: 'GENERATION: project'
           - bash: $(JHI_SCRIPTS)/12.1-post-generate-project.sh
             displayName: 'GENERATION: post project'
-          - bash: $(JHI_SCRIPTS)/12.2-verify-generate-project.sh
-            displayName: 'GENERATION: print npm tree project'
           - bash: $(JHI_SCRIPTS)/13-replace-version-generated-project.sh
             displayName: 'GENERATION: replace version in generated project'
           - bash: $(JHI_SCRIPTS)/14-jhipster-info.sh
             displayName: 'GENERATION: jhipster info'
+          - bash: $(JHI_SCRIPTS)/15-npm-info.sh
+            displayName: 'GENERATION: npm info'
 
           #----------------------------------------------------------------------
           # Bugs fix

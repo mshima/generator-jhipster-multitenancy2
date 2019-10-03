@@ -18,11 +18,11 @@ if [[ "$JHI_ENTITY" == "jdl" ]]; then
     mkdir -p "$JHI_FOLDER_APP"
     cp -f "$JHI_SAMPLES"/"$JHI_APP"/*.jdl "$JHI_FOLDER_APP"/
     cd "$JHI_FOLDER_APP"
-    jhipster import-jdl *.jdl --no-insight
+    jhipster import-jdl *.jdl --no-insight $JHI_PARAMS
 
 elif [[ "$JHI_ENTITY" == "other" ]]; then
     #-------------------------------------------------------------------------------
-    # Generate project with jhipster
+    # Just copy templates.
     #-------------------------------------------------------------------------------
     mkdir -p "$JHI_FOLDER_APP"
     if [[ -d "$JHI_SAMPLES/$JHI_APP" ]]; then
@@ -37,7 +37,7 @@ else
         mkdir -p "$JHI_FOLDER_UAA"
         cp -f "$JHI_SAMPLES"/uaa/.yo-rc.json "$JHI_FOLDER_UAA"/
         cd "$JHI_FOLDER_UAA"
-        jhipster --force --no-insight --with-entities --skip-checks --from-cli
+        jhipster --force --no-insight --with-entities --skip-checks --from-cli $JHI_PARAMS
         ls -al "$JHI_FOLDER_UAA"
     fi
 
@@ -47,7 +47,7 @@ else
     mkdir -p "$JHI_FOLDER_APP"
     cp -f "$JHI_SAMPLES"/"$JHI_APP"/.yo-rc.json "$JHI_FOLDER_APP"/
     cd "$JHI_FOLDER_APP"
-    jhipster --force --no-insight --skip-checks --with-entities --from-cli
+    jhipster --force --no-insight --skip-checks --with-entities --from-cli $JHI_PARAMS
 
 fi
 

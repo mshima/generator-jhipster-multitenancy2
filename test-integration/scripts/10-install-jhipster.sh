@@ -50,10 +50,6 @@ if [[ "$JHI_BUILD_SOURCE" == "generator-jhipster" ]]; then
 
     npm ci
     npm install -g "$JHI_HOME"
-    if [[ "$JHI_APP" == "" || "$JHI_APP" == "ms-micro-consul" ]]; then
-        npm test
-    fi
-
 elif [[ "$JHI_GEN_BRANCH" == "release" && "$JHI_GEN_VERSION" != "" ]]; then
     echo "*** generator-jhipster: use release $JHI_GEN_VERSION version"
     npm install -g "generator-jhipster@$JHI_GEN_VERSION"
