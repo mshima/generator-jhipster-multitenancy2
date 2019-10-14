@@ -1,8 +1,10 @@
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const randexp = require('randexp');
 const debug = require('debug')('jhipster:multitenancy2:entity:server:files');
 
 const faker = require('../../faker');
+const jhipsterEnv = require('../../jhipster-environment');
+
+const jhipsterConstants = jhipsterEnv.constants;
 
 // In order to have consistent results with Faker, the seed is fixed.
 faker.seed(42);

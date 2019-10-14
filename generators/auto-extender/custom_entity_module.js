@@ -2,9 +2,12 @@ const chalk = require('chalk');
 const _ = require('lodash');
 // const debug = require('debug')('jhipster:multitenancy2:generator-extender:custom-entity-module');
 
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-const NeedleClientAngular = require('generator-jhipster/generators/client/needle-api/needle-client-angular');
-const jhipsterUtils = require('../utils-overrides');
+const jhipsterEnv = require('../jhipster-environment');
+
+const NeedleClientAngular = require(`${jhipsterEnv.generatorsPath}/client/needle-api/needle-client-angular`);
+
+const jhipsterConstants = jhipsterEnv.constants;
+const jhipsterUtils = jhipsterEnv.utils;
 
 class NeedleClientAngularExtend extends NeedleClientAngular {
     addEntityToModule(entityInstance, entityClass, entityAngularName, entityFolderName, entityFileName, entityUrl, microServiceName) {

@@ -4,7 +4,9 @@ const glob = require('glob');
 const semver = require('semver');
 const debug = require('debug')('jhipster:multitenancy2:patcher');
 
-const packagejs = require('generator-jhipster/package.json');
+const packagePath = require('./jhipster-environment').packagePath;
+
+const packagejs = require(`${packagePath}/package.json`);
 
 const jhipsterVersion = packagejs.version;
 const defaultOptions = {

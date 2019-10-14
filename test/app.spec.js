@@ -3,18 +3,12 @@ const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 // const fse = require('fs-extra');
 
-// const constants = require('generator-jhipster/generators/generator-constants');
-const angularFiles = require('generator-jhipster/generators/client/files-angular').files;
-// const reactFiles = require('generator-jhipster/generators/client/files-react').files;
-
 const getFilesForOptions = require('./jhipster_utils/utils').getFilesForOptions;
 const expectedFiles = require('./jhipster_utils/expected-files');
-// const shouldBeV3DockerfileCompatible = require('./jhipster_utils/utils').shouldBeV3DockerfileCompatible;
 
-// const CLIENT_MAIN_SRC_DIR = constants.CLIENT_MAIN_SRC_DIR;
-// const SERVER_MAIN_SRC_DIR = constants.SERVER_MAIN_SRC_DIR;
-// const SERVER_MAIN_RES_DIR = constants.SERVER_MAIN_RES_DIR;
-// const TEST_DIR = constants.TEST_DIR;
+const generatorsPath = require('../generators/jhipster-environment').generatorsPath;
+
+const angularFiles = require(`${generatorsPath}/client/files-angular`).files;
 
 describe('JHipster generator', () => {
     context('Default configuration with', () => {

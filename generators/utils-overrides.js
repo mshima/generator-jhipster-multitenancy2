@@ -1,7 +1,8 @@
 const path = require('path');
 
-const jhipsterUtils = require('generator-jhipster/generators/utils');
 const debug = require('debug')('jhipster:multitenancy2:utils-overrides');
+
+const jhipsterUtils = require('./jhipster-environment').utils;
 
 /*
  * =======================

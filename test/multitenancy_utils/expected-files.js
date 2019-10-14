@@ -1,4 +1,6 @@
-const constants = require('generator-jhipster/generators/generator-constants');
+const generatorsPath = require('../../generators/jhipster-environment').generatorsPath;
+
+const constants = require(`${generatorsPath}/generator-constants`);
 
 // const TEST_DIR = constants.TEST_DIR;
 const CLIENT_MAIN_SRC_DIR = constants.CLIENT_MAIN_SRC_DIR;

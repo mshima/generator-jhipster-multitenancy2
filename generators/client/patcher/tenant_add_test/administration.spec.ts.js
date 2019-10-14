@@ -1,4 +1,6 @@
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const jhipsterEnv = require('../../../jhipster-environment');
+
+const jhipsterConstants = jhipsterEnv.constants;
 
 const file = context => `${jhipsterConstants.CLIENT_TEST_SRC_DIR}e2e/admin/administration.spec.ts`;
 

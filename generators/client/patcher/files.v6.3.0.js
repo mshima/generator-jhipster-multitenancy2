@@ -1,4 +1,6 @@
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const jhipsterEnv = require('../../jhipster-environment');
+
+const jhipsterConstants = jhipsterEnv.constants;
 
 module.exports = {
     files: {

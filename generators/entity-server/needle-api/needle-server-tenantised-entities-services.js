@@ -17,9 +17,14 @@
  * limitations under the License.
  */
 const chalk = require('chalk');
-const needleServer = require('generator-jhipster/generators/server/needle-api/needle-server');
-const constants = require('generator-jhipster/generators/generator-constants');
 const debug = require('debug')('jhipster:multitenancy2:server');
+
+const generatorsPath = require('../../jhipster-environment').generatorsPath;
+
+const needleServer = require(`${generatorsPath}/server/needle-api/needle-server`);
+const jhipsterEnv = require('../../jhipster-environment');
+
+const constants = jhipsterEnv.constants;
 
 const SERVER_MAIN_SRC_DIR = constants.SERVER_MAIN_SRC_DIR;
 

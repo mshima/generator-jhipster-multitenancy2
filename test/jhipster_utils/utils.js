@@ -2,8 +2,11 @@ const path = require('path');
 const os = require('os');
 const shelljs = require('shelljs');
 const assert = require('yeoman-assert');
-const Generator = require('generator-jhipster/generators/generator-base');
-const constants = require('generator-jhipster/generators/generator-constants');
+
+const generatorsPath = require('../../generators/jhipster-environment').generatorsPath;
+
+const Generator = require(`${generatorsPath}/generator-base`);
+const constants = require(`${generatorsPath}/generator-constants`);
 
 const DOCKER_DIR = constants.DOCKER_DIR;
 
