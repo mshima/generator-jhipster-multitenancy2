@@ -1,10 +1,13 @@
 /* eslint-disable consistent-return */
 const debug = require('debug')('jhipster:multitenancy2:languages');
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-const LanguagesGenerator = require('../auto-extender')('generator-jhipster/generators/languages');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
+
+const jhipsterEnv = require('../jhipster-environment');
+const LanguagesGenerator = require('../auto-extender')(jhipsterEnv.generator('languages'));
+
+const jhipsterConstants = jhipsterEnv.constants;
 
 module.exports = class extends LanguagesGenerator {
     constructor(args, opts) {

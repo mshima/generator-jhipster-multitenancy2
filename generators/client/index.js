@@ -1,9 +1,11 @@
 /* eslint-disable consistent-return */
 const debug = require('debug')('jhipster:multitenancy2:entity');
-const ClientGenerator = require('../auto-extender')('generator-jhipster/generators/client');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
+
+const jhipsterEnv = require('../jhipster-environment');
+const ClientGenerator = require('../auto-extender')(jhipsterEnv.generator('client'));
 
 module.exports = class extends ClientGenerator {
     constructor(args, opts) {

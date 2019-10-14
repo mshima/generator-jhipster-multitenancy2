@@ -1,7 +1,9 @@
 const debug = require('debug')('jhipster:multitenancy2:entity:client');
-const EntityClientGenerator = require('../auto-extender')('generator-jhipster/generators/entity-client');
 
 const Patcher = require('../patcher');
+
+const jhipsterEnv = require('../jhipster-environment');
+const EntityClientGenerator = require('../auto-extender')(jhipsterEnv.generator('entity-client'));
 
 module.exports = class extends EntityClientGenerator {
     constructor(args, opts) {

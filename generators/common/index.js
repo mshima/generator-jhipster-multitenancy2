@@ -2,11 +2,13 @@
 const _ = require('lodash');
 const fs = require('fs');
 const debug = require('debug')('jhipster:multitenancy2:common');
-const CommonGenerator = require('../auto-extender')('generator-jhipster/generators/common');
 
 const mtUtils = require('../multitenancy-utils');
 const Patcher = require('../patcher');
 const jhipsterUtils = require('../utils-overrides');
+
+const jhipsterEnv = require('../jhipster-environment');
+const CommonGenerator = require('../auto-extender')(jhipsterEnv.generator('common'));
 
 module.exports = class extends CommonGenerator {
     constructor(args, opts) {

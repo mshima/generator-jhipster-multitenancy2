@@ -1,12 +1,15 @@
 /* eslint-disable consistent-return */
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const debug = require('debug')('jhipster:multitenancy2:entity:server');
-const EntityServerGenerator = require('../auto-extender')('generator-jhipster/generators/entity-server');
 
 const TenantisedNeedle = require('./needle-api/needle-server-tenantised-entities-services');
 
 const mtUtils = require('../multitenancy-utils');
 const Patcher = require('../patcher');
+
+const jhipsterEnv = require('../jhipster-environment');
+const EntityServerGenerator = require('../auto-extender')(jhipsterEnv.generator('entity-server'));
+
+const jhipsterConstants = jhipsterEnv.constants;
 
 module.exports = class extends EntityServerGenerator {
     constructor(args, opts) {

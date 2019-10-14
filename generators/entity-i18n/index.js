@@ -1,6 +1,8 @@
 /* eslint-disable consistent-return */
 const debug = require('debug')('jhipster:multitenancy:entity:i18n');
-const EntityI18nGenerator = require('../auto-extender')('generator-jhipster/generators/entity-i18n');
+
+const jhipsterEnv = require('../jhipster-environment');
+const EntityI18nGenerator = require('../auto-extender')(jhipsterEnv.generator('entity-i18n'));
 
 module.exports = class extends EntityI18nGenerator {
     constructor(args, opts) {
