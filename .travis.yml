@@ -5,6 +5,7 @@ node_js:
     - "10.16.0"
 before_install:
     - npm install -g npm
+    - npm install -g generator-jhipster@6.3.0
 install:
     - npm install
 script:
