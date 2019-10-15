@@ -15,7 +15,7 @@ describe('JHipster generator', () => {
         describe('AngularX', () => {
             before(done => {
                 helpers
-                    .run('generator-jhipster/generators/app')
+                    .run(`${generatorsPath}/app`)
                     .withOptions({ 'from-cli': true, skipInstall: true, skipChecks: true, jhiPrefix: 'test' })
                     .withPrompts({
                         baseName: 'jhipster',

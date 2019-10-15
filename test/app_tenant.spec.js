@@ -16,7 +16,7 @@ describe('JHipster generator with multitenancy2 blueprint', () => {
         describe('AngularX', () => {
             before(done => {
                 helpers
-                    .run('generator-jhipster/generators/app')
+                    .run(`${generatorsPath}/app`)
                     .withOptions({
                         'from-cli': true,
                         skipInstall: true,

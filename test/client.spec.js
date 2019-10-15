@@ -2,11 +2,13 @@ const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
+const generatorsPath = require('../generators/jhipster-environment').generatorsPath;
+
 describe('Subgenerator client of multitenancy2 JHipster blueprint', () => {
     describe('Sample test', () => {
         before(done => {
             helpers
-                .run('generator-jhipster/generators/client')
+                .run(`${generatorsPath}/client`)
                 .withOptions({
                     'from-cli': true,
                     skipInstall: true,
