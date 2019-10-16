@@ -4,7 +4,7 @@ set -e
 source $(dirname $0)/00-init-env.sh
 
 
-if [[ "$JHI_LIB_BRANCH" == "release" ]]; then
+if [[ $JHI_VERSION == '' && "$JHI_LIB_BRANCH" == "release" ]]; then
     echo "*** no need to change version in generated project"
     exit 0
 fi
