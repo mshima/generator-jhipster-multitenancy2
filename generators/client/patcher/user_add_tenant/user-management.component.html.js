@@ -4,22 +4,19 @@ const tmpls = [
     {
         type: 'replaceContent',
         regex: true,
-        target: context => '(.*)(<th jhiSortBy="langKey">)',
+        target: context => '((.*)<th(.*)>\\s*<span jhiTranslate="userManagement.profiles">)',
         tmpl: context => {
-            let trans = '';
-            if (context.enableTranslation) trans = ` jhiTranslate="userManagement.${context.tenantNameLowerFirst}"`;
-            return `$1<th jhiSortBy="${context.tenantNameLowerFirst}" *ngIf="!currentAccount.${
-                context.tenantNameLowerFirst
-            }"><span${trans}>${context.tenantNameUpperFirst}</span> <span class="fa fa-sort"></span></th>
-$1$2`;
+            // eslint-disable-next-line prettier/prettier
+            return `$2<th$3 jhiSortBy="${context.tenantNameLowerFirst}" *ngIf="!currentAccount.${context.tenantNameLowerFirst}"><span jhiTranslate="userManagement.${context.tenantNameLowerFirst}">${context.tenantNameUpperFirst}</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+$1`;
         }
     },
     {
         type: 'replaceContent',
         regex: true,
         target: context => '(.*)(<td>{{user.langKey}}</td>)',
-        tmpl: context => `$1<td *ngIf="!currentAccount.${context.tenantNameLowerFirst}">{{user.${context.tenantNameLowerFirst}?.name}}</td>
-$1$2`
+        tmpl: context => `$2<td *ngIf="!currentAccount.${context.tenantNameLowerFirst}">{{user.${context.tenantNameLowerFirst}?.name}}</td>
+$1`
     }
 ];
 

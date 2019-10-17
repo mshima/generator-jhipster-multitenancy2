@@ -4,13 +4,13 @@ const tmpls = [
     {
         type: 'replaceContent',
         regex: true,
-        target: context => '(.*)(<dt>.*>Created By<)',
+        target: context => '((.*)<dt>.*>Created By<)',
         tmpl: context => {
             let trans = '';
             if (context.enableTranslation) trans = ` jhiTranslate="userManagement.${context.tenantNameLowerFirst}"`;
-            return `$1<dt><span${trans}>${context.tenantNameUpperFirst}</span></dt>
-$1<dd>{{user.${context.tenantNameLowerFirst}?.name}}</dd>
-$1$2`;
+            return `$2<dt><span${trans}>${context.tenantNameUpperFirst}</span></dt>
+$2<dd>{{user.${context.tenantNameLowerFirst}?.name}}</dd>
+$1`;
         }
     }
 ];
