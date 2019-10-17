@@ -3,6 +3,7 @@ const path = require('path');
 const glob = require('glob');
 const semver = require('semver');
 const debug = require('debug')('jhipster:multitenancy2:patcher');
+const trace = require('debug')('jhipster:multitenancy2:patcher:trace');
 
 const packagePath = require('./jhipster-environment').packagePath;
 
@@ -121,13 +122,14 @@ module.exports = class Patcher {
                 if (!success) successLog = chalk.red(`${success}`);
 
                 debug(`======== Template finished type: ${item.type}, success: ${successLog}`);
-                if (success === false && generator.options['debug-patcher']) {
+                if (success === false) {
                     try {
                         const body = generator.fs.read(file);
-                        debug(`Target: ${target}`);
-                        debug(body);
+                        trace(`Target: ${target}`);
+                        trace(body);
+                        trace(body.match(target));
                     } catch (e) {
-                        debug(`File ${file} not found`);
+                        trace(`File ${file} not found`);
                     }
                 }
 
