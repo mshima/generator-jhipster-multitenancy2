@@ -108,6 +108,19 @@ module.exports = class Patcher {
 
                 const tmpl = typeof item.tmpl === 'function' ? item.tmpl(generator) : item.tmpl;
                 // debug(`tmpl: ${tmpl}`);
+
+                if (item.debug) {
+                    try {
+                        const body = generator.fs.read(file);
+                        trace(`Target: ${target}`);
+                        trace(body);
+                        trace('Match:');
+                        trace(body.match(target));
+                    } catch (e) {
+                        trace(`File ${file} not found`);
+                    }
+                }
+
                 let success;
                 if (item.type === 'replaceContent') {
                     // replaceContent return undefined on 6.2.0
@@ -122,18 +135,19 @@ module.exports = class Patcher {
                 if (!success) successLog = chalk.red(`${success}`);
 
                 debug(`======== Template finished type: ${item.type}, success: ${successLog}`);
-                if (success === false) {
+                if (success === false || item.debug) {
                     try {
                         const body = generator.fs.read(file);
                         trace(`Target: ${target}`);
                         trace(body);
-                        trace(body.match(target));
                     } catch (e) {
                         trace(`File ${file} not found`);
                     }
                 }
 
-                if (!this.options.ignorePatchErrors && success === false && !this.ignorePatchErrors.includes(templates.filename))
+                const ignorePatchErrors =
+                    item.ignorePatchErrors || this.options.ignorePatchErrors || this.ignorePatchErrors.includes(templates.filename);
+                if (!ignorePatchErrors && success === false)
                     generator.error(`Error applying template ${templates.filename} (${templates.origin}) on ${file}`);
             });
         });
