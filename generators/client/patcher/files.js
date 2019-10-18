@@ -19,17 +19,6 @@ module.exports = {
                     }
                 ]
             }
-        ],
-        tenant_base: [
-            {
-                path: jhipsterConstants.ANGULAR_DIR,
-                templates: [
-                    {
-                        file: 'core/auth/_tenant-route-access-service.ts',
-                        renameTo: generator => `core/auth/${generator.tenantNameLowerFirst}-route-access-service.ts`
-                    }
-                ]
-            }
         ]
     }
 };
