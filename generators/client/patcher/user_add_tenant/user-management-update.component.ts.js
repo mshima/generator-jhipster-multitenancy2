@@ -72,7 +72,9 @@ $2    filter((mayBeOk: HttpResponse<I${context.tenantNameUpperFirst}[]>) => mayB
 $2        map((response: HttpResponse<I${context.tenantNameUpperFirst}[]>) => response.body)
 $2)
 $2.subscribe(
-$2    (res: I${context.tenantNameUpperFirst}[]) => (this.${context.tenantNamePluralLowerFirst} = res), (res: HttpErrorResponse) => this.onError(res.message)
+$2    (res: I${context.tenantNameUpperFirst}[]) => (this.${
+            context.tenantNamePluralLowerFirst
+        } = res), (res: HttpErrorResponse) => this.onError(res.message)
 $2);
 
 $1`
