@@ -36,17 +36,7 @@ else
 
     # Create package.json otherwise npm will error and break
     # https://github.com/visionmedia/debug/issues/261
-    npm init -f
-
-    if [[ "$JHI_GEN_BRANCH" == "release" && "$JHI_GEN_VERSION" != "" ]]; then
-        npm install "generator-jhipster@$JHI_GEN_VERSION"
-
-    elif [[ "$JHI_GEN_BRANCH" == "release" ]]; then
-        npm install generator-jhipster
-
-    else
-        npm install "$HOME"/generator-jhipster
-    fi
+    test -f package.json || npm init -f
 
     # Install blueprint
     npm install "$JHI_HOME"

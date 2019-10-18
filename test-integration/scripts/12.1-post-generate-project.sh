@@ -21,8 +21,6 @@ if [[ "$BLUEPRINT_ENTITY" == "jdl" ]]; then
     # Generate blueprint project with JDL
     #-------------------------------------------------------------------------------
     jhipster import-jdl *.jdl --no-insight --blueprints multitenancy2 --tenant-name company --relation-tenant-aware
-    # Regenerate to fix errors
-    jhipster --force --no-insight --skip-checks --with-entities --from-cli
 fi
 
 if $BLUEPRINT_FIX_VERSION; then
@@ -47,6 +45,11 @@ fi
 
 if $BLUEPRINT_RUN_NPM; then
     npm install
+fi
+
+if $BLUEPRINT_REGENERATE; then
+    # Regenerate to fix errors
+    jhipster --force --no-insight --skip-checks --with-entities --from-cli --blueprints multitenancy2
 fi
 
 echo "Updation webdriver from chrome"
