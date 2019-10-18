@@ -18,20 +18,21 @@ const tmpls = [
         tmpl: '\n$1currentAccount: any;\n$1isSaving: boolean;'
     },
     {
-        // Load currentAccount
         type: 'replaceContent',
-        regex: true,
-        target: '\n(\\s*)private fb: FormBuilder\n(\\s*)\\) {(\\s*)}',
-        tmpl: context => `\n$1private fb: FormBuilder,
-$1private accountService: AccountService
-$2) {
-$1this.accountService.identity().then(account => {
-$1$2this.currentAccount = account;
-$1});
-$2}`
+        target: /(\n(\s*)private fb: FormBuilder)/,
+        tmpl: context => `$1,
+$2private accountService: AccountService`
     },
     {
-        // Load currentAccount
+        type: 'replaceContent',
+        target: /(\n(\s*)ngOnInit\(\) {\n(\s*))/,
+        tmpl: context => `$1this.accountService.identity().subscribe((account) => {
+$2$3this.currentAccount = account;
+$3});
+
+$3`
+    },
+    {
         type: 'rewriteFile',
         regex: true,
         target: 'this.updateForm',

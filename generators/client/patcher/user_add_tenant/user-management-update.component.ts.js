@@ -3,7 +3,6 @@ const file = context => `${context.CLIENT_MAIN_SRC_DIR}app/admin/user-management
 const tmpls = [
     {
         type: 'replaceContent',
-        regex: true,
         target: /(import \{ ActivatedRoute(.*) \} from '@angular\/router';)/,
         // eslint-disable-next-line prettier/prettier
         tmpl: context => `$1
@@ -15,7 +14,6 @@ import { JhiAlertService } from 'ng-jhipster';
     },
     {
         type: 'replaceContent',
-        regex: true,
         target: /(@Component\(\{)/,
         tmpl: context => `import { AccountService } from 'app/core/auth/account.service';
 import { I${context.tenantNameUpperFirst} } from '../../${context.tenantModelPath}/${context.tenantNameLowerFirst}.model';
@@ -25,7 +23,6 @@ $1`
     },
     {
         type: 'replaceContent',
-        regex: true,
         target: /(\n(\s*)isSaving: boolean;)/,
         tmpl: context => `$1
 $2currentAccount: any;
@@ -34,7 +31,6 @@ $2${context.tenantNamePluralLowerFirst}: I${context.tenantNameUpperFirst}[];
     },
     {
         type: 'replaceContent',
-        regex: true,
         target: /(\n(\s*)authorities: \[\](,?))/,
         tmpl: context => `$1,
 $2${context.tenantNameLowerFirst}: []$3
@@ -42,7 +38,6 @@ $2${context.tenantNameLowerFirst}: []$3
     },
     {
         type: 'replaceContent',
-        regex: true,
         target: /(\n(\s*)private fb: FormBuilder)/,
         tmpl: context => `$1,
 $2private accountService: AccountService,
@@ -51,18 +46,17 @@ $2private ${context.tenantNameLowerFirst}Service: ${context.tenantNameUpperFirst
 `
     },
     {
+        // Load currentAccount
         type: 'replaceContent',
-        regex: true,
-        target: /(\n(\s*)\) \{\})/,
-        tmpl: context => `$2) {
-$2$2this.accountService.identity().then(account => {
-$2$2$2this.currentAccount = account;
-$2$2});
-$2}`
+        target: /(\n(\s*)ngOnInit\(\) {\n(\s*))/,
+        tmpl: context => `$1this.accountService.identity().subscribe((account) => {
+$2$3this.currentAccount = account;
+$3});
+
+$3`
     },
     {
         type: 'replaceContent',
-        regex: true,
         target: /(\n(\s*)this.authorities = \[\];)/,
         tmpl: context => `
 
@@ -81,21 +75,18 @@ $1`
     },
     {
         type: 'replaceContent',
-        regex: true,
         target: /(\n(\s*)authorities: user.authorities)(,?)/,
         tmpl: context => `$1,
 $2${context.tenantNameLowerFirst}: user.${context.tenantNameLowerFirst}$3`
     },
     {
         type: 'replaceContent',
-        regex: true,
         target: /(\n(\s*)user.authorities = this.editForm.get\(\['authorities'\]\).value;)/,
         tmpl: context => `$1
 $2user.${context.tenantNameLowerFirst} = this.editForm.get(['${context.tenantNameLowerFirst}']).value;`
     },
     {
         type: 'replaceContent',
-        regex: true,
         target: /(\n(\s*)private onSaveError\(\) \{(\s*))/,
         tmpl: context => `$2protected onError(errorMessage: string) {
 $3this.jhiAlertService.error(errorMessage, null, null);
