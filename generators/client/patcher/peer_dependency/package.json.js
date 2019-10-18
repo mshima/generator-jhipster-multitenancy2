@@ -14,6 +14,7 @@ const tmpls = [
     },
     {
         type: 'replaceContent',
+        ignorePatchErrors: true,
         target: /("typescript": "[\w.]*",)(.*),(\n\s*"webdriver-manager": "[\w.]*".*"generator-jhipster": "[\w.]*")/s,
         tmpl: '$1$3,$2'
     }
