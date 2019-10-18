@@ -140,6 +140,11 @@ module.exports = class Patcher {
                         const body = generator.fs.read(file);
                         trace(`Target: ${target}`);
                         trace(body);
+                        generator.log.error('Body:');
+                        generator.log.error(body);
+                        generator.log.error(`Target: ${target}`);
+                        generator.log.error('Match:');
+                        generator.log.error(body.match(target));
                     } catch (e) {
                         trace(`File ${file} not found`);
                     }
@@ -148,7 +153,7 @@ module.exports = class Patcher {
                 const ignorePatchErrors =
                     item.ignorePatchErrors || this.options.ignorePatchErrors || this.ignorePatchErrors.includes(templates.filename);
                 if (!ignorePatchErrors && success === false)
-                    generator.error(`Error applying template ${templates.filename} (${templates.origin}) on ${file}`);
+                    generator.error(`Error applying template ${templates.filename}[${index}] (${templates.origin}) on ${file}`);
             });
         });
     }
