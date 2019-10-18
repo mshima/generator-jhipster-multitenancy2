@@ -13,6 +13,7 @@ const tmpls = [
     {
         type: 'replaceContent',
         regex: true,
+        version: '6.3.0-6.3.1',
         target: context => `app/entities/${context.tenantNameLowerFirst}/${context.tenantNameLowerFirst}.service`,
         tmpl: context => `app/entities/${context.tenantFolderName}/${context.tenantNameLowerFirst}.service`
     }

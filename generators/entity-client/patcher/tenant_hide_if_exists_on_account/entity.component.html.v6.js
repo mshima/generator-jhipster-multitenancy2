@@ -6,8 +6,8 @@ const tmpls = [
         condition: context => context.tenantAware,
         type: 'replaceContent',
         regex: true,
-        target: context => `<th><span(.*)>${context.tenantNameUpperFirst}</span>`,
-        tmpl: context => `<th *ngIf="!currentAccount.${context.tenantNameLowerFirst}"><span$1>${context.tenantNameUpperFirst}</span>`
+        target: context => `<th(.*)><span(.*)>${context.tenantNameUpperFirst}</span>`,
+        tmpl: context => `<th$1 *ngIf="!currentAccount.${context.tenantNameLowerFirst}"><span$2>${context.tenantNameUpperFirst}</span>`
     },
     {
         // Hide if currentAccount has a tenant
