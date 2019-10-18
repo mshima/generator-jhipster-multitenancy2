@@ -43,6 +43,17 @@ module.exports = class extends ClientGenerator {
                 // template variables
                 mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
                 this.patcher.patch(this);
+                this.addVendorSCSSStyle(
+                    `
+#home-menu-container {@extend .order-0;}
+#entity-menu-container {@extend .order-1;}
+#${this.tenantNameLowerCase}-admin-menu-container {@extend .order-3;}
+#admin-menu-container {@extend .order-10;}
+#languages-menu-container {@extend .order-11;}
+#account-menu-container {@extend .order-12;}
+`,
+                    'Apply order to menu'
+                );
             }
         };
         return { ...super._writing(), ...postWritingSteps };

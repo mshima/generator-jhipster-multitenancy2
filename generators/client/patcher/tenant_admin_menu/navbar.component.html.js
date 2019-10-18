@@ -4,9 +4,9 @@ const tmpls = [
     {
         type: 'rewriteFile',
         target: context => '- jhipster-needle-add-element-to-menu -',
-        tmpl: context => `<li *jhiHasAnyAuthority="'ROLE_${
-            context.tenantNameUpperCase
-        }_ADMIN'" ngbDropdown class="nav-item dropdown pointer order-3" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        tmpl: context => `<li *jhiHasAnyAuthority="'ROLE_${context.tenantNameUpperCase}_ADMIN'" ngbDropdown id="${
+            context.tenantNameLowerCase
+        }-admin-menu-container" class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="${
                     context.tenantNameLowerFirst
                 }-admin-menu">
