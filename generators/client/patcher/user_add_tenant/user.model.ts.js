@@ -9,24 +9,20 @@ const tmpls = [
     },
     {
         type: 'replaceContent',
-        regex: true,
-        target: context => '(.*)(password.* string;)',
-        tmpl: context => `$1$2
-$1${context.tenantNameLowerFirst}?: ${context.tenantNameUpperFirst};`
+        target: /((\n\s*)password\?: string;)/,
+        tmpl: context => `$1$2${context.tenantNameLowerFirst}?: ${context.tenantNameUpperFirst};`
+    },
+    {
+        type: 'replaceContent',
+        target: /((\n\s*)public password\?: string)/,
+        tmpl: context => `$1,$2public ${context.tenantNameLowerFirst}?: ${context.tenantNameUpperFirst}`
     },
     {
         type: 'replaceContent',
         regex: true,
-        target: context => '(.*)(public password.* string)',
-        tmpl: context => `$1$2,
-$1public ${context.tenantNameLowerFirst}?: ${context.tenantNameUpperFirst}`
-    },
-    {
-        type: 'replaceContent',
-        regex: true,
-        target: context => '(.*)(this.password = .*;)',
-        tmpl: context => `$1$2
-$1this.${context.tenantNameLowerFirst} = ${context.tenantNameLowerFirst} ? ${context.tenantNameLowerFirst} : null;`
+        target: /((\n\s*)this.password = password \? password : null;)/,
+        tmpl: context =>
+            `$1$2this.${context.tenantNameLowerFirst} = ${context.tenantNameLowerFirst} ? ${context.tenantNameLowerFirst} : null;`
     }
 ];
 
