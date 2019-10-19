@@ -6,6 +6,7 @@ const tmpls = [
     {
         type: 'replaceContent',
         regex: true,
+        disabled: true,
         target: context => `app/shared/model/${context.tenantNameLowerFirst}.model`,
         tmpl: context => `app/shared/model/${context.tenantClientRootFolder}/${context.tenantNameLowerFirst}.model`
     }
