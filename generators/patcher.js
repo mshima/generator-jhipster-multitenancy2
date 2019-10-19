@@ -27,10 +27,6 @@ module.exports = class Patcher {
         // Alternative is resolved that point to generator file
         this.rootPath = path.resolve(generator._sourceRoot, `../${this.options.autoLoadPath}`);
 
-        this.templates = glob.sync(`${this.rootPath}/**/*.js`);
-        debug('Found patches:');
-        debug(this.templates);
-
         this.ignorePatchErrors = [];
         if (generator.options['ignore-patch-errors']) {
             this.ignorePatchErrors = generator.options['ignore-patch-errors'].split(',');
@@ -42,20 +38,25 @@ module.exports = class Patcher {
         }
         debug('Disabled features:');
         debug(this.disableFeatures);
+
+        this.templates = [];
+        this.fileTemplates = [];
+        this.parsed = this.filter(glob.sync(`${this.rootPath}/**/*.js`));
+        debug('Found patches:');
+
+        debug(this.parsed);
+        debug(this.templates);
+        debug(this.fileTemplates);
     }
 
-    patch(generator = this.generator, templates = this.templates) {
-        if (!templates) {
-            generator.error('Missing templates');
-        }
-        const requiredTemplates = this.requireTemplates(templates, generator);
-
-        this.writeFiles(requiredTemplates.fileTemplates, generator);
-        this.processPartialTemplates(generator, requiredTemplates.partialTemplates);
+    patch(generator = this.generator) {
+        let success = this.writeFiles(generator);
+        success = this.processPartialTemplates(generator) && success;
+        if (!success) generator.error('Error applying templates');
     }
 
-    writeFiles(requiredTemplates, generator = this.generator) {
-        requiredTemplates.forEach(fileTemplate => {
+    writeFiles(generator = this.generator) {
+        this.load(true).forEach(fileTemplate => {
             // const templatesJson = JSON.stringify(templates);
             // debug(`${templatesJson}`);
             // parse the templates and write files to the appropriate locations
@@ -70,17 +71,23 @@ module.exports = class Patcher {
             });
             generator.writeFilesToDisk(fileTemplate.files, generator, false);
         });
+        return true;
     }
 
-    processPartialTemplates(generator, partialTemplates) {
-        if (!generator || !generator.options) {
+    processPartialTemplates(generator) {
+        if (!generator || !generator.error) {
             debug('generator parameter is not a generator');
             generator.error('Error');
         }
 
-        partialTemplates.forEach(templates => {
+        let allSuccess = true;
+        this.load(false).forEach(templates => {
             if (typeof templates.condition === 'function' && !templates.condition(generator)) {
                 debug(`Disabled by templates condition ${templates.condition}`);
+                return;
+            }
+            if (templates.version && !semver.satisfies(jhipsterVersion, templates.version)) {
+                debug(`Patch not compatible with version ${jhipsterVersion} (${templates.version})`);
                 return;
             }
             const file = typeof templates.file === 'function' ? templates.file(generator) : templates.file;
@@ -123,12 +130,8 @@ module.exports = class Patcher {
 
                 let success;
                 if (item.type === 'replaceContent') {
-                    // replaceContent return undefined on 6.2.0
-                    // https://github.com/jhipster/generator-jhipster/pull/10366
                     success = generator.replaceContent(file, target, tmpl, item.regex);
                 } else if (item.type === 'rewriteFile') {
-                    // replaceContent return undefined on 6.2.0
-                    // https://github.com/jhipster/generator-jhipster/pull/10366
                     success = generator.rewriteFile(file, target, tmpl);
                 }
                 let successLog = `${success}`;
@@ -146,69 +149,69 @@ module.exports = class Patcher {
                         generator.log.error('Match:');
                         generator.log.error(body.match(target));
                     } catch (e) {
-                        trace(`File ${file} not found`);
+                        generator.log.error(`File ${file} not found`);
+                        debug(`File ${file} not found`);
                     }
                 }
 
                 const ignorePatchErrors =
                     item.ignorePatchErrors || this.options.ignorePatchErrors || this.ignorePatchErrors.includes(templates.filename);
-                if (!ignorePatchErrors && success === false)
-                    generator.error(`Error applying template ${templates.filename}[${index}] (${templates.origin}) on ${file}`);
+                if (!ignorePatchErrors && success === false) allSuccess = false;
             });
         });
+        return allSuccess;
     }
 
-    requireTemplates(templates, generator) {
-        const partialTemplates = [];
-        const fileTemplates = [];
-
-        templates.forEach(file => {
+    filter(templates) {
+        const self = this;
+        const parsed = templates.map(file => {
             const parse = path.parse(file);
-            const filename = parse.base;
             // Rebuild file name without extension
             const template = path.format({ ...parse, ext: undefined, base: undefined });
 
             const relativePath = path.relative(this.rootPath, template);
 
             const parseRelative = path.parse(relativePath);
-            let feature;
+            const filename = parseRelative.base;
+            let feature = '';
             if (parseRelative.dir) {
                 feature = parseRelative.dir.split(path.sep, 1)[0];
-                debug(`======== Loading feature ${feature}, template ${file}`);
-            } else {
-                debug(`======== Loading template ${file}`);
             }
             if (this.disableFeatures.includes(feature)) {
                 debug(`======== Template with feature ${feature} disabled (${file})`);
-                return;
+                return undefined;
             }
 
-            let dest = partialTemplates;
-            if (parse.name === 'files') {
-                dest = fileTemplates;
-            } else {
-                const splitFileName = parse.name.split('.v', 2);
-                if (splitFileName.length > 1) {
-                    if (!jhipsterVersion.startsWith(splitFileName[1])) {
-                        debug(`Template ${parse.name} not compatible with jhipster ${jhipsterVersion}`);
-                        return;
-                    }
-                    if (splitFileName[0] === 'files') {
-                        dest = fileTemplates;
-                    }
+            let sfilename = filename;
+            const splitFileName = filename.split('.v', 2);
+            if (splitFileName.length > 1) {
+                if (!jhipsterVersion.startsWith(splitFileName[1])) {
+                    debug(`Template ${feature} ${filename} not compatible with jhipster ${jhipsterVersion}`);
+                    return undefined;
                 }
+                sfilename = splitFileName[0];
             }
 
-            const loadedTemplate = require(template);
-            loadedTemplate.origin = template;
-            loadedTemplate.feature = feature;
-            loadedTemplate.filename = filename;
-            dest.push(loadedTemplate);
-            debug(`======== Success loading template ${template}`);
+            const ret = { origin: template, feature, filename, isFile: false };
+            if (sfilename === 'files') {
+                self.fileTemplates.push(file);
+                ret.isFile = true;
+            } else {
+                self.templates.push(file);
+            }
+            return ret;
         });
-        return {
-            partialTemplates,
-            fileTemplates
-        };
+        return parsed.filter(p => p);
+    }
+
+    load(isFile) {
+        function loadTemplate(parsed) {
+            const loadedTemplate = require(parsed.origin);
+            Object.assign(loadedTemplate, parsed);
+
+            debug(`======== Success loading template ${parsed.feature} ${parsed.filename}`);
+            return loadedTemplate;
+        }
+        return this.parsed.filter(p => p.isFile === isFile).map(loadTemplate);
     }
 };
