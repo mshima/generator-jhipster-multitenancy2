@@ -1,4 +1,5 @@
-const file = context => `${context.CLIENT_MAIN_SRC_DIR}app/shared/model//${context.entityFileName}.model.ts`;
+const file = context =>
+    `${context.CLIENT_MAIN_SRC_DIR}app/entities/${context.clientRootFolder}/${context.entityFolderName}/${context.entityFileName}.model.ts`;
 
 const condition = context => context.tenantAware;
 
@@ -6,7 +7,8 @@ const tmpls = [
     {
         type: 'replaceContent',
         regex: true,
-        disabled: true,
+        ignorePatchErrors: true,
+        debug: true,
         target: context => `app/shared/model/${context.tenantNameLowerFirst}.model`,
         tmpl: context => `app/shared/model/${context.tenantClientRootFolder}/${context.tenantNameLowerFirst}.model`
     }
