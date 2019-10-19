@@ -47,6 +47,7 @@ jobs:
           BLUEPRINT_RUN_NPM: true
           BLUEPRINT_LINK: false
           JHI_GEN_VERSION: 6.3.1
+          DEBUG: 'jhipster:*'
 
       strategy:
           matrix:
