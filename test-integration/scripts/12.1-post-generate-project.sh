@@ -21,6 +21,8 @@ if [[ "$BLUEPRINT_ENTITY" == "jdl" ]]; then
     # Generate blueprint project with JDL
     #-------------------------------------------------------------------------------
     jhipster import-jdl *.jdl --no-insight --blueprints multitenancy2 --tenant-name company --relation-tenant-aware
+    echo "Finished project generation"
+    echo $?
 fi
 
 if $BLUEPRINT_FIX_VERSION; then
