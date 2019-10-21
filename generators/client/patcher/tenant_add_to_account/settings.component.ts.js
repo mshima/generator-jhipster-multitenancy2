@@ -15,7 +15,7 @@ $2${context.tenantNameLowerFirst}: []$3`
         type: 'replaceContent',
         target: /(\n(\s*)imageUrl: this.settingsForm.get\('imageUrl'\).value)(,?)/,
         tmpl: context => `$1,
-$2${context.tenantNameLowerFirst}: this.settingsForm.get\('${context.tenantNameLowerFirst}'\).value$3`
+$2${context.tenantNameLowerFirst}: this.settingsForm.get('${context.tenantNameLowerFirst}').value$3`
     },
     {
         type: 'replaceContent',
