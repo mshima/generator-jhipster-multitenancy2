@@ -7,7 +7,6 @@ const file = context => `${jhipsterConstants.CLIENT_TEST_SRC_DIR}spec/app/accoun
 const tmpls = [
     {
         type: 'replaceContent',
-        regex: true,
         target: /(\n(\s*)imageUrl: '')(,?)/,
         tmpl: context => `$1,
 $2company: 'MockCompany'$3`
