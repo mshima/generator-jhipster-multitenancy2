@@ -14,6 +14,16 @@ const NeedleClientAngular = require(`${jhipsterEnv.generatorsPath}/client/needle
 const jhipsterConstants = jhipsterEnv.constants;
 const jhipsterUtils = jhipsterEnv.utils;
 
+const isNot63 = !jhipsterEnv.jhipsterVersion.startsWith('6.3');
+const adminRouteFile = isNot63 ? 'admin-routing.module.ts' : 'admin.route.ts';
+const aditionalRouteOptions = isNot63
+    ? ''
+    : `data: {
+    |            authorities: ['ROLE_ADMIN']
+    |        },
+    |        canActivate: [UserRouteAccessService],
+    |        `;
+
 class NeedleClientAngularExtend extends NeedleClientAngular {
     addEntityToModule(entityInstance, entityClass, entityAngularName, entityFolderName, entityFileName, entityUrl, microServiceName) {
         this.addEntityToAnyModule(
@@ -41,13 +51,9 @@ class NeedleClientAngularExtend extends NeedleClientAngular {
             entityUrl,
             microServiceName,
             {
-                entityModulePath: `${jhipsterConstants.CLIENT_MAIN_SRC_DIR}app/admin/admin.route.ts`,
+                entityModulePath: `${jhipsterConstants.CLIENT_MAIN_SRC_DIR}app/admin/${adminRouteFile}`,
                 needleName: 'jhipster-needle-add-admin-route',
-                aditionalRouteOptions: `data: {
-                    |            authorities: ['ROLE_ADMIN']
-                    |        },
-                    |        canActivate: [UserRouteAccessService],
-                    |        `,
+                aditionalRouteOptions,
                 addComma: true
             }
         );

@@ -17,4 +17,4 @@ const generator = function(generator) {
     return autoExtender(require(`${generatorsPath}/${generator}`));
 };
 
-module.exports = { packagePath, generatorsPath, utils, constants, generator };
+module.exports = { packagePath, generatorsPath, utils, constants, generator, jhipsterVersion };
