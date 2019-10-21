@@ -3,7 +3,8 @@ const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
 
 const jhipsterEnv = require('../jhipster-environment');
-const ServerGenerator = require('../auto-extender')(jhipsterEnv.generator('server'));
+
+const ServerGenerator = jhipsterEnv.generator('server');
 
 module.exports = class extends ServerGenerator {
     constructor(args, opts) {

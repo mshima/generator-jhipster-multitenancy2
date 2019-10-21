@@ -5,7 +5,8 @@ const debug = require('debug')('jhipster:multitenancy2:entity');
 const mtUtils = require('../multitenancy-utils');
 
 const jhipsterEnv = require('../jhipster-environment');
-const EntityGenerator = require('../auto-extender')(jhipsterEnv.generator('entity'));
+
+const EntityGenerator = jhipsterEnv.generator('entity');
 
 module.exports = class extends EntityGenerator {
     constructor(args, opts) {

@@ -5,7 +5,8 @@ const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
 
 const jhipsterEnv = require('../jhipster-environment');
-const LanguagesGenerator = require('../auto-extender')(jhipsterEnv.generator('languages'));
+
+const LanguagesGenerator = jhipsterEnv.generator('languages');
 
 const jhipsterConstants = jhipsterEnv.constants;
 

@@ -7,7 +7,8 @@ const mtUtils = require('../multitenancy-utils');
 const Patcher = require('../patcher');
 
 const jhipsterEnv = require('../jhipster-environment');
-const EntityServerGenerator = require('../auto-extender')(jhipsterEnv.generator('entity-server'));
+
+const EntityServerGenerator = jhipsterEnv.generator('entity-server');
 
 const jhipsterConstants = jhipsterEnv.constants;
 

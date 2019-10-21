@@ -8,7 +8,8 @@ const Patcher = require('../patcher');
 const jhipsterUtils = require('../utils-overrides');
 
 const jhipsterEnv = require('../jhipster-environment');
-const CommonGenerator = require('../auto-extender')(jhipsterEnv.generator('common'));
+
+const CommonGenerator = jhipsterEnv.generator('common');
 
 module.exports = class extends CommonGenerator {
     constructor(args, opts) {

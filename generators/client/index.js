@@ -5,7 +5,8 @@ const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');
 
 const jhipsterEnv = require('../jhipster-environment');
-const ClientGenerator = require('../auto-extender')(jhipsterEnv.generator('client'));
+
+const ClientGenerator = jhipsterEnv.generator('client');
 
 module.exports = class extends ClientGenerator {
     constructor(args, opts) {
