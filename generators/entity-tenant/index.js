@@ -17,7 +17,7 @@ module.exports = class extends EntityGenerator {
         });
 
         // current subgen
-        this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.options.tenantName || this.config.get('tenantName'));
+        this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.options.tenantName || this.blueprintConfig.get('tenantName'));
 
         // pass to entity-* subgen
         this.context.isTenant = this.isTenant;
@@ -56,7 +56,7 @@ module.exports = class extends EntityGenerator {
             preJson() {
                 mtUtils.validateTenant(this);
 
-                this.context.changelogDate = this.configOptions.tenantChangelogDate || this.config.get('tenantChangelogDate');
+                this.context.changelogDate = this.configOptions.tenantChangelogDate || this.blueprintConfig.get('tenantChangelogDate');
             }
         };
 

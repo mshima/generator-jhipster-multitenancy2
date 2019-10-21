@@ -46,7 +46,7 @@ module.exports = class extends EntityServerGenerator {
             },
             // make the necessary server code changes
             customServerCode() {
-                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this, this);
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.blueprintConfig.get('tenantName'), this, this);
                 this.patcher.patch();
 
                 const tenantisedNeedle = new TenantisedNeedle(this);

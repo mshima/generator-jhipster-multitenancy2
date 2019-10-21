@@ -37,7 +37,7 @@ module.exports = class extends LanguagesGenerator {
     get writing() {
         const postWritingSteps = {
             addTenantAdminMenuTranslation() {
-                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.blueprintConfig.get('tenantName'), this);
                 this.CLIENT_MAIN_SRC_DIR = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
                 this.languages.forEach(language => {
                     this.lang = language;

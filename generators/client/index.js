@@ -42,7 +42,7 @@ module.exports = class extends ClientGenerator {
         const postWritingSteps = {
             patchFiles() {
                 // template variables
-                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.blueprintConfig.get('tenantName'), this);
                 this.patcher.patch();
                 this.addVendorSCSSStyle(
                     `

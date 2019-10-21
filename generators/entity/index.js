@@ -19,7 +19,7 @@ module.exports = class extends EntityGenerator {
         });
 
         // current subgen
-        this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.config.get('tenantName'));
+        this.isTenant = this._.lowerFirst(args[0]) === this._.lowerFirst(this.blueprintConfig.get('tenantName'));
 
         // pass to entity-* subgen
         this.context.isTenant = this.isTenant;
@@ -121,7 +121,7 @@ module.exports = class extends EntityGenerator {
                 if (this.isTenant) {
                     // force tenant to be serviceClass
                     context.service = 'serviceClass';
-                    context.changelogDate = this.config.get('tenantChangelogDate');
+                    context.changelogDate = this.blueprintConfig.get('tenantChangelogDate');
                     return;
                 }
 

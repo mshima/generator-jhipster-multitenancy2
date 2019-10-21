@@ -33,7 +33,7 @@ module.exports = class extends CommonGenerator {
             defaults: false
         });
 
-        this.tenantName = this.options.tenantName || this.config.get('tenantName');
+        this.tenantName = this.options.tenantName || this.blueprintConfig.get('tenantName');
         this.patcher = new Patcher(this);
     }
 
@@ -42,10 +42,10 @@ module.exports = class extends CommonGenerator {
             loadConf() {
                 this.configOptions.baseName = this.baseName;
 
-                if (this.config.get('tenantChangelogDate') === undefined) {
+                if (this.blueprintConfig.get('tenantChangelogDate') === undefined) {
                     this.tenantChangelogDate = this.dateFormatForLiquibase();
                     debug(`Using tenantChangelogDate ${this.tenantChangelogDate}`);
-                    this.config.set('tenantChangelogDate', this.tenantChangelogDate);
+                    this.blueprintConfig.set('tenantChangelogDate', this.tenantChangelogDate);
                     this.configOptions.tenantChangelogDate = this.tenantChangelogDate;
                 }
 
@@ -53,7 +53,7 @@ module.exports = class extends CommonGenerator {
                 this.configOptions.tenantAwareEntities = [];
 
                 /* tenant variables */
-                mtUtils.tenantVariables.call(this, this.config.get('tenantName'), this);
+                mtUtils.tenantVariables.call(this, this.blueprintConfig.get('tenantName'), this);
             }
         };
         return { ...super._initializing(), ...myCustomPhaseSteps };
@@ -91,11 +91,11 @@ module.exports = class extends CommonGenerator {
     get configuring() {
         const postConfiguringSteps = {
             saveConf() {
-                this.tenantNameExists = this.config.get('tenantName') !== undefined;
+                this.tenantNameExists = this.blueprintConfig.get('tenantName') !== undefined;
 
                 this.configOptions.tenantName = this.tenantName;
 
-                this.config.set('tenantName', this.tenantName);
+                this.blueprintConfig.set('tenantName', this.tenantName);
                 // this.config.set('tenantChangelogDate', this.tenantChangelogDate);
             }
         };

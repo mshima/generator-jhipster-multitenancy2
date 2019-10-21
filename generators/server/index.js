@@ -36,7 +36,7 @@ module.exports = class extends ServerGenerator {
                 // references to the various directories we'll be copying files to
 
                 // template variables
-                mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
+                mtUtils.tenantVariables.call(this, this.options.tenantName || this.blueprintConfig.get('tenantName'), this);
 
                 this.patcher.patch();
             }
