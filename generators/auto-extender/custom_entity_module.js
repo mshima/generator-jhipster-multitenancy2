@@ -1,3 +1,8 @@
+/*
+ * =======================
+ * Implement entityModule
+ * Workaround https://github.com/jhipster/generator-jhipster/pull/10286
+ */
 const chalk = require('chalk');
 const _ = require('lodash');
 // const debug = require('debug')('jhipster:multitenancy2:generator-extender:custom-entity-module');
@@ -103,12 +108,6 @@ class NeedleClientAngularExtend extends NeedleClientAngular {
     }
 }
 
-/*
- * =======================
- * Init patches
- * getAllJhipsterConfig isn't getting all jhipster config
- * Workaround https://github.com/jhipster/generator-jhipster/issues/10205
- */
 function extend(Superclass) {
     return class GeneratorExtender extends Superclass {
         constructor(args, opts) {
