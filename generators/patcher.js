@@ -17,6 +17,10 @@ const defaultOptions = {
 
 module.exports = class Patcher {
     constructor(generator, options = {}) {
+        if (!generator || !generator.error) {
+            debug('generator parameter is not a generator');
+            throw new Error('generator parameter is not a generator');
+        }
         this.generator = generator;
         this.options = { ...defaultOptions, ...options };
 
@@ -49,19 +53,20 @@ module.exports = class Patcher {
         debug(this.fileTemplates);
     }
 
-    patch(generator = this.generator) {
-        let success = this.writeFiles(generator);
-        success = this.processPartialTemplates(generator) && success;
-        if (!success) generator.error('Error applying templates');
+    patch() {
+        let success = this.writeFiles();
+        success = this.processPartialTemplates() && success;
+        if (!success) this.generator.error('Error applying templates');
     }
 
-    writeFiles(generator = this.generator) {
+    writeFiles() {
+        const generator = this.generator;
         this.load(true).forEach(fileTemplate => {
             // const templatesJson = JSON.stringify(templates);
             // debug(`${templatesJson}`);
             // parse the templates and write files to the appropriate locations
             if (fileTemplate.files === undefined) {
-                this.generator.error(`Template file should have format: { file: { feature: [ ...patches ] } } (${fileTemplate.origin})`);
+                generator.error(`Template file should have format: { file: { feature: [ ...patches ] } } (${fileTemplate.origin})`);
             }
             this.disableFeatures.forEach(disabledFeature => {
                 if (fileTemplate.files[disabledFeature] !== undefined) {
@@ -74,11 +79,8 @@ module.exports = class Patcher {
         return true;
     }
 
-    processPartialTemplates(generator) {
-        if (!generator || !generator.error) {
-            debug('generator parameter is not a generator');
-            generator.error('Error');
-        }
+    processPartialTemplates() {
+        const generator = this.generator;
 
         let allSuccess = true;
         this.load(false).forEach(templates => {

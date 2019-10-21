@@ -43,7 +43,7 @@ module.exports = class extends ClientGenerator {
             patchFiles() {
                 // template variables
                 mtUtils.tenantVariables.call(this, this.options.tenantName || this.config.get('tenantName'), this);
-                this.patcher.patch(this);
+                this.patcher.patch();
                 this.addVendorSCSSStyle(
                     `
 #home-menu-container {@extend .order-0;}
