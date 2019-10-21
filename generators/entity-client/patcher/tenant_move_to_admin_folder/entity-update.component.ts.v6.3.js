@@ -7,8 +7,8 @@ const tmpls = [
     {
         type: 'replaceContent',
         regex: true,
-        target: context => `app/shared/model/${context.tenantNameLowerFirst}.model`,
-        tmpl: context => `app/shared/model/${context.tenantClientRootFolder}/${context.tenantNameLowerFirst}.model`
+        target: context => `app/entities/${context.tenantNameLowerFirst}/${context.tenantNameLowerFirst}.service`,
+        tmpl: context => `app/entities/${context.tenantFolderName}/${context.tenantNameLowerFirst}.service`
     }
 ];
 
