@@ -1,13 +1,13 @@
 {
-  "name": "generator-jhipster-multitenancy2",
+  "name": "generator-jhipster-tenantview",
   "version": "0.0.0",
-  "description": "Multi Tenancy",
+  "description": "Tenancy customizations",
   "keywords": [
     "yeoman-generator",
     "jhipster-blueprint",
     "jhipster-5"
   ],
-  "homepage": "https://github.com/mshima/generator-jhipster-multitenancy2",
+  "homepage": "https://github.com/mshima/generator-jhipster-tenantview",
   "author": {
     "name": "Marcelo Shima",
     "email": "marceloshima@gmail.com",
@@ -19,7 +19,7 @@
   "main": "generators/app/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mshima/generator-jhipster-multitenancy2.git"
+    "url": "git+https://github.com/mshima/generator-jhipster-tenantview.git"
   },
   "dependencies": {
     "chalk": "^2.4.2",
@@ -70,6 +70,6 @@
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/mshima/generator-jhipster-multitenancy2/issues"
+    "url": "https://github.com/mshima/generator-jhipster-tenantview/issues"
   }
 }

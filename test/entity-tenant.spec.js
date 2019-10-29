@@ -4,7 +4,7 @@ const helpers = require('yeoman-test');
 
 const mtExpectedFiles = require('./multitenancy_utils/expected-files');
 
-describe('Subgenerator entity-tenant of multitenancy2 JHipster blueprint', () => {
+describe('Subgenerator entity-tenant of tenantview JHipster blueprint', () => {
     describe('Sample test', () => {
         before(done => {
             helpers
@@ -31,7 +31,7 @@ describe('Subgenerator entity-tenant of multitenancy2 JHipster blueprint', () =>
                     buildTool: 'maven',
                     rememberMeKey: '5c37379956bd1242f5636c8cb322c2966ad81277',
 
-                    blueprint: 'multitenancy2',
+                    blueprint: 'tenantview',
                     tenantName: 'Company',
                     tenantFileSuffix: 'management',
                     baseChangelogDate: '2019-09-07',
@@ -42,12 +42,12 @@ describe('Subgenerator entity-tenant of multitenancy2 JHipster blueprint', () =>
                 .withGenerators([
                     [
                         require('../generators/entity-client/index.js'), // eslint-disable-line global-require
-                        'jhipster-multitenancy2:entity-client',
+                        'jhipster-tenantview:entity-client',
                         path.join(__dirname, '../generators/entity-client/index.js')
                     ],
                     [
                         require('../generators/entity-server/index.js'), // eslint-disable-line global-require
-                        'jhipster-multitenancy2:entity-server',
+                        'jhipster-tenantview:entity-server',
                         path.join(__dirname, '../generators/entity-server/index.js')
                     ]
                 ])

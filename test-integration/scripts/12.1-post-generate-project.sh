@@ -20,7 +20,7 @@ if [[ "$BLUEPRINT_ENTITY" == "jdl" ]]; then
     #-------------------------------------------------------------------------------
     # Generate blueprint project with JDL
     #-------------------------------------------------------------------------------
-    jhipster import-jdl *.jdl --no-insight --blueprints multitenancy2 --tenant-name company --relation-tenant-aware
+    jhipster import-jdl *.jdl --no-insight --blueprints tenantview --tenant-name company --relation-tenant-aware
     echo "Finished project generation"
     echo $?
 fi
@@ -51,7 +51,7 @@ fi
 
 if $BLUEPRINT_REGENERATE; then
     # Regenerate to fix errors
-    jhipster --force --no-insight --skip-checks --with-entities --from-cli --blueprints multitenancy2
+    jhipster --force --no-insight --skip-checks --with-entities --from-cli --blueprints tenantview
 fi
 
 echo "Updation webdriver from chrome"

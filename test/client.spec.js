@@ -4,7 +4,7 @@ const helpers = require('yeoman-test');
 
 const generatorsPath = require('../generators/jhipster-environment').generatorsPath;
 
-describe('Subgenerator client of multitenancy2 JHipster blueprint', () => {
+describe('Subgenerator client of tenantview JHipster blueprint', () => {
     describe('Sample test', () => {
         before(done => {
             helpers
@@ -12,14 +12,14 @@ describe('Subgenerator client of multitenancy2 JHipster blueprint', () => {
                 .withOptions({
                     'from-cli': true,
                     skipInstall: true,
-                    blueprint: 'multitenancy2',
+                    blueprint: 'tenantview',
                     tenantName: 'Company',
                     skipChecks: true
                 })
                 .withGenerators([
                     [
                         require('../generators/client/index.js'), // eslint-disable-line global-require
-                        'jhipster-multitenancy2:client',
+                        'jhipster-tenantview:client',
                         path.join(__dirname, '../generators/client/index.js')
                     ]
                 ])

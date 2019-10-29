@@ -42,7 +42,7 @@ jobs:
 
           # Blueprint defaults
           BLUEPRINT_BUILD: true
-          BLUEPRINT_NAME: generator-jhipster-multitenancy2
+          BLUEPRINT_NAME: generator-jhipster-tenantview
           BLUEPRINT_GLOBAL: false
           BLUEPRINT_FIX_VERSION: true
           BLUEPRINT_RUN_NPM: true
@@ -67,8 +67,8 @@ jobs:
                   JHI_PROTRACTOR: 1
                   BLUEPRINT_ENTITY: jdl
               #jdl-postgres-global:
-              #    JHI_APP: jdl-multitenancy2-postgres
-              #    JHI_ENTITY: jdl-multitenancy2-company
+              #    JHI_APP: jdl-tenantview-postgres
+              #    JHI_ENTITY: jdl-tenantview-company
               #    JHI_PROFILE: prod
               #    JHI_PROTRACTOR: 1
               #    INSTALL_BLUEPRINT: global

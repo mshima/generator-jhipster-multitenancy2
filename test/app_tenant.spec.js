@@ -11,7 +11,7 @@ const generatorsPath = require('../generators/jhipster-environment').generatorsP
 
 const angularFiles = require(`${generatorsPath}/client/files-angular`).files;
 
-describe('JHipster generator with multitenancy2 blueprint', () => {
+describe('JHipster generator with tenantview blueprint', () => {
     context('Default configuration with', () => {
         describe('AngularX', () => {
             before(done => {
@@ -20,7 +20,7 @@ describe('JHipster generator with multitenancy2 blueprint', () => {
                     .withOptions({
                         'from-cli': true,
                         skipInstall: true,
-                        blueprint: 'multitenancy2',
+                        blueprint: 'tenantview',
                         baseChangelogDate: '2019-09-07',
                         defaultTenantAware: true,
                         tenantFileSuffix: 'management',
@@ -30,32 +30,32 @@ describe('JHipster generator with multitenancy2 blueprint', () => {
                     .withGenerators([
                         [
                             require('../generators/common/index.js'), // eslint-disable-line global-require
-                            'jhipster-multitenancy2:common',
+                            'jhipster-tenantview:common',
                             path.join(__dirname, '../generators/common/index.js')
                         ],
                         [
                             require('../generators/server/index.js'), // eslint-disable-line global-require
-                            'jhipster-multitenancy2:server',
+                            'jhipster-tenantview:server',
                             path.join(__dirname, '../generators/server/index.js')
                         ],
                         [
                             require('../generators/client/index.js'), // eslint-disable-line global-require
-                            'jhipster-multitenancy2:client',
+                            'jhipster-tenantview:client',
                             path.join(__dirname, '../generators/client/index.js')
                         ],
                         [
                             require('../generators/entity/index.js'), // eslint-disable-line global-require
-                            'jhipster-multitenancy2:entity',
+                            'jhipster-tenantview:entity',
                             path.join(__dirname, '../generators/entity/index.js')
                         ],
                         [
                             require('../generators/entity-client/index.js'), // eslint-disable-line global-require
-                            'jhipster-multitenancy2:entity-client',
+                            'jhipster-tenantview:entity-client',
                             path.join(__dirname, '../generators/entity-client/index.js')
                         ],
                         [
                             require('../generators/entity-server/index.js'), // eslint-disable-line global-require
-                            'jhipster-multitenancy2:entity-server',
+                            'jhipster-tenantview:entity-server',
                             path.join(__dirname, '../generators/entity-server/index.js')
                         ]
                     ])
@@ -92,7 +92,7 @@ describe('JHipster generator with multitenancy2 blueprint', () => {
 
             it('tenantName is saved in .yo-rc.json', () => {
                 assert.JSONFileContent('.yo-rc.json', {
-                    'generator-jhipster-multitenancy2': { tenantName: 'company' }
+                    'generator-jhipster-tenantview': { tenantName: 'company' }
                 });
             });
 

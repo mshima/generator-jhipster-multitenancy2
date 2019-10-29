@@ -1,6 +1,6 @@
-# generator-jhipster-multitenancy2
+# generator-jhipster-tenantview
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> JHipster blueprint, Multi Tenancy
+> JHipster blueprint, Tenancy customizations
 
 # Introduction
 
@@ -19,13 +19,13 @@ As this is a [JHipster](https://www.jhipster.tech/) blueprint, we expect you hav
 To install this blueprint:
 
 ```bash
-npm install -g generator-jhipster-multitenancy2
+npm install -g generator-jhipster-tenantview
 ```
 
 To update this blueprint:
 
 ```bash
-npm update -g generator-jhipster-multitenancy2
+npm update -g generator-jhipster-tenantview
 ```
 
 ## With Yarn
@@ -33,13 +33,13 @@ npm update -g generator-jhipster-multitenancy2
 To install this blueprint:
 
 ```bash
-yarn global add generator-jhipster-multitenancy2
+yarn global add generator-jhipster-tenantview
 ```
 
 To update this blueprint:
 
 ```bash
-yarn global upgrade generator-jhipster-multitenancy2
+yarn global upgrade generator-jhipster-tenantview
 ```
 
 # Usage
@@ -47,7 +47,7 @@ yarn global upgrade generator-jhipster-multitenancy2
 To use this blueprint, run the below command
 
 ```bash
-jhipster --blueprint multitenancy2
+jhipster --blueprint tenantview
 ```
 
 
@@ -60,7 +60,7 @@ During development of blueprint, please note the below steps. They are very impo
 Note: If you do not want to link the blueprint(step 3) to each project being created, use NPM instead of Yarn as yeoman doesn't seem to fetch globally linked Yarn modules. On the other hand, this means you have to use NPM in all the below steps as well.
 
 ```bash
-cd multitenancy2
+cd tenantview
 npm link
 ```
 
@@ -72,7 +72,7 @@ You could also use Yarn for this if you prefer
 cd generator-jhipster
 npm link
 
-cd multitenancy2
+cd tenantview
 npm link generator-jhipster
 ```
 
@@ -81,10 +81,10 @@ npm link generator-jhipster
 ```bash
 mkdir my-app && cd my-app
 
-npm link generator-jhipster-multitenancy2
+npm link generator-jhipster-tenantview
 npm link generator-jhipster (Optional: Needed only if you are using a non-released JHipster version)
 
-jhipster -d --blueprint multitenancy2
+jhipster -d --blueprint tenantview
 
 ```
 
@@ -92,9 +92,9 @@ jhipster -d --blueprint multitenancy2
 
 
 
-[npm-image]: https://img.shields.io/npm/v/generator-jhipster-multitenancy2.svg
-[npm-url]: https://npmjs.org/package/generator-jhipster-multitenancy2
-[travis-image]: https://travis-ci.org/mshima/generator-jhipster-multitenancy2.svg?branch=master
-[travis-url]: https://travis-ci.org/mshima/generator-jhipster-multitenancy2
-[daviddm-image]: https://david-dm.org/mshima/generator-jhipster-multitenancy2.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/mshima/generator-jhipster-multitenancy2
+[npm-image]: https://img.shields.io/npm/v/generator-jhipster-tenantview.svg
+[npm-url]: https://npmjs.org/package/generator-jhipster-tenantview
+[travis-image]: https://travis-ci.org/mshima/generator-jhipster-tenantview.svg?branch=master
+[travis-url]: https://travis-ci.org/mshima/generator-jhipster-tenantview
+[daviddm-image]: https://david-dm.org/mshima/generator-jhipster-tenantview.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/mshima/generator-jhipster-tenantview
