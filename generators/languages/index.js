@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-const debug = require('debug')('jhipster:multitenancy2:languages');
+const debug = require('debug')('tenantview:languages');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');

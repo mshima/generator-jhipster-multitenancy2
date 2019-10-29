@@ -2,8 +2,8 @@ const chalk = require('chalk');
 const path = require('path');
 const glob = require('glob');
 const semver = require('semver');
-const debug = require('debug')('jhipster:multitenancy2:patcher');
-const trace = require('debug')('jhipster:multitenancy2:patcher:trace');
+const debug = require('debug')('tenancy-view:patcher');
+const trace = require('debug')('trace:tenancy-view:patcher');
 
 const packagePath = require('./jhipster-environment').packagePath;
 

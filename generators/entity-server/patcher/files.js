@@ -1,5 +1,5 @@
 const randexp = require('randexp');
-const debug = require('debug')('jhipster:multitenancy2:entity:server:files');
+const debug = require('debug')('tenantview:entity:server:files');
 
 const faker = require('../../faker');
 const jhipsterEnv = require('../../jhipster-environment');

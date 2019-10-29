@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-const debug = require('debug')('jhipster:multitenancy2:entity');
+const debug = require('debug')('tenantview:entity');
 
 const Patcher = require('../patcher');
 const mtUtils = require('../multitenancy-utils');

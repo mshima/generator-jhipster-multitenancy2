@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-const debug = require('debug')('jhipster:multitenancy2:entity:server');
+const debug = require('debug')('tenantview:entity:server');
 
 const TenantisedNeedle = require('./needle-api/needle-server-tenantised-entities-services');
 

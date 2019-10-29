@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 const chalk = require('chalk');
-const debug = require('debug')('jhipster:multitenancy2:server');
+const debug = require('debug')('tenantview:server');
 
 const generatorsPath = require('../../jhipster-environment').generatorsPath;
 

@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 const _ = require('lodash');
 const fs = require('fs');
-const debug = require('debug')('jhipster:multitenancy2:common');
+const debug = require('debug')('tenantview:common');
 
 const mtUtils = require('../multitenancy-utils');
 const Patcher = require('../patcher');

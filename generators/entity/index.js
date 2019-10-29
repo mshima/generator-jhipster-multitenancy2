@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 const chalk = require('chalk');
-const debug = require('debug')('jhipster:multitenancy2:entity');
+const debug = require('debug')('tenantview:entity');
 
 const mtUtils = require('../multitenancy-utils');
 

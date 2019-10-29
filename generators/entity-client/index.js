@@ -1,4 +1,4 @@
-const debug = require('debug')('jhipster:multitenancy2:entity:client');
+const debug = require('debug')('tenantview:entity:client');
 
 const Patcher = require('../patcher');
 

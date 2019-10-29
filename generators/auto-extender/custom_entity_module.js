@@ -5,7 +5,7 @@
  */
 const chalk = require('chalk');
 const _ = require('lodash');
-// const debug = require('debug')('jhipster:multitenancy2:generator-extender:custom-entity-module');
+// const debug = require('debug')('tenantview:generator-extender:custom-entity-module');
 
 const jhipsterEnv = require('../jhipster-environment');
 
