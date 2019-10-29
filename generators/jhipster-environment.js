@@ -2,7 +2,7 @@ const Env = require('yeoman-environment');
 const path = require('path');
 const chalk = require('chalk');
 
-const debug = require('debug')('tenancy-view:env');
+const debug = require('debug')('tenantview:env');
 
 const autoExtender = require('./auto-extender');
 
