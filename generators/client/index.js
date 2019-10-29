@@ -22,22 +22,6 @@ module.exports = class extends ClientGenerator {
         this.patcher = new Patcher(this);
     }
 
-    get initializing() {
-        return super._initializing();
-    }
-
-    get prompting() {
-        return super._prompting();
-    }
-
-    get configuring() {
-        return super._configuring();
-    }
-
-    get default() {
-        return super._default();
-    }
-
     get writing() {
         const postWritingSteps = {
             patchFiles() {

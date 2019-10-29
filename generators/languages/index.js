@@ -18,22 +18,6 @@ module.exports = class extends LanguagesGenerator {
         debug('Initializing languages blueprint');
     }
 
-    get initializing() {
-        return super._initializing();
-    }
-
-    get prompting() {
-        return super._prompting();
-    }
-
-    get configuring() {
-        return super._configuring();
-    }
-
-    get default() {
-        return super._default();
-    }
-
     get writing() {
         const postWritingSteps = {
             addTenantAdminMenuTranslation() {
@@ -46,13 +30,5 @@ module.exports = class extends LanguagesGenerator {
             }
         };
         return { ...super._writing(), ...postWritingSteps };
-    }
-
-    get install() {
-        return super._install();
-    }
-
-    get end() {
-        return super._end();
     }
 };

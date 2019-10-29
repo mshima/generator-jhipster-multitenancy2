@@ -49,11 +49,6 @@ describe('Subgenerator entity-tenant of multitenancy2 JHipster blueprint', () =>
                         require('../generators/entity-server/index.js'), // eslint-disable-line global-require
                         'jhipster-multitenancy2:entity-server',
                         path.join(__dirname, '../generators/entity-server/index.js')
-                    ],
-                    [
-                        require('../generators/entity-i18n/index.js'), // eslint-disable-line global-require
-                        'jhipster-multitenancy2:entity-i18n',
-                        path.join(__dirname, '../generators/entity-i18n/index.js')
                     ]
                 ])
                 .withArguments(['company'])

@@ -22,22 +22,6 @@ module.exports = class extends EntityServerGenerator {
         debug(`Initializing entity-server ${this.name}`);
     }
 
-    get initializing() {
-        return super._initializing();
-    }
-
-    get prompting() {
-        return super._prompting();
-    }
-
-    get configuring() {
-        return super._configuring();
-    }
-
-    get default() {
-        return super._default();
-    }
-
     get writing() {
         const postWritingSteps = {
             // sets up all the variables we'll need for the templating
@@ -67,13 +51,5 @@ module.exports = class extends EntityServerGenerator {
             }
         };
         return { ...super._writing(), ...postWritingSteps };
-    }
-
-    get install() {
-        return super._install();
-    }
-
-    get end() {
-        return super._end();
     }
 };

@@ -103,11 +103,6 @@ module.exports = class extends CommonGenerator {
         return { ...super._configuring(), ...postConfiguringSteps };
     }
 
-    get default() {
-        // Here we are not overriding this phase and hence its being handled by JHipster
-        return super._default();
-    }
-
     get writing() {
         const preWritingSteps = {
             generateTenant() {
@@ -142,13 +137,5 @@ module.exports = class extends CommonGenerator {
         };
 
         return { ...preWritingSteps, ...super._writing(), ...postWritingSteps };
-    }
-
-    get install() {
-        return super._install();
-    }
-
-    get end() {
-        return super._end();
     }
 };

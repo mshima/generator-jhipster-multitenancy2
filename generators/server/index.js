@@ -13,22 +13,6 @@ module.exports = class extends ServerGenerator {
         this.patcher = new Patcher(this);
     }
 
-    get initializing() {
-        return super._initializing();
-    }
-
-    get prompting() {
-        return super._prompting();
-    }
-
-    get configuring() {
-        return super._configuring();
-    }
-
-    get default() {
-        return super._default();
-    }
-
     get writing() {
         const postWritingSteps = {
             writeAdditionalFile() {
@@ -43,13 +27,5 @@ module.exports = class extends ServerGenerator {
         };
 
         return { ...super._writing(), ...postWritingSteps };
-    }
-
-    get install() {
-        return super._install();
-    }
-
-    get end() {
-        return super._end();
     }
 };

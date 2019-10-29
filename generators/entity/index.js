@@ -222,20 +222,4 @@ module.exports = class extends EntityGenerator {
         };
         return { ...preConfiguringSteps, ...super._configuring(), ...postConfiguringSteps };
     }
-
-    get default() {
-        return super._default();
-    }
-
-    get writing() {
-        return super._writing();
-    }
-
-    get install() {
-        return super._install();
-    }
-
-    get end() {
-        return super._end();
-    }
 };
