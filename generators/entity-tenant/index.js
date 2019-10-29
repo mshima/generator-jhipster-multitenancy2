@@ -80,22 +80,4 @@ module.exports = class extends EntityGenerator {
         };
         return { ...preConfiguringSteps, ...super._configuring(), ...postConfiguringSteps };
     }
-
-    get default() {
-        // default phase doesn't exists on entity module
-        return {};
-    }
-
-    get writing() {
-        return super._writing();
-    }
-
-    get install() {
-        return super._install();
-    }
-
-    get end() {
-        // end phase doesn't exists on entity module
-        return {};
-    }
 };
